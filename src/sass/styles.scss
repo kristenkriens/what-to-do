@@ -1,0 +1,61 @@
+@import 'normalize';
+@import 'variables';
+@import 'typography';
+@import 'home';
+
+/*
+====================================
+Default Styling
+====================================
+*/
+
+html, body {
+	overflow-x: hidden;
+}
+
+body {
+	color: $white;
+	font-size: 16px;
+	font-family: 'Lato', sans-serif;
+	line-height: 1.25;
+  display: flex;
+  flex-wrap: wrap;
+}
+
+img {
+	max-width: 100%;
+	color: transparent;
+}
+
+.wrapper {
+	display: flex;
+	justify-content: space-between;
+	flex-wrap: wrap;
+	max-width: 1200px;
+	width: 100%;
+	margin: 0 auto;
+	padding: 30px;
+
+	@media (max-width: $sm-width) {
+		padding: 30px 15px;
+	}
+}
+
+.accessible {
+	position: absolute !important;
+	clip: rect(0, 0, 0, 0);
+	overflow: hidden;
+	border: 0 none !important;
+	width: 1px !important;
+	height: 1px !important;
+	margin: -1px;
+}
+
+a[href^="http://maps.google.com/maps"],
+a[href^="https://maps.google.com/maps"] {
+	display:none !important
+}
+
+.gmnoprint a, .gmnoprint span, .gm-style-cc {
+  display:none;
+}

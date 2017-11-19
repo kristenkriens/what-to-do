@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>What To Do</title>
+  <link type="image/png" href="dist/images/favicon.png" rel="icon">
+  <link rel="stylesheet" type="text/css" href="dist/css/styles.css">
+</head>
+<body>
+  <section class="options">
+    <div class="options__content">
+      <header>
+        <h1>What To Do</h1>
+        <h2>Event/Place Finder</h2>
+      </header>
+      <div class="options__content-items">
+        <div class="options__content-item options__content-item--active" data-title="location">
+          <p>Where are you located?<p>
+          <input type="text" id="location" placeholder="e.g. 123 Fake Street, Toronto" class="options__input options__input--search">
+          <button class="options__button options__button--search">Search</button>
+          OR
+          <button class="options__button options__button--geolocate">Use Current Location</button>
+        </div>
+        <div class="options__content-item" data-title="date">
+          <p>When do you want to go?</p>
+        </div>
+      </div>
+      <footer>
+        <p><a href="https://dribbble.com/shots/2736111-Pub-Explorer" target="_blank">Inspiration</a></p>
+        <p>&copy; Kristen Kriens 2017</p>
+      </footer>
+    </div>
+    <div class="options__tabs">
+      <div class="options__tabs-item options__tabs-item--active" data-title="location"><i class="fa fa-globe" aria-hidden="true"></i><span class="accessible">Location</span></div>
+      <div class="options__tabs-item" data-title="date"><i class="fa fa-calendar" aria-hidden="true"></i><span class="accessible">Date</span></div>
+    </div>
+  </section>
+  <section class="map"></section>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_3oQBqRgHi7SAKpys-YF546vL_GpsYAc" type="text/javascript"></script>
+  <script src="https://use.fontawesome.com/07dc8c3210.js"></script>
+  <script src="dist/js/fontawesome-markers.min.js"></script>
+  <script src="dist/js/scripts.min.js"></script>
+</body>
+</html>

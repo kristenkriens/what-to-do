@@ -1,0 +1,71 @@
+.options {
+  display: flex;
+  flex-wrap: wrap;
+  width: 350px;
+
+  @media (max-width: $lg-width) {
+    width: 100%;
+  }
+
+  &__content {
+    display: flex;
+    flex-wrap: wrap;
+    background-color: $blue;
+    width: calc(100% - 75px);
+    height: 100%;
+    padding: 30px;
+
+    @media (max-width: $sm-width) {
+  		padding: 30px 15px;
+  	}
+
+    &-items, header, footer {
+      width: 100%;
+    }
+
+    &-item {
+      display: none;
+
+      &--active {
+        display: block;
+      }
+    }
+
+    footer {
+      align-self: flex-end;
+    }
+  }
+
+  &__tabs {
+    background-color: $navy;
+    height: 100%;
+
+    &-item {
+      color: $grey;
+      width: 75px;
+      height: 75px;
+      font-size: 35px;
+      padding: 15px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+
+      &--active {
+        background-color: $blue;
+        color: $white;
+      }
+    }
+  }
+}
+
+.map {
+  width: calc(100% - 350px);
+  height: 100vh;
+  min-height: 600px;
+
+
+  @media (max-width: $lg-width) {
+    width: 100%;
+  }
+}
