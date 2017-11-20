@@ -52,6 +52,7 @@ app.generateMap = function() {
 
 // Gets location via geolocation and adds address to location input
 app.getGeolocation = function() {
+	$('.options__button--location').attr('disabled', 'disabled');
   $('.options__units--geolocate').html('<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="accessible">Loading...</span>');
 
   if (navigator.geolocation) {
@@ -220,7 +221,6 @@ app.init = function() {
   app.generateMap();
 
   $('.options__units--geolocate').on('click', function() {
-    $('.options__button--location').attr('disabled', 'disabled');
     app.getGeolocation();
   });
 
