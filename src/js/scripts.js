@@ -48,12 +48,6 @@ app.generateMap = function() {
   };
 
   app.map = new google.maps.Map(mapContainer, mapInfo);
-
-  let center = app.map.getCenter();
-
-  google.maps.event.addDomListener(window, 'resize', function() {
-    app.map.setCenter(center);
-  });
 }
 
 // Gets location via geolocation and adds address to location input
