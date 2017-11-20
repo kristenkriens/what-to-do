@@ -159,8 +159,13 @@ app.init = function() {
   app.generateMap();
 
   $('.options__button--geolocate').on('click', function() {
+    $('.options__button--search').attr('disabled', 'disabled');
     $(this).html('<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="accessible">Loading...</span>');
     app.getGeolocation();
+  });
+
+  $('.options__location-search input').on('keypress', function() {
+    $('.options__button--search').removeAttr('disabled');
   });
 
   $('.options__button--search').on('click', function() {
