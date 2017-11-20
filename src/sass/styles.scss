@@ -20,6 +20,10 @@ body {
 	line-height: 1.25;
   display: flex;
   flex-wrap: wrap;
+
+	@media (max-width: $lg-width) {
+    flex-direction: column;
+  }
 }
 
 img {

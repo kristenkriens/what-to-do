@@ -15,6 +15,10 @@
     height: 100%;
     padding: 30px;
 
+    @media (max-width: $lg-width) {
+      width: 100%;
+    }
+
     @media (max-width: $sm-width) {
   		padding: 30px 15px;
   	}
@@ -39,6 +43,13 @@
   &__tabs {
     background-color: $navy;
     height: 100%;
+    position: relative;
+
+    @media (max-width: $lg-width) {
+      height: auto;
+      width: 100%;
+      display: flex;
+    }
 
     &-item {
       color: $grey;
@@ -50,10 +61,36 @@
       justify-content: center;
       align-items: center;
       cursor: pointer;
+      transition: 200ms color ease, 200ms background-color ease;
+
+      @media (max-width: $sm-width) {
+        width: 50px;
+        height: 50px;
+        font-size: 25px;
+      }
+
+      &:hover, &:active, &:focus {
+        color: $light-grey;
+      }
 
       &--active {
         background-color: $blue;
         color: $white;
+
+        &:hover {
+          color: $white;
+        }
+      }
+
+      &--email {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+
+        @media (max-width: $lg-width) {
+          right: 0;
+          left: auto;
+        }
       }
     }
   }
