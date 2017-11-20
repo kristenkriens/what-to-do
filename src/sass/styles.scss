@@ -53,6 +53,7 @@ button {
 	font-size: 20px;
 	font-weight: 300;
 	letter-spacing: 1px;
+	text-transform: uppercase;
 
 	&:hover, &:active, &:focus {
 		background-color: $light-navy;

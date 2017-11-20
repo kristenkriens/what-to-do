@@ -17,23 +17,39 @@
       </header>
       <div class="options__content-items">
         <div class="options__content-item options__content-item--active" data-title="location">
-          <div class="options__location-search">
+          <h3>Location</h3>
+          <div class="options__search options__search--right">
             <label for="location">Where are you located?</label>
             <input type="text" id="location" placeholder="e.g. 123 Fake St., Toronto" class="options__input">
-            <button class="options__button options__button--geolocate"><i class="fa fa-location-arrow" aria-hidden="true"></i><span class="accessible">Use Current Location</span></button>
+            <button class="options__units options__units--geolocate"><i class="fa fa-location-arrow" aria-hidden="true"></i><span class="accessible">Use Current Location</span></button>
           </div>
           <button class="options__button options__button--search options__button--next" disabled>Next</button>
         </div>
         <div class="options__content-item" data-title="date">
-          <p>When do you want to go?</p>
+          <h3>Date</h3>
+          <div class="options__search options__search--right">
+            <label for="date">When do you want to go?</label>
+            <input type="text" id="date" class="options__input">
+            <button class="options__units options__units--date"><i class="fa fa-calendar" aria-hidden="true"></i><span class="accessible">Date Picker</span></button>
+          </div>
           <button class="options__button options__button--next">Next</button>
         </div>
         <div class="options__content-item" data-title="distance">
-          <p>How far are you willing to travel?</p>
+          <h3>Distance</h3>
+          <div class="options__search options__search--right">
+            <label for="distance">How far are you willing to travel?</label>
+            <input type="text" id="distance" class="options__input">
+            <p class="options__units">km</p>
+          </div>
           <button class="options__button options__button--next">Next</button>
         </div>
-        <div class="options__content-item" data-title="price">
-          <p>How much are you willing to spend?</p>
+        <div class="options__content-item" data-title="budget">
+          <h3>Budget</h3>
+          <div class="options__search options__search--left">
+            <label for="budget">How much are you willing to spend?</label>
+            <p class="options__units">$</p>
+            <input type="text" id="budget" class="options__input">
+          </div>
           <button class="options__button options__button--next">Next</button>
         </div>
         <div class="options__content-item" data-title="directions">
@@ -49,11 +65,19 @@
       <div class="options__tabs-item options__tabs-item--active" data-title="location"><i class="fa fa-globe" aria-hidden="true"></i><span class="accessible">Location</span></div>
       <div class="options__tabs-item" data-title="date"><i class="fa fa-calendar" aria-hidden="true"></i><span class="accessible">Date</span></div>
       <div class="options__tabs-item" data-title="distance"><i class="fa fa-street-view" aria-hidden="true"></i><span class="accessible">Distance</span></div>
-      <div class="options__tabs-item" data-title="price"><i class="fa fa-usd" aria-hidden="true"></i><span class="accessible">Price</span></div>
+      <div class="options__tabs-item" data-title="budget"><i class="fa fa-usd" aria-hidden="true"></i><span class="accessible">Budget</span></div>
       <div class="options__tabs-item" data-title="directions"><i class="fa fa-map-signs" aria-hidden="true"></i><span class="accessible">Directions</span></div>
     </div>
   </section>
-  <section class="map"></section>
+  <section class="map">
+    <div class="map__overlay">
+      <div class="map__search">
+        <label for="search"><i class="fa fa-search" aria-hidden="true"></i></label>
+        <input type="text" id="search" placeholder="Search Results"></div>
+      <div class="map__results"><span class="map__results-number">0</span> Results</div>
+    </div>
+    <div class="map__map"></div>
+  </section>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_3oQBqRgHi7SAKpys-YF546vL_GpsYAc" type="text/javascript"></script>
   <script src="https://use.fontawesome.com/07dc8c3210.js"></script>
