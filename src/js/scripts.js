@@ -2,6 +2,8 @@ const app = {};
 
 app.map;
 
+app.markers = [];
+
 app.searchClicks = 0;
 
 app.placeApiUrl = 'https://api.foursquare.com/v2/venues/explore';
@@ -70,6 +72,8 @@ app.mapZoomClick = function(marker) {
 
 // Gets location via geolocation and adds address to location input
 app.getGeolocation = function() {
+  $('.options__button--geolocate').html('<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="accessible">Loading...</span>');
+
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
       let myLatLng = {lat: position.coords.latitude, lng: position.coords.longitude};
@@ -99,6 +103,11 @@ app.setLocation = function() {
 
   new google.maps.Geocoder().geocode({'address': location}, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
+      if(typeof app.markers[0] !== "undefined") {
+        app.markers[0].setMap(null);
+        app.markers.shift();
+      }
+
       let marker = new google.maps.Marker({
         map: app.map,
         animation: google.maps.Animation.DROP,
@@ -110,6 +119,10 @@ app.setLocation = function() {
           fillOpacity: 1
         }
       });
+
+      app.markers.push(marker);
+
+      console.log(app.markers);
 
       let latLngString = `${marker.position.lat()},${marker.position.lng()}`;
 
@@ -159,9 +172,8 @@ app.init = function() {
   app.generateMap();
 
   $('.options__button--geolocate').on('click', function() {
-    $('.options__button--search').attr('disabled', 'disabled');
-    $(this).html('<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="accessible">Loading...</span>');
     app.getGeolocation();
+    $('.options__button--search').attr('disabled', 'disabled');
   });
 
   $('.options__location-search input').on('keypress', function() {
