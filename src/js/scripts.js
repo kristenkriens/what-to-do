@@ -56,23 +56,6 @@ app.generateMap = function() {
   });
 }
 
-// Zooms map and centers around marker on click and zooms back out on alternate click
-app.mapZoomClick = function(marker) {
-  let clicks = 0;
-
-  marker.addListener('click', function() {
-    if(clicks % 2) {
-      app.map.setZoom(16);
-    } else {
-      app.map.setZoom(18);
-    }
-
-    app.map.setCenter(this.position);
-
-    clicks++;
-  });
-}
-
 // Gets location via geolocation and adds address to location input
 app.getGeolocation = function() {
   $('.options__units--geolocate').html('<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="accessible">Loading...</span>');
@@ -82,7 +65,7 @@ app.getGeolocation = function() {
       let myLatLng = {lat: position.coords.latitude, lng: position.coords.longitude};
 
       let checkInput = setInterval(function() {
-        let location = $('.options__search input').val();
+        let location = $('.options__search input#location').val();
 
         if(location !== '') {
           clearInterval(checkInput);
@@ -92,7 +75,7 @@ app.getGeolocation = function() {
       }, 500);
 
       new google.maps.Geocoder().geocode({'location': myLatLng}, function(results, status) {
-        $('.options__search input').val(results[0].formatted_address);
+        $('.options__search input#location').val(results[0].formatted_address);
       });
     });
   } else {
@@ -100,15 +83,18 @@ app.getGeolocation = function() {
   }
 }
 
-// Gets location via user input and generates marker
+// Gets location via user input, adds address to input, and generates marker
 app.setLocation = function() {
-  let location = $('.options__search input').val();
+  let location = $('.options__search input#location').val();
 
   new google.maps.Geocoder().geocode({'address': location}, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
       if(typeof app.markers[0] !== "undefined") {
-        app.markers[0].setMap(null);
-        app.markers.shift();
+				for(let i = 0; i < app.markers.length; i++) {
+					app.markers[i].setMap(null);
+				}
+
+				app.markers.splice(0, app.markers.length);
       }
 
       let homeMarker = new google.maps.Marker({
@@ -153,29 +139,60 @@ app.setLocation = function() {
 
 // Generates place markers on map and fills out number of results in overlay
 app.generatePlaces = function(places) {
-  app.totalItems = places.response.venues.length;
-
-  $('.map__results-number').text(app.totalItems);
-
-  let place;
-
-  for (place in places.response.venues) {
-    var marker = new google.maps.Marker({
+  for (let i in places.response.venues) {
+    let placeMarker = new google.maps.Marker({
       map: app.map,
-      position: places.response.venues[place].location,
-      icon: {
-        path: fontawesome.markers.CIRCLE,
-        scale: 0.5,
-        strokeWeight: 0,
-        fillColor: '#27b2d0',
-        fillOpacity: 1
-      }
+      position: places.response.venues[i].location,
+			label: {
+	      text: (parseInt(i) + 1).toString(),
+	      color: 'white',
+	    },
+      icon: app.generatePlaceMarkerSymbol('#27b2d0')
     });
 
-    app.markers.push(marker);
+		placeMarker.addListener('click', app.changePlaceMarkerColour);
 
-    app.mapZoomClick(marker);
+    app.markers.push(placeMarker);
+
+    app.mapZoomClick(placeMarker);
   }
+
+	app.totalItems = places.response.venues.length;
+  $('.map__results-number').text(app.totalItems);
+}
+
+// Zooms map and centers around marker on click
+app.mapZoomClick = function(marker) {
+  marker.addListener('click', function() {
+    app.map.setZoom(18);
+    app.map.setCenter(this.position);
+  });
+}
+
+// Changes the colour of the active place marker
+app.changePlaceMarkerColour = function() {
+  app.restorePlaceMarkerColour();
+  this.setIcon(app.generatePlaceMarkerSymbol('#14192d'));
+}
+
+// Generates the place marker symbol
+app.generatePlaceMarkerSymbol = function(colour) {
+  return {
+		path: fontawesome.markers.CIRCLE,
+		scale: 0.5,
+		strokeWeight: 0,
+		fillColor: colour,
+		fillOpacity: 1,
+		origin: new google.maps.Point(0, 0),
+		labelOrigin: new google.maps.Point(27,-33)
+  };
+}
+
+// Restores the colour of the place marker when it isn't the active one
+app.restorePlaceMarkerColour = function() {
+	for (var i = 1; i < app.markers.length; i++) {
+  	app.markers[i].setIcon(app.generatePlaceMarkerSymbol('#27b2d0'));
+	}
 }
 
 // Changes the active tab based on which tab was clicked
@@ -204,7 +221,7 @@ app.init = function() {
     app.getGeolocation();
   });
 
-  $('.options__search input').on('keypress', function() {
+  $('.options__search input#location').on('keypress', function() {
     $('.options__button--search').removeAttr('disabled');
   });
 
