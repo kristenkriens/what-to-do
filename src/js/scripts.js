@@ -104,8 +104,7 @@ app.setLocation = function() {
         animation: google.maps.Animation.DROP,
         position: results[0].geometry.location,
         icon: {
-          path: fontawesome.markers.THUMB_TACK,
-          scale: 0.5,
+          path: fontawesome.markers.MAP_MARKER,
           strokeWeight: 0,
           fillColor: '#ff751a',
           fillOpacity: 1
