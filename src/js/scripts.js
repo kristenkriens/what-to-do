@@ -99,7 +99,8 @@ app.setLocation = function() {
           path: fontawesome.markers.MAP_MARKER,
           strokeWeight: 0,
           fillColor: '#ff751a',
-          fillOpacity: 1
+          fillOpacity: 1,
+					origin: new google.maps.Point(0, 0)
         }
       });
 
@@ -190,7 +191,7 @@ app.restorePlaceMarkerColour = function() {
 }
 
 // Changes the active tab based on which tab was clicked
-app.changeActiveTab = function(that) {
+app.changeActiveTabClick = function(that) {
   let tabTitle = that.data('title');
 
   if(tabTitle) {
@@ -204,6 +205,14 @@ app.changeActiveTab = function(that) {
       }
     });
   }
+}
+
+// Changes the active tab based on which tab was clicked and enables disabled tabs once they have been active
+app.changeActiveTabNext = function(that) {
+	let tabs = $('.options__tabs').children();
+	let currentIndex = that.parent().index();
+
+	tabs.eq(currentIndex + 1).removeClass('options__tabs-item--disabled').click();
 }
 
 // Initializes app
@@ -224,8 +233,12 @@ app.init = function() {
   });
 
   $('.options__tabs-item').on('click', function() {
-    app.changeActiveTab($(this));
+    app.changeActiveTabClick($(this));
   });
+
+	$('.options__button--next').on('click', function() {
+		app.changeActiveTabNext($(this));
+	});
 }
 
 $(function() {
