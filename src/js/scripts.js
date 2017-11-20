@@ -68,7 +68,9 @@ app.generateMap = function() {
 
 // Resizes, centers, and zooms map around main marker
 app.mapResizeCenterZoom = function(marker, markerPosition) {
-  app.map.setZoom(13);
+  let origZoom = 13;
+
+  app.map.setZoom(origZoom);
   app.map.setCenter(markerPosition);
 
   google.maps.event.addDomListener(app.map, 'idle', function() {
@@ -83,7 +85,7 @@ app.mapResizeCenterZoom = function(marker, markerPosition) {
 
   marker.addListener('click', function() {
     if(clicks % 2) {
-      app.map.setZoom(13);
+      app.map.setZoom(origZoom);
     } else {
       app.map.setZoom(16);
     }
