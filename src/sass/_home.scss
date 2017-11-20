@@ -3,7 +3,7 @@
   flex-wrap: wrap;
   width: 350px;
 
-  @media (max-width: $lg-width) {
+  @media (max-width: $md-width) {
     width: 100%;
   }
 
@@ -13,18 +13,20 @@
     background-color: $blue;
     width: calc(100% - 75px);
     height: 100%;
-    padding: 30px;
+    padding: 20px;
 
-    @media (max-width: $lg-width) {
+    @media (max-width: $md-width) {
       width: 100%;
     }
 
-    @media (max-width: $sm-width) {
-  		padding: 30px 15px;
-  	}
-
     &-items, header, footer {
       width: 100%;
+    }
+
+    &-items {
+      margin: 25px 0;
+      padding-bottom: 60px;
+      position: relative;
     }
 
     &-item {
@@ -37,6 +39,41 @@
 
     footer {
       align-self: flex-end;
+      font-size: 14px;
+
+      a {
+        color: $white;
+        transition: 200ms opacity ease;
+
+        &:hover {
+          opacity: 0.75;
+        }
+      }
+    }
+  }
+
+  &__location-search {
+    position: relative;
+
+    input {
+      padding-right: 50px;
+    }
+  }
+
+  &__button {
+    &--geolocate {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      height: 40px;
+      width: 40px;
+      padding: 5px;
+    }
+
+    &--next {
+      position: absolute;
+      bottom: 0;
+      right: 0;
     }
   }
 
@@ -45,7 +82,7 @@
     height: 100%;
     position: relative;
 
-    @media (max-width: $lg-width) {
+    @media (max-width: $md-width) {
       height: auto;
       width: 100%;
       display: flex;
@@ -81,17 +118,6 @@
           color: $white;
         }
       }
-
-      &--email {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-
-        @media (max-width: $lg-width) {
-          right: 0;
-          left: auto;
-        }
-      }
     }
   }
 }
@@ -102,7 +128,7 @@
   min-height: 600px;
 
 
-  @media (max-width: $lg-width) {
+  @media (max-width: $md-width) {
     width: 100%;
   }
 }

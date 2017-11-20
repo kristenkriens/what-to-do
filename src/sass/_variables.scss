@@ -4,6 +4,7 @@ $grey: rgba(200, 200, 200, 0.5);
 $light-grey: rgba(250, 250, 250, 0.75);
 $blue: #27b2d0;
 $navy: #14192d;
+$light-navy: lighten($navy, 5%);
 
 $xs-width: 320px;
 $xs-width-plus: $xs-width + 1px;

@@ -17,28 +17,32 @@
       </header>
       <div class="options__content-items">
         <div class="options__content-item options__content-item--active" data-title="location">
-          <p>Where are you located?<p>
-          <input type="text" id="location" placeholder="e.g. 123 Fake Street, Toronto" class="options__input options__input--search">
-          <button class="options__button options__button--search">Search</button>
-          OR
-          <button class="options__button options__button--geolocate">Use Current Location</button>
+          <div class="options__location-search">
+            <label for="location">Where are you located?</label>
+            <input type="text" id="location" placeholder="e.g. 123 Fake St., Toronto" class="options__input">
+            <button class="options__button options__button--geolocate"><i class="fa fa-location-arrow" aria-hidden="true"></i><span class="accessible">Use Current Location</span></button>
+          </div>
+          <button class="options__button options__button--search options__button--next" disabled>Next</button>
         </div>
         <div class="options__content-item" data-title="date">
           <p>When do you want to go?</p>
+          <button class="options__button options__button--next">Next</button>
         </div>
         <div class="options__content-item" data-title="distance">
           <p>How far are you willing to travel?</p>
+          <button class="options__button options__button--next">Next</button>
         </div>
         <div class="options__content-item" data-title="price">
           <p>How much are you willing to spend?</p>
+          <button class="options__button options__button--next">Next</button>
         </div>
         <div class="options__content-item" data-title="directions">
           <h3>Directions</h3>
+          <button class="options__button options__button--next options__button--email">Send <i class="fa fa-envelope" aria-hidden="true"></i></button>
         </div>
       </div>
       <footer>
-        <p><a href="https://dribbble.com/shots/2736111-Pub-Explorer" target="_blank">Inspiration</a></p>
-        <p>&copy; Kristen Kriens 2017</p>
+        <p>&copy; <a href="http://kristenkriens.com" target="_blank">Kristen Kriens</a> 2017</p>
       </footer>
     </div>
     <div class="options__tabs">
@@ -47,7 +51,6 @@
       <div class="options__tabs-item" data-title="distance"><i class="fa fa-street-view" aria-hidden="true"></i><span class="accessible">Distance</span></div>
       <div class="options__tabs-item" data-title="price"><i class="fa fa-usd" aria-hidden="true"></i><span class="accessible">Price</span></div>
       <div class="options__tabs-item" data-title="directions"><i class="fa fa-map-signs" aria-hidden="true"></i><span class="accessible">Directions</span></div>
-      <div class="options__tabs-item options__tabs-item--email" data-title="email"><i class="fa fa-envelope" aria-hidden="true"></i><span class="accessible">Email</span></div>
     </div>
   </section>
   <section class="map"></section>

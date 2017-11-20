@@ -2,28 +2,11 @@ const app = {};
 
 app.map;
 
-app.eventApiUrl = 'http://api.eventful.com/json/events/search';
-app.eventApiKey = 'srQBgzwWJzXwZcrM';
+app.searchClicks = 0;
 
 app.placeApiUrl = 'https://api.foursquare.com/v2/venues/explore';
 app.placeApiClientId = '1JM0YWOJPR4JMQ3VTCFJTHCOZIDYQQ1ZQICNZNQ2JPTVXO5B';
 app.placeApiKey = '3P0H0ECHZUY2JQQTZWDGW4C4G1F1JPMBJQIPCMUTGHVWJI5W';
-
-// Gets info from Eventful API
-app.getEvents = function(location) {
-	$.ajax({
-		url: app.eventApiUrl,
-		method: "GET",
-		dataType: "jsonp",
-		data: {
-			app_key: app.eventApiKey,
-      location: location,
-      within: '5'
-		}
-	}).then(function(events) {
-		console.log(events);
-	});
-};
 
 // Gets info from Foursquare API
 app.getPlaces = function(location) {
@@ -68,26 +51,13 @@ app.generateMap = function() {
   });
 }
 
-// Resizes, centers, and zooms map around main marker
-app.mapResizeCenterZoom = function(marker, markerPosition) {
-  let origZoom = 13;
-
-  app.map.setZoom(origZoom);
-  app.map.setCenter(markerPosition);
-
-  google.maps.event.addDomListener(app.map, 'idle', function() {
-    app.map.getCenter();
-  });
-
-  google.maps.event.addDomListener(window, 'resize', function() {
-    app.map.setCenter(markerPosition);
-  });
-
+// Zooms map and centers around marker on click and zooms back out on alternate click
+app.mapZoomClick = function(marker) {
   let clicks = 0;
 
   marker.addListener('click', function() {
     if(clicks % 2) {
-      app.map.setZoom(origZoom);
+      app.map.setZoom(13);
     } else {
       app.map.setZoom(16);
     }
@@ -96,42 +66,26 @@ app.mapResizeCenterZoom = function(marker, markerPosition) {
 
     clicks++;
   });
-
-  let latLngString = `${markerPosition.lat()},${markerPosition.lng()}`;
-
-  app.getEvents(latLngString);
-  app.getPlaces(latLngString);
 }
 
-// Generates marker for base location
-app.generateLocationMarker = function(marker, position) {
-  marker = new google.maps.Marker({
-    map: app.map,
-    animation: google.maps.Animation.DROP,
-    position: position,
-    icon: {
-      path: fontawesome.markers.THUMB_TACK,
-      scale: 0.5,
-      strokeWeight: 0,
-      fillColor: '#ff751a',
-      fillOpacity: 1
-    }
-  });
-
-  app.mapResizeCenterZoom(marker, marker.position);
-}
-
-// Gets location via geolocation, adds address to location input, and calls function to generate marker
-app.getLocationGeolocation = function() {
+// Gets location via geolocation and adds address to location input
+app.getGeolocation = function() {
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
       let myLatLng = {lat: position.coords.latitude, lng: position.coords.longitude};
 
-      new google.maps.Geocoder().geocode({'location': myLatLng}, function(results, status) {
-        $('.options__input--search').val(results[0].formatted_address);
+      let checkInput = setInterval(function() {
+        let location = $('.options__location-search input').val();
 
-        let marker;
-        app.generateLocationMarker(marker, results[0].geometry.location);
+        if(location !== '') {
+          clearInterval(checkInput);
+          $('.options__button--geolocate').html('<i class="fa fa-location-arrow" aria-hidden="true"></i><span class="accessible">Use Current Location</span>')
+          $('.options__button--search').removeAttr('disabled');
+        }
+      }, 500);
+
+      new google.maps.Geocoder().geocode({'location': myLatLng}, function(results, status) {
+          $('.options__location-search input').val(results[0].formatted_address);
       });
     });
   } else {
@@ -139,14 +93,41 @@ app.getLocationGeolocation = function() {
   }
 }
 
-// Gets location via user input and calls function to generate marker
-app.getLocationSearch = function() {
-  let location = $('.options__input--search').val();
+// Gets location via user input and generates marker
+app.setLocation = function() {
+  let location = $('.options__location-search input').val();
 
   new google.maps.Geocoder().geocode({'address': location}, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
-      let marker;
-      app.generateLocationMarker(marker, results[0].geometry.location);
+      let marker = new google.maps.Marker({
+        map: app.map,
+        animation: google.maps.Animation.DROP,
+        position: results[0].geometry.location,
+        icon: {
+          path: fontawesome.markers.THUMB_TACK,
+          scale: 0.5,
+          strokeWeight: 0,
+          fillColor: '#ff751a',
+          fillOpacity: 1
+        }
+      });
+
+      let latLngString = `${marker.position.lat()},${marker.position.lng()}`;
+
+      app.map.setZoom(13);
+      app.map.setCenter(marker.position);
+
+      google.maps.event.addDomListener(app.map, 'idle', function() {
+        app.map.getCenter();
+      });
+
+      google.maps.event.addDomListener(window, 'resize', function() {
+        app.map.setCenter(marker.position);
+      });
+
+      app.mapZoomClick(marker);
+
+      app.getPlaces(latLngString);
     } else {
       if(status === 'ZERO_RESULTS') {
         alert('Your search location could not be found. Please try again.')
@@ -161,7 +142,7 @@ app.getLocationSearch = function() {
 app.changeActiveTab = function(that) {
   let tabTitle = that.data('title');
 
-  if(tabTitle !== 'email') {
+  if(tabTitle) {
     $('.options__tabs-item').removeClass('options__tabs-item--active');
     that.addClass('options__tabs-item--active');
 
@@ -179,17 +160,12 @@ app.init = function() {
   app.generateMap();
 
   $('.options__button--geolocate').on('click', function() {
-    app.getLocationGeolocation();
+    $(this).html('<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="accessible">Loading...</span>');
+    app.getGeolocation();
   });
 
-  $('.options__input--search').on('keypress', function(event) {
-    if (event.keyCode === 13) {
-      app.getLocationSearch();
-    }
-  });
-
-  $('.options__button--search').on('click', function(event) {
-    app.getLocationSearch();
+  $('.options__button--search').on('click', function() {
+    app.setLocation();
   });
 
   $('.options__tabs-item').on('click', function() {
