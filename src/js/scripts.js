@@ -2,6 +2,43 @@ const app = {};
 
 app.map;
 
+app.eventApiUrl = 'http://api.eventful.com/json/events/search';
+app.eventApiKey = 'srQBgzwWJzXwZcrM';
+
+app.placeApiUrl = 'https://api.foursquare.com/v2/venues/explore';
+app.placeApiClientId = '1JM0YWOJPR4JMQ3VTCFJTHCOZIDYQQ1ZQICNZNQ2JPTVXO5B';
+app.placeApiKey = '3P0H0ECHZUY2JQQTZWDGW4C4G1F1JPMBJQIPCMUTGHVWJI5W';
+
+app.getEvents = function() {
+	$.ajax({
+		url: app.eventApiUrl,
+		method: "GET",
+		dataType: "jsonp",
+		data: {
+			app_key: app.eventApiKey,
+      location: '43.641633,-79.382053',
+      within: '5'
+		}
+	}).then(function(events) {
+		console.log(events);
+	});
+};
+
+app.getPlaces = function() {
+	$.ajax({
+		url: app.placeApiUrl,
+		method: "GET",
+		data: {
+      client_id: app.placeApiClientId,
+      client_secret: app.placeApiKey,
+      ll: '43.641633,-79.382053',
+      v: new Date().toISOString().slice(0,10).replace(/-/g,"")
+		}
+	}).then(function(places) {
+		console.log(places);
+	});
+};
+
 // Generates the base map for the app
 app.generateMap = function() {
   const mapContainer = $('.map')[0];
