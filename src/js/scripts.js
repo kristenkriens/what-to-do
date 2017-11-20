@@ -59,17 +59,17 @@ app.getGeolocation = function() {
       let myLatLng = {lat: position.coords.latitude, lng: position.coords.longitude};
 
       let checkInput = setInterval(function() {
-        let location = $('.options__search input#location').val();
+        let location = $('.options__input--location').val();
 
         if(location !== '') {
           clearInterval(checkInput);
           $('.options__units--geolocate').html('<i class="fa fa-location-arrow" aria-hidden="true"></i><span class="accessible">Use Current Location</span>')
-          $('.options__button--search').removeAttr('disabled');
+          $('.options__button--location').removeAttr('disabled');
         }
       }, 500);
 
       new google.maps.Geocoder().geocode({'location': myLatLng}, function(results, status) {
-        $('.options__search input#location').val(results[0].formatted_address);
+        $('.options__input--location').val(results[0].formatted_address);
       });
     });
   } else {
@@ -79,7 +79,7 @@ app.getGeolocation = function() {
 
 // Gets location via user input, adds address to input, and generates marker
 app.setLocation = function() {
-  let location = $('.options__search input#location').val();
+  let location = $('.options__input--location').val();
 
   new google.maps.Geocoder().geocode({'address': location}, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
@@ -220,15 +220,15 @@ app.init = function() {
   app.generateMap();
 
   $('.options__units--geolocate').on('click', function() {
-    $('.options__button--search').attr('disabled', 'disabled');
+    $('.options__button--location').attr('disabled', 'disabled');
     app.getGeolocation();
   });
 
-  $('.options__search input#location').on('keypress', function() {
-    $('.options__button--search').removeAttr('disabled');
+  $('.options__input--location').on('keypress', function() {
+    $('.options__button--location').removeAttr('disabled');
   });
 
-  $('.options__button--search').on('click', function() {
+  $('.options__button--location').on('click', function() {
     app.setLocation();
   });
 
