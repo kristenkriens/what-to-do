@@ -9,14 +9,15 @@ app.placeApiUrl = 'https://api.foursquare.com/v2/venues/explore';
 app.placeApiClientId = '1JM0YWOJPR4JMQ3VTCFJTHCOZIDYQQ1ZQICNZNQ2JPTVXO5B';
 app.placeApiKey = '3P0H0ECHZUY2JQQTZWDGW4C4G1F1JPMBJQIPCMUTGHVWJI5W';
 
-app.getEvents = function() {
+// Gets info from Eventful API
+app.getEvents = function(location) {
 	$.ajax({
 		url: app.eventApiUrl,
 		method: "GET",
 		dataType: "jsonp",
 		data: {
 			app_key: app.eventApiKey,
-      location: '43.641633,-79.382053',
+      location: location,
       within: '5'
 		}
 	}).then(function(events) {
@@ -24,14 +25,15 @@ app.getEvents = function() {
 	});
 };
 
-app.getPlaces = function() {
+// Gets info from Foursquare API
+app.getPlaces = function(location) {
 	$.ajax({
 		url: app.placeApiUrl,
 		method: "GET",
 		data: {
       client_id: app.placeApiClientId,
       client_secret: app.placeApiKey,
-      ll: '43.641633,-79.382053',
+      ll: location,
       v: new Date().toISOString().slice(0,10).replace(/-/g,"")
 		}
 	}).then(function(places) {
@@ -94,6 +96,11 @@ app.mapResizeCenterZoom = function(marker, markerPosition) {
 
     clicks++;
   });
+
+  let latLngString = `${markerPosition.lat()},${markerPosition.lng()}`;
+
+  app.getEvents(latLngString);
+  app.getPlaces(latLngString);
 }
 
 // Generates marker for base location
@@ -154,15 +161,17 @@ app.getLocationSearch = function() {
 app.changeActiveTab = function(that) {
   let tabTitle = that.data('title');
 
-  $('.options__tabs-item').removeClass('options__tabs-item--active');
-  that.addClass('options__tabs-item--active');
+  if(tabTitle !== 'email') {
+    $('.options__tabs-item').removeClass('options__tabs-item--active');
+    that.addClass('options__tabs-item--active');
 
-  $('.options__content-item').removeClass('options__content-item--active');
-  $('.options__content-item').each(function(i) {
-    if($('.options__content-item').eq(i).data('title') === tabTitle) {
-      $(this).addClass('options__content-item--active');
-    }
-  })
+    $('.options__content-item').removeClass('options__content-item--active');
+    $('.options__content-item').each(function(i) {
+      if($('.options__content-item').eq(i).data('title') === tabTitle) {
+        $(this).addClass('options__content-item--active');
+      }
+    });
+  }
 }
 
 // Initializes app
