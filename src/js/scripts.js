@@ -4,8 +4,6 @@ app.map;
 
 app.markers = [];
 
-app.totalItems = 0;
-
 app.placeApiUrl = 'https://api.foursquare.com/v2/venues/search';
 app.placeApiClientId = '1JM0YWOJPR4JMQ3VTCFJTHCOZIDYQQ1ZQICNZNQ2JPTVXO5B';
 app.placeApiKey = '3P0H0ECHZUY2JQQTZWDGW4C4G1F1JPMBJQIPCMUTGHVWJI5W';
@@ -153,8 +151,8 @@ app.generatePlaces = function(places) {
     app.mapZoomClick(placeMarker);
   }
 
-	app.totalItems = places.response.venues.length;
-  $('.map__results-number').text(app.totalItems);
+	let totalItems = places.response.venues.length;
+  $('.map__results-number').text(totalItems);
 }
 
 // Zooms map and centers around marker on click
