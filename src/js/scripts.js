@@ -8,25 +8,6 @@ app.placeApiUrl = 'https://api.foursquare.com/v2/venues/search';
 app.placeApiClientId = '1JM0YWOJPR4JMQ3VTCFJTHCOZIDYQQ1ZQICNZNQ2JPTVXO5B';
 app.placeApiKey = '3P0H0ECHZUY2JQQTZWDGW4C4G1F1JPMBJQIPCMUTGHVWJI5W';
 
-// Gets info from Foursquare API
-app.getPlaces = function(location) {
-	$.ajax({
-		url: app.placeApiUrl,
-		method: "GET",
-		data: {
-      client_id: app.placeApiClientId,
-      client_secret: app.placeApiKey,
-      ll: location,
-      v: new Date().toISOString().slice(0,10).replace(/-/g,""),
-      limit: 50
-		}
-	}).then(function(places) {
-    console.log(places);
-
-    app.generatePlaces(places);
-	});
-};
-
 // Generates the base map for the app
 app.generateMap = function() {
   const mapContainer = $('.map__map')[0];
@@ -107,8 +88,7 @@ app.setLocation = function() {
 
       let latLngString = `${homeMarker.position.lat()},${homeMarker.position.lng()}`;
 
-      app.map.setZoom(16);
-      app.map.setCenter(homeMarker.position);
+			app.getPlaces(latLngString);
 
       google.maps.event.addDomListener(app.map, 'idle', function() {
         app.map.getCenter();
@@ -119,8 +99,6 @@ app.setLocation = function() {
       });
 
       app.mapZoomClick(homeMarker);
-
-      app.getPlaces(latLngString);
     } else {
       if(status === 'ZERO_RESULTS') {
         alert('Your search location could not be found. Please try again.')
@@ -130,6 +108,25 @@ app.setLocation = function() {
     }
   });
 }
+
+// Gets info from Foursquare API
+app.getPlaces = function(location) {
+	$.ajax({
+		url: app.placeApiUrl,
+		method: "GET",
+		data: {
+      client_id: app.placeApiClientId,
+      client_secret: app.placeApiKey,
+      ll: location,
+      v: new Date().toISOString().slice(0,10).replace(/-/g,""),
+      limit: 50
+		}
+	}).then(function(places) {
+    console.log(places);
+
+    app.generatePlaces(places);
+	});
+};
 
 // Generates place markers on map and fills out number of results in overlay
 app.generatePlaces = function(places) {
@@ -144,15 +141,42 @@ app.generatePlaces = function(places) {
       icon: app.generatePlaceMarkerSymbol('#27b2d0')
     });
 
-		placeMarker.addListener('click', app.changePlaceMarkerColour);
-
     app.markers.push(placeMarker);
 
+		app.fitMapToMarkers();
+
     app.mapZoomClick(placeMarker);
+
+		placeMarker.addListener('click', app.changePlaceMarkerColour);
   }
 
 	let totalItems = places.response.venues.length;
   $('.map__results-number').text(totalItems);
+}
+
+// Generates the place marker symbol
+app.generatePlaceMarkerSymbol = function(colour) {
+  return {
+		path: fontawesome.markers.CIRCLE,
+		scale: 0.5,
+		strokeWeight: 0,
+		fillColor: colour,
+		fillOpacity: 1,
+		origin: new google.maps.Point(0, 0),
+		labelOrigin: new google.maps.Point(27,-33)
+  };
+}
+
+// Automatically adjusts map so all markers fit on screen
+app.fitMapToMarkers = function() {
+	let newBoundary = new google.maps.LatLngBounds();
+
+	for(let index in app.markers){
+		let position = app.markers[index].position;
+		newBoundary.extend(position);
+	}
+
+	app.map.fitBounds(newBoundary);
 }
 
 // Zooms map and centers around marker on click
@@ -167,19 +191,6 @@ app.mapZoomClick = function(marker) {
 app.changePlaceMarkerColour = function() {
   app.restorePlaceMarkerColour();
   this.setIcon(app.generatePlaceMarkerSymbol('#14192d'));
-}
-
-// Generates the place marker symbol
-app.generatePlaceMarkerSymbol = function(colour) {
-  return {
-		path: fontawesome.markers.CIRCLE,
-		scale: 0.5,
-		strokeWeight: 0,
-		fillColor: colour,
-		fillOpacity: 1,
-		origin: new google.maps.Point(0, 0),
-		labelOrigin: new google.maps.Point(27,-33)
-  };
 }
 
 // Restores the colour of the place marker when it isn't the active one
