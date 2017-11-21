@@ -4,9 +4,8 @@ app.map;
 
 app.markers = [];
 
-app.placeApiUrl = 'https://api.foursquare.com/v2/venues/search';
-app.placeApiClientId = '1JM0YWOJPR4JMQ3VTCFJTHCOZIDYQQ1ZQICNZNQ2JPTVXO5B';
-app.placeApiKey = '3P0H0ECHZUY2JQQTZWDGW4C4G1F1JPMBJQIPCMUTGHVWJI5W';
+app.eventApiUrl = 'http://api.eventful.com/json/events/search';
+app.eventApiKey = 'srQBgzwWJzXwZcrM';
 
 // Generates the base map for the app
 app.generateMap = function() {
@@ -88,7 +87,7 @@ app.setLocation = function() {
 
       let latLngString = `${homeMarker.position.lat()},${homeMarker.position.lng()}`;
 
-			app.getPlaces(latLngString);
+			app.getEvents(latLngString);
 
       google.maps.event.addDomListener(app.map, 'idle', function() {
         app.map.getCenter();
@@ -109,53 +108,57 @@ app.setLocation = function() {
   });
 }
 
-// Gets info from Foursquare API
-app.getPlaces = function(location) {
+// Gets info from Eventful API
+app.getEvents = function(location) {
 	$.ajax({
-		url: app.placeApiUrl,
-		method: "GET",
+		url: app.eventApiUrl,
+		method: 'GET',
+		dataType: 'jsonp',
 		data: {
-      client_id: app.placeApiClientId,
-      client_secret: app.placeApiKey,
-      ll: location,
-      v: new Date().toISOString().slice(0,10).replace(/-/g,""),
-      limit: 50
+			app_key: app.eventApiKey,
+      location: location,
+      within: '100',
+			units: 'km',
+			page_size: 100
 		}
-	}).then(function(places) {
-    console.log(places);
-
-    app.generatePlaces(places);
+	}).then(function(events) {
+		app.generateEvents(events);
 	});
 };
 
-// Generates place markers on map and fills out number of results in overlay
-app.generatePlaces = function(places) {
-  for (let i in places.response.venues) {
-    let placeMarker = new google.maps.Marker({
+// Generates event markers on map and fills out number of results in overlay
+app.generateEvents = function(events) {
+	let event = events.events.event;
+	console.log(event)
+  for (let i in event) {
+    let eventMarker = new google.maps.Marker({
       map: app.map,
-      position: places.response.venues[i].location,
+      position: {
+				lat: parseFloat(event[i].latitude),
+				lng: parseFloat(event[i].longitude)
+			},
 			label: {
 	      text: (parseInt(i) + 1).toString(),
 	      color: 'white',
 	    },
-      icon: app.generatePlaceMarkerSymbol('#27b2d0')
+      icon: app.generateEventMarkerSymbol('#27b2d0')
     });
 
-    app.markers.push(placeMarker);
+    app.markers.push(eventMarker);
 
 		app.fitMapToMarkers();
 
-    app.mapZoomClick(placeMarker);
+    app.mapZoomClick(eventMarker);
 
-		placeMarker.addListener('click', app.changePlaceMarkerColour);
+		eventMarker.addListener('click', app.changeEventMarkerColour);
   }
 
-	let totalItems = places.response.venues.length;
+	let totalItems = event.length;
   $('.map__results-number').text(totalItems);
 }
 
-// Generates the place marker symbol
-app.generatePlaceMarkerSymbol = function(colour) {
+// Generates the event marker symbol
+app.generateEventMarkerSymbol = function(colour) {
   return {
 		path: fontawesome.markers.CIRCLE,
 		scale: 0.5,
@@ -187,16 +190,16 @@ app.mapZoomClick = function(marker) {
   });
 }
 
-// Changes the colour of the active place marker
-app.changePlaceMarkerColour = function() {
-  app.restorePlaceMarkerColour();
-  this.setIcon(app.generatePlaceMarkerSymbol('#14192d'));
+// Changes the colour of the active event marker
+app.changeEventMarkerColour = function() {
+  app.restoreEventMarkerColour();
+  this.setIcon(app.generateEventMarkerSymbol('#14192d'));
 }
 
-// Restores the colour of the place marker when it isn't the active one
-app.restorePlaceMarkerColour = function() {
+// Restores the colour of the event marker when it isn't the active one
+app.restoreEventMarkerColour = function() {
 	for (var i = 1; i < app.markers.length; i++) {
-  	app.markers[i].setIcon(app.generatePlaceMarkerSymbol('#27b2d0'));
+  	app.markers[i].setIcon(app.generateEventMarkerSymbol('#27b2d0'));
 	}
 }
 
