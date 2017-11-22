@@ -4,6 +4,8 @@ app.map;
 
 app.markers = [];
 
+app.distanceRadius;
+
 app.lat = 0;
 app.lng = 0;
 app.latLngString = '';
@@ -35,6 +37,21 @@ app.generateMap = function() {
   app.map = new google.maps.Map(mapContainer, mapInfo);
 }
 
+// Clears all markers and circles off the map
+app.clearMap = function() {
+  if(typeof app.markers[0] !== "undefined") {
+    for(let i = 0; i < app.markers.length; i++) {
+      app.markers[i].setMap(null);
+    }
+
+    app.markers.splice(0, app.markers.length);
+
+    if(typeof app.distanceRadius !== "undefined") {
+      app.distanceRadius.setMap(null);
+    }
+  }
+}
+
 // Gets location via geolocation and adds address to location input
 app.getGeolocation = function() {
 	$('.options__button--location').attr('disabled', 'disabled');
@@ -63,19 +80,13 @@ app.getGeolocation = function() {
   }
 }
 
-// Gets location via user input, adds address to input, and generates marker
+// Gets location via user input, adds address to input, generates marker, and clears map first to avoid multiple sets of searches on the map at once
 app.setLocation = function() {
   let location = $('.options__input--location').val();
 
   new google.maps.Geocoder().geocode({'address': location}, function(results, status) {
     if (status == google.maps.GeocoderStatus.OK) {
-      if(typeof app.markers[0] !== "undefined") {
-				for(let i = 0; i < app.markers.length; i++) {
-					app.markers[i].setMap(null);
-				}
-
-				app.markers.splice(0, app.markers.length);
-      }
+      app.clearMap();
 
       let homeMarker = new google.maps.Marker({
         map: app.map,
@@ -172,7 +183,7 @@ app.drawDistanceRadius = function() {
 
 	let radius = parseInt(app.distance) * 1000;
 
-	let distanceRadius = new google.maps.Circle({
+	app.distanceRadius = new google.maps.Circle({
     strokeColor: '#ff751a',
     strokeOpacity: 0.8,
     strokeWeight: 2,
@@ -186,7 +197,7 @@ app.drawDistanceRadius = function() {
     radius: radius
   });
 
-	app.map.fitBounds(distanceRadius.getBounds());
+	app.map.fitBounds(app.distanceRadius.getBounds());
 }
 
 // Generates event markers on map and fills out number of results in overlay
