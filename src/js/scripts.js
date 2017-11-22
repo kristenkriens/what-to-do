@@ -212,7 +212,7 @@ app.generateEvents = function(events) {
 app.generateEventMarkerSymbol = function(colour) {
   return {
 		path: fontawesome.markers.CIRCLE,
-		scale: 0.5,
+		scale: 0.35,
 		strokeWeight: 0,
 		fillColor: colour,
 		fillOpacity: 1
