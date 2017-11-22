@@ -60,27 +60,16 @@
   &__question {
     position: relative;
 
-    &--left, &--right {
+    &--units  {
       max-width: 250px;
-    }
 
-    &--left  {
-      input {
-        padding-left: 50px;
-      }
-
-      .options__units {
-        left: 0;
-      }
-    }
-
-    &--right  {
       input {
         padding-right: 50px;
       }
 
       .options__units {
         right: 0;
+        margin-bottom: 0;
       }
     }
 

@@ -18,7 +18,7 @@
       <div class="options__content-items">
         <div class="options__content-item options__content-item--active" data-title="location">
           <h3>Location</h3>
-          <div class="options__question options__question--right" role="group">
+          <div class="options__question options__question--units" role="group">
             <legend>Where are you located?</legend>
             <input type="text" id="location" placeholder="e.g. 123 Fake St., Toronto" class="options__input options__input--location">
             <button class="options__units options__units--geolocate"><i class="fa fa-location-arrow" aria-hidden="true"></i><span class="accessible">Use Current Location</span></button>
@@ -50,10 +50,10 @@
         </div>
         <div class="options__content-item" data-title="distance">
           <h3>Distance</h3>
-          <div class="options__question options__question--right" role="group">
+          <div class="options__question options__question--units" role="group">
             <legend>How far are you willing to travel?</legend>
             <input type="number" id="distance" placeholder="e.g. 100" class="options__input options__input--distance">
-            <p class="options__units">km</p>
+            <label for="distance" class="options__units">km</label>
           </div>
           <button class="options__button options__button--distance options__button--next" disabled>Next</button>
         </div>
