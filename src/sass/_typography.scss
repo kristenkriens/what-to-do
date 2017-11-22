@@ -23,6 +23,11 @@ p {
 }
 
 label {
+  margin: 0;
+}
+
+legend {
+  font-weight: 400;
   display: block;
   margin-bottom: 10px;
 }

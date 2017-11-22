@@ -18,8 +18,8 @@
       <div class="options__content-items">
         <div class="options__content-item options__content-item--active" data-title="location">
           <h3>Location</h3>
-          <div class="options__question options__question--right">
-            <label for="location">Where are you located?</label>
+          <div class="options__question options__question--right" role="group">
+            <legend>Where are you located?</legend>
             <input type="text" id="location" placeholder="e.g. 123 Fake St., Toronto" class="options__input options__input--location">
             <button class="options__units options__units--geolocate"><i class="fa fa-location-arrow" aria-hidden="true"></i><span class="accessible">Use Current Location</span></button>
           </div>
@@ -27,30 +27,57 @@
         </div>
         <div class="options__content-item" data-title="date">
           <h3>Date</h3>
-          <div class="options__question options__question--right">
-            <label for="date">When do you want to go?</label>
-            <input type="text" id="date" class="options__input options__input--date">
-            <button class="options__units options__units--date"><i class="fa fa-calendar" aria-hidden="true"></i><span class="accessible">Date Picker</span></button>
+          <div class="options__question" role="group">
+            <legend>When do you want to go?</legend>
+            <div>
+              <input type="radio" id="today" name="date" value="Today" class="accessible options__radio" checked>
+              <label for="today">Today</label>
+            </div>
+            <div>
+              <input type="radio" id="thisWeek" name="date" value="This Week" class="accessible options__radio">
+              <label for="thisWeek">This Week</label>
+            </div>
+            <div>
+              <input type="radio" id="nextWeek" name="date" value="Next Week" class="accessible options__radio">
+              <label for="nextWeek">Next Week</label>
+            </div>
+            <div>
+              <input type="radio" id="doesntMatter" name="date" value="Future" class="accessible options__radio">
+              <label for="doesntMatter">Doesn't Matter</label>
+            </div>
+            <p>Maybe add custom date or date range?</p>
           </div>
           <button class="options__button options__button--date options__button--next">Next</button>
         </div>
         <div class="options__content-item" data-title="distance">
           <h3>Distance</h3>
-          <div class="options__question options__question--right">
+          <div class="options__question options__question--right" role="group">
             <label for="distance">How far are you willing to travel?</label>
             <input type="text" id="distance" class="options__input options__input--distance">
             <p class="options__units">km</p>
           </div>
+          <p>Still needs to be hooked up.</p>
           <button class="options__button options__button--distance options__button--next">Next</button>
         </div>
         <div class="options__content-item" data-title="budget">
           <h3>Budget</h3>
-          <div class="options__question options__question--left">
+          <div class="options__question options__question--left" role="group">
             <label for="budget">How much are you willing to spend?</label>
             <p class="options__units">$</p>
             <input type="text" id="budget" class="options__input options__input--budget">
           </div>
-          <button class="options__button options__button--budget options__button--next">Next</button>
+          <p>Still needs to be hooked up, if I can...</p>
+          <button class="options__button options__button--budget options__button--submit options__button--next">Submit</button>
+        </div>
+        <div class="options__content-item" data-title="instructions">
+          <h3>Instructions</h3>
+          <p>Click the dots on the map to find out about the events going on!</p>
+        </div>
+        <div class="options__content-item" data-title="about">
+          <h3>About</h3>
+          <p>Still needs to be hooked up and filled out</p>
+          <p>Also need to make Get Directions button work</p>
+          <button class="options__button options__button--directions options__button--next">Get Directions</button>
         </div>
         <div class="options__content-item" data-title="directions">
           <h3>Directions</h3>
@@ -66,6 +93,7 @@
       <div class="options__tabs-item options__tabs-item--disabled" data-title="date"><i class="fa fa-calendar" aria-hidden="true"></i><span class="accessible">Date</span></div>
       <div class="options__tabs-item options__tabs-item--disabled" data-title="distance"><i class="fa fa-street-view" aria-hidden="true"></i><span class="accessible">Distance</span></div>
       <div class="options__tabs-item options__tabs-item--disabled" data-title="budget"><i class="fa fa-usd" aria-hidden="true"></i><span class="accessible">Budget</span></div>
+      <div class="options__tabs-item options__tabs-item--disabled" data-title="about"><i class="fa fa-info" aria-hidden="true"></i><span class="accessible">About</span></div>
       <div class="options__tabs-item options__tabs-item--disabled" data-title="directions"><i class="fa fa-map-signs" aria-hidden="true"></i><span class="accessible">Directions</span></div>
     </div>
   </section>

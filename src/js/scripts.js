@@ -4,6 +4,8 @@ app.map;
 
 app.markers = [];
 
+app.homeLatLng = '';
+
 app.eventApiUrl = 'http://api.eventful.com/json/events/search';
 app.eventApiKey = 'srQBgzwWJzXwZcrM';
 
@@ -57,7 +59,7 @@ app.getGeolocation = function() {
 }
 
 // Gets location via user input, adds address to input, and generates marker
-app.setLocation = function() {
+app.setUserLocation = function() {
   let location = $('.options__input--location').val();
 
   new google.maps.Geocoder().geocode({'address': location}, function(results, status) {
@@ -85,9 +87,9 @@ app.setLocation = function() {
 
       app.markers.push(homeMarker);
 
-      let latLngString = `${homeMarker.position.lat()},${homeMarker.position.lng()}`;
+      app.homeLatLng = `${homeMarker.position.lat()},${homeMarker.position.lng()}`;
 
-			app.getEvents(latLngString);
+			app.getEvents(app.homeLatLng);
 
       google.maps.event.addDomListener(app.map, 'idle', function() {
         app.map.getCenter();
@@ -109,22 +111,51 @@ app.setLocation = function() {
 }
 
 // Gets info from Eventful API
-app.getEvents = function(location) {
+app.getEvents = function() {
 	$.ajax({
 		url: app.eventApiUrl,
 		method: 'GET',
 		dataType: 'jsonp',
 		data: {
 			app_key: app.eventApiKey,
-      location: location,
+      location: app.homeLatLng,
+			date: 'Future',
       within: '100',
 			units: 'km',
-			page_size: 100
+			page_size: 50
 		}
 	}).then(function(events) {
-		app.generateEvents(events);
+		if(events.total_items === '0') {
+			alert('Your search returned 0 results. Please try again with less strict restrictions.');
+		} else {
+			app.generateEvents(events);
+		}
 	});
 };
+
+app.getUserDate = function() {
+	let date = $('input[name="date"]:checked').val();
+
+	$.ajax({
+		url: app.eventApiUrl,
+		method: 'GET',
+		dataType: 'jsonp',
+		data: {
+			app_key: app.eventApiKey,
+      location: app.homeLatLng,
+			date: date,
+      within: '100',
+			units: 'km',
+			page_size: 50
+		}
+	}).then(function(events) {
+		if(events.total_items === '0') {
+			alert('Your search returned 0 results. Please try again with less strict restrictions.');
+		} else {
+			app.generateEvents(events);
+		}
+	});
+}
 
 // Generates event markers on map and fills out number of results in overlay
 app.generateEvents = function(events) {
@@ -137,10 +168,6 @@ app.generateEvents = function(events) {
 				lat: parseFloat(event[i].latitude),
 				lng: parseFloat(event[i].longitude)
 			},
-			label: {
-	      text: (parseInt(i) + 1).toString(),
-	      color: 'white',
-	    },
       icon: app.generateEventMarkerSymbol('#27b2d0')
     });
 
@@ -151,6 +178,8 @@ app.generateEvents = function(events) {
     app.mapZoomClick(eventMarker);
 
 		eventMarker.addListener('click', app.changeEventMarkerColour);
+
+		eventMarker.addListener('click', app.showAbout);
   }
 
 	let totalItems = event.length;
@@ -185,7 +214,7 @@ app.fitMapToMarkers = function() {
 // Zooms map and centers around marker on click
 app.mapZoomClick = function(marker) {
   marker.addListener('click', function() {
-    app.map.setZoom(18);
+    app.map.setZoom(16);
     app.map.setCenter(this.position);
   });
 }
@@ -228,6 +257,23 @@ app.changeActiveTabNext = function(that) {
 	tabs.eq(currentIndex + 1).removeClass('options__tabs-item--disabled').click();
 }
 
+// Shows the Instructions tab and removes the active classes from other tabs
+app.showInstructions = function() {
+	$('.options__tabs-item').removeClass('options__tabs-item--active');
+	$('.options__content-item').removeClass('options__content-item--active');
+
+	$('.options__content-item[data-title="instructions"]').addClass('options__content-item--active');
+}
+
+// Shows the About tab and removes the active classes from other tabs
+app.showAbout = function() {
+	$('.options__tabs-item').removeClass('options__tabs-item--active');
+	$('.options__content-item').removeClass('options__content-item--active');
+
+	$('.options__tabs-item[data-title="about"]').addClass('options__tabs-item--active').removeClass('options__tabs-item--disabled');
+	$('.options__content-item[data-title="about"]').addClass('options__content-item--active');
+}
+
 // Initializes app
 app.init = function() {
   app.generateMap();
@@ -241,14 +287,22 @@ app.init = function() {
   });
 
   $('.options__button--location').on('click', function() {
-    app.setLocation();
+    app.setUserLocation();
+  });
+
+	$('.options__button--date').on('click', function() {
+    app.getUserDate();
+  });
+
+	$('.options__button--submit').on('click', function() {
+    app.showInstructions();
   });
 
   $('.options__tabs-item').on('click', function() {
     app.changeActiveTabClick($(this));
   });
 
-	$('.options__button--next').on('click', function() {
+	$('.options__button--next:not(.options__button--submit)').on('click', function() {
 		app.changeActiveTabNext($(this));
 	});
 }
