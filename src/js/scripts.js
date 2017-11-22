@@ -218,7 +218,7 @@ app.generateEvents = function(events) {
 
 		eventMarker.addListener('click', app.changeEventMarkerColour);
 
-		eventMarker.addListener('click', app.showAbout);
+		eventMarker.addListener('click', app.showEventInfo);
   }
 }
 
@@ -283,14 +283,14 @@ app.showInstructions = function() {
 	$('.options__content-item[data-title="instructions"]').addClass('options__content-item--active');
 }
 
-// Shows the About tab, removes the disabled class from the Directions tab, and removes the active class from other tabs
-app.showAbout = function() {
+// Shows the Event Info tab, removes the disabled class from the Directions tab, and removes the active class from other tabs
+app.showEventInfo = function() {
 	$('.options__tabs-item').removeClass('options__tabs-item--active');
 	$('.options__content-item').removeClass('options__content-item--active');
 
 	$('.options__tabs-item[data-title="directions"]').removeClass('options__tabs-item--disabled');
-	$('.options__tabs-item[data-title="about"]').addClass('options__tabs-item--active').removeClass('options__tabs-item--disabled');
-	$('.options__content-item[data-title="about"]').addClass('options__content-item--active');
+	$('.options__tabs-item[data-title="eventInfo"]').addClass('options__tabs-item--active').removeClass('options__tabs-item--disabled');
+	$('.options__content-item[data-title="eventInfo"]').addClass('options__content-item--active');
 }
 
 // Disables next button if the input is empty
