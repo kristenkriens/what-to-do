@@ -207,7 +207,7 @@
 
   &__overlay {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     align-items: center;
     color: $black;
     position: absolute;
@@ -224,25 +224,6 @@
   &__results {
     &-number {
       font-weight: 600;
-    }
-  }
-
-  &__search {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    label {
-      margin-bottom: 3px;
-    }
-
-    input[type="text"] {
-      background-color: transparent;
-      padding: 0;
-      margin-left: 10px;
-      background-color: transparent;
-      height: auto;
-      text-transform: uppercase;
     }
   }
 
