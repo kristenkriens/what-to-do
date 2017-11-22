@@ -52,34 +52,48 @@
           <h3>Distance</h3>
           <div class="options__question options__question--right" role="group">
             <label for="distance">How far are you willing to travel?</label>
-            <input type="text" id="distance" class="options__input options__input--distance">
+            <input type="text" id="distance" placeholder="e.g. 100" class="options__input options__input--distance">
             <p class="options__units">km</p>
           </div>
           <button class="options__button options__button--distance options__button--next" disabled>Next</button>
         </div>
-        <div class="options__content-item" data-title="budget">
-          <h3>Budget</h3>
+        <div class="options__content-item" data-title="interests">
+          <h3>Interests</h3>
           <div class="options__question options__question--left" role="group">
-            <label for="budget">How much are you willing to spend?</label>
-            <p class="options__units">$</p>
-            <input type="text" id="budget" class="options__input options__input--budget">
+            <legend>Which of these are of interest to you?</legend>
+            <div>
+              <input type="radio" id="today" name="interests" value="Today" class="accessible options__radio" checked>
+              <label for="today">Today</label>
+            </div>
+            <div>
+              <input type="radio" id="thisWeek" name="interests" value="This Week" class="accessible options__radio">
+              <label for="thisWeek">This Week</label>
+            </div>
+            <div>
+              <input type="radio" id="nextWeek" name="interests" value="Next Week" class="accessible options__radio">
+              <label for="nextWeek">Next Week</label>
+            </div>
+            <div>
+              <input type="radio" id="anytime" name="interests" value="Future" class="accessible options__radio">
+              <label for="anytime">Anytime</label>
+            </div>
           </div>
-          <p>Still needs to be hooked up, if I can...</p>
-          <button class="options__button options__button--budget options__button--submit options__button--next" disabled>View Events</button>
+          <button class="options__button options__button--interests options__button--submit options__button--next">View Events</button>
         </div>
-        <div class="options__content-item" data-title="instructions">
+        <div class="options__content-item options__content-item--ignore" data-title="instructions">
           <h3>Instructions</h3>
           <p>Click the dots on the map to find out about the events going on!</p>
+          <p class="italic"><span class="normal">Note:</span> Be patient, they might take a few seconds to load!</p>
         </div>
         <div class="options__content-item" data-title="about">
           <h3>About</h3>
           <p>Still needs to be hooked up and filled out</p>
           <p>Also need to make Get Directions button work</p>
-          <button class="options__button options__button--directions options__button--next">Get Directions</button>
+          <button class="options__button options__button--about options__button--next">Get Directions</button>
         </div>
         <div class="options__content-item" data-title="directions">
           <h3>Directions</h3>
-          <button class="options__button options__button--email options__button--next">Send <i class="fa fa-envelope" aria-hidden="true"></i></button>
+          <button class="options__button options__button--directions options__button--next">Send <i class="fa fa-envelope" aria-hidden="true"></i></button>
         </div>
       </div>
       <footer>
@@ -90,7 +104,7 @@
       <div class="options__tabs-item options__tabs-item--active" data-title="location"><i class="fa fa-globe" aria-hidden="true"></i><span class="accessible">Location</span></div>
       <div class="options__tabs-item options__tabs-item--disabled" data-title="date"><i class="fa fa-calendar" aria-hidden="true"></i><span class="accessible">Date</span></div>
       <div class="options__tabs-item options__tabs-item--disabled" data-title="distance"><i class="fa fa-street-view" aria-hidden="true"></i><span class="accessible">Distance</span></div>
-      <div class="options__tabs-item options__tabs-item--disabled" data-title="budget"><i class="fa fa-usd" aria-hidden="true"></i><span class="accessible">Budget</span></div>
+      <div class="options__tabs-item options__tabs-item--disabled" data-title="interests"><i class="fa fa-heart" aria-hidden="true"></i><span class="accessible">Interests</span></div>
       <div class="options__tabs-item options__tabs-item--disabled" data-title="about"><i class="fa fa-info" aria-hidden="true"></i><span class="accessible">About</span></div>
       <div class="options__tabs-item options__tabs-item--disabled" data-title="directions"><i class="fa fa-map-signs" aria-hidden="true"></i><span class="accessible">Directions</span></div>
     </div>

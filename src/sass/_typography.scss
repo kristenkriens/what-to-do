@@ -19,13 +19,25 @@ h3 {
 }
 
 p {
-  margin: 0;
+  margin: 0 0 10px 0;
+
+  &:last-of-type {
+    margin-bottom: 0;
+  }
 }
 
 legend, label {
   font-weight: 400;
   display: block;
   margin-bottom: 10px;
+}
+
+.italic {
+  font-style: italic;
+}
+
+.normal {
+  font-weight: 400;
 }
 
 @font-face {

@@ -92,8 +92,6 @@ app.setLocation = function() {
 			app.map.setCenter(homeMarker.position);
 			app.map.setZoom(12);
 
-			app.mapZoomClick(homeMarker);
-
       google.maps.event.addDomListener(window, 'resize', function() {
         app.map.setCenter(homeMarker.position);
       });
@@ -111,6 +109,8 @@ app.setLocation = function() {
 app.getEvents = function() {
 	let date = $('input[name="date"]:checked').val();
 	let distance = $('.options__input--distance').val();
+
+	$('.map__results-number').html('<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="accessible">Loading...</span>');
 
 	$.ajax({
 		url: app.eventApiUrl,
@@ -151,8 +151,6 @@ app.generateEvents = function(events) {
 
 		app.fitMapToMarkers();
 
-    app.mapZoomClick(eventMarker);
-
 		eventMarker.addListener('click', app.changeEventMarkerColour);
 
 		eventMarker.addListener('click', app.showAbout);
@@ -187,14 +185,6 @@ app.fitMapToMarkers = function() {
 	app.map.fitBounds(newBoundary);
 }
 
-// Zooms map and centers around marker on click
-app.mapZoomClick = function(marker) {
-  marker.addListener('click', function() {
-    app.map.setZoom(16);
-    app.map.setCenter(this.position);
-  });
-}
-
 // Changes the colour of the active event marker
 app.changeEventMarkerColour = function() {
   app.restoreEventMarkerColour();
@@ -227,10 +217,14 @@ app.changeActiveTabClick = function(that) {
 
 // Changes the active tab based on which tab was clicked and enables disabled tabs once they have been active
 app.changeActiveTabNext = function(that) {
-	let tabs = $('.options__tabs').children();
 	let currentIndex = that.parent().index();
+	let totalTabs = $('.options__tabs-item').length;
 
-	tabs.eq(currentIndex + 1).removeClass('options__tabs-item--disabled').click();
+	if(currentIndex > totalTabs - 2) {
+		currentIndex--;
+	}
+
+	$('.options__tabs-item').eq(currentIndex + 1).removeClass('options__tabs-item--disabled').click();
 }
 
 // Shows the Instructions tab and removes the active classes from other tabs
@@ -241,13 +235,23 @@ app.showInstructions = function() {
 	$('.options__content-item[data-title="instructions"]').addClass('options__content-item--active');
 }
 
-// Shows the About tab and removes the active classes from other tabs
+// Shows the About tab, removes the disabled class from the Directions tab, and removes the active class from other tabs
 app.showAbout = function() {
 	$('.options__tabs-item').removeClass('options__tabs-item--active');
 	$('.options__content-item').removeClass('options__content-item--active');
 
+	$('.options__tabs-item[data-title="directions"]').removeClass('options__tabs-item--disabled');
 	$('.options__tabs-item[data-title="about"]').addClass('options__tabs-item--active').removeClass('options__tabs-item--disabled');
 	$('.options__content-item[data-title="about"]').addClass('options__content-item--active');
+}
+
+// Disables next button if the input is empty
+app.disableNextButton = function(that, type) {
+	if(that.val() !== '') {
+		$(`.options__button--${type}`).removeAttr('disabled');
+	} else {
+		$(`.options__button--${type}`).attr('disabled', 'disabled');
+	}
 }
 
 // Initializes app
@@ -259,16 +263,15 @@ app.init = function() {
   });
 
   $('.options__input--location').on('keyup', function() {
-		if($(this).val() !== '') {
-			$('.options__button--location').removeAttr('disabled');
-		} else {
-			$('.options__button--location').attr('disabled', 'disabled');
-		}
+		app.disableNextButton($(this), 'location');
+  });
+
+	$('.options__input--distance').on('keyup', function() {
+		app.disableNextButton($(this), 'distance');
   });
 
   $('.options__button--location').on('click', function() {
     app.setLocation();
-		$('.map__results-number').html('<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="accessible">Loading...</span>');
   });
 
 	$('.options__button--submit').on('click', function() {
