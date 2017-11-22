@@ -9,6 +9,7 @@ app.lng = 0;
 app.latLngString = '';
 app.date = '';
 app.distance = 0;
+app.categories = [];
 
 app.eventApiUrl = 'https://api.eventful.com/json/events/search';
 app.eventApiKey = 'srQBgzwWJzXwZcrM';
@@ -137,6 +138,10 @@ app.generateCategories = function(categories) {
 app.getEvents = function() {
 	app.date = $('input[name="date"]:checked').val();
 
+	app.categories = $('input[name="interests"]:checked').map(function() {
+		return this.value;
+	}).get().join(',');
+
 	$('.map__results-number').html('<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="accessible">Loading...</span>');
 
 	$.ajax({
@@ -148,6 +153,7 @@ app.getEvents = function() {
       location: app.latLngString,
 			date: app.date,
       within: app.distance,
+			category: app.categories,
 			units: 'km',
 			page_size: 50
 		}
