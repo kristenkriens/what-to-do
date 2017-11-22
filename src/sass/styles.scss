@@ -46,6 +46,7 @@ input[type="text"], input[type="number"] {
 input[type="radio"] {
 	& ~ label {
 		cursor: pointer;
+		margin-bottom: 0;
 
 		&:before {
 			font-family: 'FontAwesome';
@@ -63,6 +64,7 @@ input[type="radio"] {
 input[type="checkbox"] {
 	& ~ label {
 		cursor: pointer;
+		margin-bottom: 0;
 
 		&:before {
 			font-family: 'FontAwesome';

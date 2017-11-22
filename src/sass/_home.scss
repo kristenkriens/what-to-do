@@ -59,7 +59,10 @@
 
   &__question {
     position: relative;
-    max-width: 250px;
+
+    &--left, &--right {
+      max-width: 250px;
+    }
 
     &--left  {
       input {
@@ -90,6 +93,17 @@
     overflow-y: scroll;
     max-height: 185px;
     margin-top: 13px;
+    width: 100%;
+
+    @media (min-width: $sm-width-plus) and (max-width: $md-width) {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+
+      div {
+        width: calc(50% - 10px);
+      }
+    }
   }
 
   &__units {
