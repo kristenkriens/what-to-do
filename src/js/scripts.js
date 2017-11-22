@@ -45,10 +45,6 @@ app.clearMap = function() {
     }
 
     app.markers.splice(0, app.markers.length);
-
-    if(typeof app.distanceRadius !== "undefined") {
-      app.distanceRadius.setMap(null);
-    }
   }
 }
 
@@ -80,7 +76,7 @@ app.getGeolocation = function() {
   }
 }
 
-// Gets location via user input, adds address to input, generates marker, and clears map first to avoid multiple sets of searches on the map at once
+// Gets location via user input, adds address to input, generates marker, clears map first to avoid multiple sets of searches on the map at once
 app.setLocation = function() {
   let location = $('.options__input--location').val();
 
@@ -177,8 +173,12 @@ app.getEvents = function() {
 	});
 };
 
-// Draws distance radius and automatically fits to map
+// Draws distance radius, clear previous distance radius if applicable, and automatically fits to map
 app.drawDistanceRadius = function() {
+  if(typeof app.distanceRadius !== "undefined") {
+    app.distanceRadius.setMap(null);
+  }
+
 	app.distance = $('.options__input--distance').val();
 
 	let radius = parseInt(app.distance) * 1000;
