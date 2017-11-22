@@ -59,7 +59,7 @@
 
   &__question {
     position: relative;
-    max-width: 300px;
+    max-width: 250px;
 
     &--left  {
       input {
@@ -86,14 +86,21 @@
     }
   }
 
+  &__checkbox-scroll {
+    overflow-y: scroll;
+    max-height: 185px;
+    padding-top: 3px;
+  }
+
   &__units {
+    font-size: 14px;
     display: flex;
     justify-content: center;
     align-items: center;
     position: absolute;
     bottom: 0;
-    height: 40px;
-    width: 40px;
+    height: 35px;
+    width: 35px;
     padding: 0;
     background-color: $navy;
   }

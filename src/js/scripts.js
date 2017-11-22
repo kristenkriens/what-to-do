@@ -105,6 +105,29 @@ app.setLocation = function() {
   });
 }
 
+// Gets all categories from Eventful API
+app.getCategories = function() {
+	$.ajax({
+		url: 'https://api.eventful.com/json/categories/list',
+		method: 'GET',
+		dataType: 'jsonp',
+		data: {
+			app_key: app.eventApiKey,
+		}
+	}).then(function(categories) {
+		app.generateCategories(categories);
+	});
+}
+
+app.generateCategories = function(categories) {
+	for (let i in categories.category) {
+		let id = categories.category[i].id;
+		let name = categories.category[i].name;
+
+		$('.options__checkbox-scroll').append(`<div><input type="checkbox" id="${id}" name="interests" value="${id}" class="accessible options__radio"><label for="${id}">${name}</label></div>`);
+	}
+}
+
 // Gets info from Eventful API
 app.getEvents = function() {
 	let date = $('input[name="date"]:checked').val();
@@ -257,6 +280,7 @@ app.disableNextButton = function(that, type) {
 // Initializes app
 app.init = function() {
   app.generateMap();
+	app.getCategories();
 
   $('.options__units--geolocate').on('click', function() {
     app.getGeolocation();
@@ -291,6 +315,3 @@ app.init = function() {
 $(function() {
   app.init();
 });
-
-
-// Disable continuing until filled out
