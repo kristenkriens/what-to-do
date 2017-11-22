@@ -4,7 +4,11 @@ app.map;
 
 app.markers = [];
 
-app.homeLatLng = '';
+app.lat = 0;
+app.lng = 0;
+app.latLngString = '';
+app.date = '';
+app.distance = 0;
 
 app.eventApiUrl = 'https://api.eventful.com/json/events/search';
 app.eventApiKey = 'srQBgzwWJzXwZcrM';
@@ -37,7 +41,7 @@ app.getGeolocation = function() {
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
-      let myLatLng = {lat: position.coords.latitude, lng: position.coords.longitude};
+      let myLatLng = {lat: parseFloat(position.coords.latitude), lng: parseFloat(position.coords.longitude)};
 
       let checkInput = setInterval(function() {
         let location = $('.options__input--location').val();
@@ -80,14 +84,15 @@ app.setLocation = function() {
           path: fontawesome.markers.MAP_MARKER,
           strokeWeight: 0,
           fillColor: '#ff751a',
-          fillOpacity: 1,
-					origin: new google.maps.Point(0, 0)
+          fillOpacity: 1
         }
       });
 
       app.markers.push(homeMarker);
 
-      app.homeLatLng = `${homeMarker.position.lat()},${homeMarker.position.lng()}`;
+			app.lat = homeMarker.position.lat();
+			app.lng = homeMarker.position.lng();
+      app.latLngString = `${app.lat},${app.lng}`;
 
 			app.map.setCenter(homeMarker.position);
 			app.map.setZoom(12);
@@ -130,8 +135,7 @@ app.generateCategories = function(categories) {
 
 // Gets info from Eventful API
 app.getEvents = function() {
-	let date = $('input[name="date"]:checked').val();
-	let distance = $('.options__input--distance').val();
+	app.date = $('input[name="date"]:checked').val();
 
 	$('.map__results-number').html('<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="accessible">Loading...</span>');
 
@@ -141,9 +145,9 @@ app.getEvents = function() {
 		dataType: 'jsonp',
 		data: {
 			app_key: app.eventApiKey,
-      location: app.homeLatLng,
-			date: date,
-      within: distance,
+      location: app.latLngString,
+			date: app.date,
+      within: app.distance,
 			units: 'km',
 			page_size: 50
 		}
@@ -155,6 +159,29 @@ app.getEvents = function() {
 		}
 	});
 };
+
+// Draws distance radius and automatically fits to map
+app.drawDistanceRadius = function() {
+	app.distance = $('.options__input--distance').val();
+
+	let radius = parseInt(app.distance) * 1000;
+
+	let distanceRadius = new google.maps.Circle({
+    strokeColor: '#ff751a',
+    strokeOpacity: 0.8,
+    strokeWeight: 2,
+    fillColor: '#ff751a',
+    fillOpacity: 0.35,
+    map: app.map,
+    center: {
+			lat: app.lat,
+			lng: app.lng
+		},
+    radius: radius
+  });
+
+	app.map.fitBounds(distanceRadius.getBounds());
+}
 
 // Generates event markers on map and fills out number of results in overlay
 app.generateEvents = function(events) {
@@ -172,8 +199,6 @@ app.generateEvents = function(events) {
 
     app.markers.push(eventMarker);
 
-		app.fitMapToMarkers();
-
 		eventMarker.addListener('click', app.changeEventMarkerColour);
 
 		eventMarker.addListener('click', app.showAbout);
@@ -190,22 +215,8 @@ app.generateEventMarkerSymbol = function(colour) {
 		scale: 0.5,
 		strokeWeight: 0,
 		fillColor: colour,
-		fillOpacity: 1,
-		origin: new google.maps.Point(0, 0),
-		labelOrigin: new google.maps.Point(27,-33)
+		fillOpacity: 1
   };
-}
-
-// Automatically adjusts map so all markers fit on screen
-app.fitMapToMarkers = function() {
-	let newBoundary = new google.maps.LatLngBounds();
-
-	for(let index in app.markers){
-		let position = app.markers[index].position;
-		newBoundary.extend(position);
-	}
-
-	app.map.fitBounds(newBoundary);
 }
 
 // Changes the colour of the active event marker
@@ -298,9 +309,13 @@ app.init = function() {
     app.setLocation();
   });
 
+	$('.options__button--distance').on('click', function() {
+    app.drawDistanceRadius();
+  });
+
 	$('.options__button--submit').on('click', function() {
     app.showInstructions();
-		app.getEvents(app.homeLatLng);
+		app.getEvents(app.latLngString);
   });
 
   $('.options__tabs-item').on('click', function() {

@@ -32,7 +32,7 @@ img {
 	color: transparent;
 }
 
-input[type="text"] {
+input[type="text"], input[type="number"] {
 	color: $black;
 	background-color: $white;
 	border: none;
