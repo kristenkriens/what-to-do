@@ -63,13 +63,14 @@
     &--units  {
       max-width: 250px;
 
-      input {
-        padding-right: 50px;
+      input[type="text"], input[type="number"] {
+        padding-right: 35px;
       }
 
       .options__units {
         right: 0;
         margin-bottom: 0;
+        box-shadow: -20px 0px 10px -5px $transparent-white;
       }
     }
 
