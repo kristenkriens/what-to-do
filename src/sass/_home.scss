@@ -51,6 +51,7 @@
 
         &:hover {
           opacity: 0.75;
+          text-decoration: underline;
         }
       }
     }
@@ -209,6 +210,10 @@
     display: flex;
     justify-content: center;
     align-items: center;
+
+    label {
+      margin-bottom: 3px;
+    }
 
     input[type="text"] {
       background-color: transparent;

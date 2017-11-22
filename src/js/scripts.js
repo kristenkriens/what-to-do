@@ -59,7 +59,7 @@ app.getGeolocation = function() {
 }
 
 // Gets location via user input, adds address to input, and generates marker
-app.setUserLocation = function() {
+app.setLocation = function() {
   let location = $('.options__input--location').val();
 
   new google.maps.Geocoder().geocode({'address': location}, function(results, status) {
@@ -89,17 +89,14 @@ app.setUserLocation = function() {
 
       app.homeLatLng = `${homeMarker.position.lat()},${homeMarker.position.lng()}`;
 
-			app.getEvents(app.homeLatLng);
+			app.map.setCenter(homeMarker.position);
+			app.map.setZoom(12);
 
-      google.maps.event.addDomListener(app.map, 'idle', function() {
-        app.map.getCenter();
-      });
+			app.mapZoomClick(homeMarker);
 
       google.maps.event.addDomListener(window, 'resize', function() {
         app.map.setCenter(homeMarker.position);
       });
-
-      app.mapZoomClick(homeMarker);
     } else {
       if(status === 'ZERO_RESULTS') {
         alert('Your search location could not be found. Please try again.')
@@ -112,6 +109,9 @@ app.setUserLocation = function() {
 
 // Gets info from Eventful API
 app.getEvents = function() {
+	let date = $('input[name="date"]:checked').val();
+	let distance = $('.options__input--distance').val();
+
 	$.ajax({
 		url: app.eventApiUrl,
 		method: 'GET',
@@ -119,8 +119,8 @@ app.getEvents = function() {
 		data: {
 			app_key: app.eventApiKey,
       location: app.homeLatLng,
-			date: 'Future',
-      within: '100',
+			date: date,
+      within: distance,
 			units: 'km',
 			page_size: 50
 		}
@@ -132,30 +132,6 @@ app.getEvents = function() {
 		}
 	});
 };
-
-app.getUserDate = function() {
-	let date = $('input[name="date"]:checked').val();
-
-	$.ajax({
-		url: app.eventApiUrl,
-		method: 'GET',
-		dataType: 'jsonp',
-		data: {
-			app_key: app.eventApiKey,
-      location: app.homeLatLng,
-			date: date,
-      within: '100',
-			units: 'km',
-			page_size: 50
-		}
-	}).then(function(events) {
-		if(events.total_items === '0') {
-			alert('Your search returned 0 results. Please try again with less strict restrictions.');
-		} else {
-			app.generateEvents(events);
-		}
-	});
-}
 
 // Generates event markers on map and fills out number of results in overlay
 app.generateEvents = function(events) {
@@ -282,20 +258,22 @@ app.init = function() {
     app.getGeolocation();
   });
 
-  $('.options__input--location').on('keypress', function() {
-    $('.options__button--location').removeAttr('disabled');
+  $('.options__input--location').on('keyup', function() {
+		if($(this).val() !== '') {
+			$('.options__button--location').removeAttr('disabled');
+		} else {
+			$('.options__button--location').attr('disabled', 'disabled');
+		}
   });
 
   $('.options__button--location').on('click', function() {
-    app.setUserLocation();
-  });
-
-	$('.options__button--date').on('click', function() {
-    app.getUserDate();
+    app.setLocation();
+		$('.map__results-number').html('<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="accessible">Loading...</span>');
   });
 
 	$('.options__button--submit').on('click', function() {
     app.showInstructions();
+		app.getEvents(app.homeLatLng);
   });
 
   $('.options__tabs-item').on('click', function() {
@@ -310,3 +288,6 @@ app.init = function() {
 $(function() {
   app.init();
 });
+
+
+// Disable continuing until filled out

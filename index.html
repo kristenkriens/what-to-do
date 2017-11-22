@@ -42,10 +42,9 @@
               <label for="nextWeek">Next Week</label>
             </div>
             <div>
-              <input type="radio" id="doesntMatter" name="date" value="Future" class="accessible options__radio">
-              <label for="doesntMatter">Doesn't Matter</label>
+              <input type="radio" id="anytime" name="date" value="Future" class="accessible options__radio">
+              <label for="anytime">Anytime</label>
             </div>
-            <p>Maybe add custom date or date range?</p>
           </div>
           <button class="options__button options__button--date options__button--next">Next</button>
         </div>
@@ -56,8 +55,7 @@
             <input type="text" id="distance" class="options__input options__input--distance">
             <p class="options__units">km</p>
           </div>
-          <p>Still needs to be hooked up.</p>
-          <button class="options__button options__button--distance options__button--next">Next</button>
+          <button class="options__button options__button--distance options__button--next" disabled>Next</button>
         </div>
         <div class="options__content-item" data-title="budget">
           <h3>Budget</h3>
@@ -67,7 +65,7 @@
             <input type="text" id="budget" class="options__input options__input--budget">
           </div>
           <p>Still needs to be hooked up, if I can...</p>
-          <button class="options__button options__button--budget options__button--submit options__button--next">Submit</button>
+          <button class="options__button options__button--budget options__button--submit options__button--next" disabled>View Events</button>
         </div>
         <div class="options__content-item" data-title="instructions">
           <h3>Instructions</h3>
