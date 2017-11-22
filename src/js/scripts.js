@@ -6,7 +6,7 @@ app.markers = [];
 
 app.homeLatLng = '';
 
-app.eventApiUrl = 'http://api.eventful.com/json/events/search';
+app.eventApiUrl = 'https://api.eventful.com/json/events/search';
 app.eventApiKey = 'srQBgzwWJzXwZcrM';
 
 // Generates the base map for the app
