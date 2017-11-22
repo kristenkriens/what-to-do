@@ -162,9 +162,11 @@ app.getEvents = function() {
       within: app.distance,
 			category: app.categories,
 			units: 'km',
+      include: 'price',
 			page_size: 50
 		}
 	}).then(function(events) {
+    console.log(events);
 		if(events.total_items === '0') {
 			alert('Your search returned 0 results. Please try again with less strict restrictions.');
 		} else {
