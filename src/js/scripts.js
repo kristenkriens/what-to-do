@@ -200,10 +200,10 @@ app.drawDistanceRadius = function() {
 	app.map.fitBounds(app.distanceRadius.getBounds());
 }
 
-// Generates event markers on map
+// Generates event markers on map and removes spinner in Instructions tab
 app.generateEvents = function(events) {
 	let event = events.events.event;
-	console.log(event)
+
   for (let i in event) {
     let eventMarker = new google.maps.Marker({
       map: app.map,
@@ -220,6 +220,8 @@ app.generateEvents = function(events) {
 
 		eventMarker.addListener('click', app.showEventInfo);
   }
+
+  $('.spinner').remove();
 }
 
 // Generates the event marker symbol
