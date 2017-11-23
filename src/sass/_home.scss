@@ -92,6 +92,7 @@
     max-height: 185px;
     margin-top: 13px;
     width: 100%;
+    padding-right: 15px;
 
     @media (min-width: $sm-width-plus) and (max-width: $md-width) {
       display: flex;
@@ -115,6 +116,14 @@
     width: 35px;
     padding: 0;
     background-color: $navy;
+  }
+
+  &__event {
+    &--scroll {
+      max-height: 300px;
+      overflow-y: scroll;
+      padding-right: 15px;
+    }
   }
 
   &__button--next {

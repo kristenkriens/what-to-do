@@ -13,7 +13,7 @@ app.date = '';
 app.distance = 0;
 app.categories = [];
 
-app.eventApiUrl = 'https://api.eventful.com/json/events/search';
+app.eventApiUrl = 'https://api.eventful.com/json';
 app.eventApiKey = 'srQBgzwWJzXwZcrM';
 
 // Generates the base map for the app
@@ -100,9 +100,6 @@ app.setLocation = function() {
 
 			app.lat = homeMarker.position.lat();
 			app.lng = homeMarker.position.lng();
-
-      console.log(app.lat);
-      console.log(app.lng);
       app.latLngString = `${app.lat},${app.lng}`;
 
 			app.map.setCenter(homeMarker.position);
@@ -124,7 +121,7 @@ app.setLocation = function() {
 // Gets all categories from Eventful API
 app.getCategories = function() {
 	$.ajax({
-		url: 'https://api.eventful.com/json/categories/list',
+		url: `${app.eventApiUrl}/categories/list`,
 		method: 'GET',
 		dataType: 'jsonp',
 		data: {
@@ -155,7 +152,7 @@ app.getEvents = function() {
 	$('.map__results-number').html('<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="accessible">Loading...</span>');
 
 	$.ajax({
-		url: app.eventApiUrl,
+		url: `${app.eventApiUrl}/events/search`,
 		method: 'GET',
 		dataType: 'jsonp',
 		data: {
@@ -166,10 +163,10 @@ app.getEvents = function() {
 			category: app.categories,
 			units: 'km',
       include: 'price',
-			page_size: 50
+			page_size: 50,
+      change_multi_day_start: true
 		}
 	}).then(function(events) {
-    console.log(events);
 		if(events.total_items === '0') {
 			alert('Your search returned 0 results. Please try again with less strict restrictions.');
 		} else {
@@ -223,7 +220,9 @@ app.generateEvents = function(events) {
 
 		eventMarker.addListener('click', app.changeEventMarkerColour);
 
-		eventMarker.addListener('click', app.showEventInfo);
+    eventMarker.addListener('click', function() {
+      app.showEventInfoTab(this);
+    });
   }
 
   $('.spinner').remove();
@@ -291,13 +290,57 @@ app.showInstructions = function() {
 }
 
 // Shows the Event Info tab, removes the disabled class from the Directions tab, and removes the active class from other tabs
-app.showEventInfo = function() {
+app.showEventInfoTab = function(that) {
 	$('.options__tabs-item').removeClass('options__tabs-item--active');
 	$('.options__content-item').removeClass('options__content-item--active');
 
 	$('.options__tabs-item[data-title="directions"]').removeClass('options__tabs-item--disabled');
-	$('.options__tabs-item[data-title="eventInfo"]').addClass('options__tabs-item--active').removeClass('options__tabs-item--disabled');
-	$('.options__content-item[data-title="eventInfo"]').addClass('options__content-item--active');
+	$('.options__tabs-item[data-title="info"]').addClass('options__tabs-item--active').removeClass('options__tabs-item--disabled');
+	$('.options__content-item[data-title="info"]').addClass('options__content-item--active');
+
+  app.getSelectedVenueInfo(that);
+}
+
+// Gets info about a specific venue from the Eventful API
+app.getSelectedVenueInfo = function(that) {
+  let eventLatLngString = `${that.position.lat()},${that.position.lng()}`;
+
+  $.ajax({
+		url: `${app.eventApiUrl}/events/search`,
+		method: 'GET',
+		dataType: 'jsonp',
+		data: {
+			app_key: app.eventApiKey,
+      location: eventLatLngString,
+			date: app.date,
+      within: 0.001,
+			category: app.categories,
+			units: 'km',
+      include: 'price',
+      page_size: 1,
+      change_multi_day_start: true
+		}
+	}).then(function(selectedVenueEvent) {
+    app.generateSelectedVenueEvents(selectedVenueEvent)
+	});
+}
+
+// Generates 1 event going on at the selected venue and displays the info in the Event Info tab
+app.generateSelectedVenueEvents = function(selectedVenueEvent) {
+  let selectedEvent = selectedVenueEvent.events.event[0];
+  let $selectedEventDiv = $('.options__event');
+
+  $selectedEventDiv.append(`
+    <h4>${selectedEvent.title}</h4>
+    <p class="normal">${selectedEvent.venue_name}</p>
+    <p>${selectedEvent.venue_address}, ${selectedEvent.city_name}</p>
+    <p>${selectedEvent.description}</p>
+    <a href="${selectedEvent.url}" class="button">More Info</button>
+  `);
+
+  if($selectedEventDiv.height() > 300) {
+    $selectedEventDiv.addClass('options__event--scroll');
+  }
 }
 
 // Disables next button if the input is empty
