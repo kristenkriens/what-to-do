@@ -1,10 +1,9 @@
 $black: #555555;
 $white: #fff;
-$transparent-white: rgba(255, 255, 255, 0.9);
-$grey: rgba(200, 200, 200, 0.5);
+$transparent-white: rgba(255, 255, 255, 0.65);
+$grey: #6E707B;
 $blue: #27b2d0;
 $navy: #14192d;
-$light-navy: lighten($navy, 5%);
 
 $xs-width: 320px;
 $xs-width-plus: $xs-width + 1px;

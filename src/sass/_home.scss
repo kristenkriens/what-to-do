@@ -41,10 +41,20 @@
       }
 
       &--ignore {
+        p:first-of-type {
+          margin-bottom: 10px;
+        }
+
         .spinner {
-          font-size: 75px;
-          margin-top: 35px;
-          text-align: center;
+          p {
+            margin-bottom: 35px;
+          }
+
+          .fa {
+            font-size: 75px;
+            display: block;
+            margin: 0 auto;
+          }
         }
       }
     }
@@ -78,7 +88,7 @@
       .options__units {
         right: 0;
         margin-bottom: 0;
-        box-shadow: -20px 0px 10px -5px $transparent-white;
+        box-shadow: -20px 0px 15px -5px $white;
       }
     }
 
@@ -119,10 +129,27 @@
   }
 
   &__event {
-    &--scroll {
-      max-height: 300px;
-      overflow-y: scroll;
-      padding-right: 15px;
+    a {
+      color: $navy;
+      font-weight: 600;
+
+      &:hover {
+        color: $white;
+      }
+    }
+
+    &-description {
+      margin: 10px 0;
+
+      &--scroll {
+        max-height: 180px;
+        overflow-y: scroll;
+        padding-right: 15px;
+      }
+    }
+
+    .fa {
+      font-size: 12px;
     }
   }
 

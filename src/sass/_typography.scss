@@ -10,20 +10,26 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
 
 h1 {
   font-weight: 300;
-  font-size: 40px;
+  font-size: 42px;
+}
+
+h2 {
+  font-size: 26px;
 }
 
 h3 {
+  font-size: 20px;
   font-weight: 600;
   text-transform: uppercase;
 }
 
-p {
-  margin: 0 0 10px 0;
+h4 {
+  font-size: 18px;
+  margin-bottom: 5px;
+}
 
-  &:last-of-type {
-    margin-bottom: 0;
-  }
+p {
+  margin: 0;
 }
 
 legend, label {

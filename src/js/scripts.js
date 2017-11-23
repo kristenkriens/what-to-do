@@ -328,18 +328,13 @@ app.getSelectedVenueInfo = function(that) {
 // Generates 1 event going on at the selected venue and displays the info in the Event Info tab
 app.generateSelectedVenueEvents = function(selectedVenueEvent) {
   let selectedEvent = selectedVenueEvent.events.event[0];
-  let $selectedEventDiv = $('.options__event');
 
-  $selectedEventDiv.append(`
-    <h4>${selectedEvent.title}</h4>
-    <p class="normal">${selectedEvent.venue_name}</p>
-    <p>${selectedEvent.venue_address}, ${selectedEvent.city_name}</p>
-    <p>${selectedEvent.description}</p>
-    <a href="${selectedEvent.url}" class="button">More Info</button>
-  `);
+  $('.options__event').empty();
 
-  if($selectedEventDiv.height() > 300) {
-    $selectedEventDiv.addClass('options__event--scroll');
+  $(`<a href="${selectedEvent.url}" target="_blank"><h4>${selectedEvent.title}</h4></a><p class="normal">${selectedEvent.venue_name}</p><p class="normal">${selectedEvent.venue_address}, ${selectedEvent.city_name}</p><div class="options__event-description">${selectedEvent.description}</div><a href="${selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`).hide().appendTo('.options__event').fadeIn(500);
+
+  if($('.options__event-description').height() > 180) {
+    $('.options__event-description').addClass('options__event-description--scroll');
   }
 }
 
