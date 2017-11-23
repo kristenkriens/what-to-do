@@ -55,7 +55,7 @@ app.getGeolocation = function() {
 
   if (navigator.geolocation) {
     navigator.geolocation.getCurrentPosition(function(position) {
-      let myLatLng = {lat: parseFloat(position.coords.latitude), lng: parseFloat(position.coords.longitude)};
+      let myLatLng = {lat: position.coords.latitude, lng: position.coords.longitude};
 
       let checkInput = setInterval(function() {
         let location = $('.options__input--location').val();
