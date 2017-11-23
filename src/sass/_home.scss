@@ -11,7 +11,7 @@
     display: flex;
     flex-wrap: wrap;
     background-color: $blue;
-    width: calc(100% - 75px);
+    width: calc(100% - 65px);
     height: 100%;
     padding: 20px;
 
@@ -46,15 +46,9 @@
         }
 
         .spinner {
-          p {
-            margin-bottom: 35px;
-          }
-
-          .fa {
-            font-size: 75px;
-            display: block;
-            margin: 0 auto;
-          }
+          font-size: 75px;
+          margin: 35px auto 0;
+          text-align: center;
         }
       }
     }
@@ -188,11 +182,15 @@
       display: flex;
     }
 
+    @media (max-width: $sm-width) {
+      justify-content: space-between;
+    }
+
     &-item {
       color: $grey;
-      width: 75px;
-      height: 75px;
-      font-size: 35px;
+      width: 65px;
+      height: 65px;
+      font-size: 30px;
       padding: 15px;
       display: flex;
       justify-content: center;
@@ -204,27 +202,30 @@
         position: absolute;
         bottom: 0;
         right: 0;
+
+        @media (max-width: $sm-width) {
+          position: relative;
+        }
       }
 
       &:nth-last-of-type(2) {
         position: absolute;
-        bottom: 75px;
+        bottom: 65px;
         right: 0;
 
         @media (max-width: $md-width) {
           bottom: 0;
-          right: 75px;
+          right: 65px;
         }
 
         @media (max-width: $sm-width) {
-          right: 50px;
+          position: relative;
+          right: 0;
         }
       }
 
       @media (max-width: $sm-width) {
-        width: 50px;
-        height: 50px;
-        font-size: 25px;
+        width: calc(100% / 6);
       }
 
       &:hover, &:active, &:focus {
