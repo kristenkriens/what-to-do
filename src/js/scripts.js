@@ -159,11 +159,12 @@ app.getEvents = function() {
 			app_key: app.eventApiKey,
       location: app.latLngString,
 			date: app.date,
+      sort_order: 'popularity',
       within: app.distance,
 			category: app.categories,
 			units: 'km',
       include: 'price',
-			page_size: 50,
+			page_size: 100,
       change_multi_day_start: true
 		}
 	}).then(function(events) {
@@ -313,6 +314,7 @@ app.getSelectedVenueInfo = function(that) {
 			app_key: app.eventApiKey,
       location: eventLatLngString,
 			date: app.date,
+      sort_order: 'popularity',
       within: 0.001,
 			category: app.categories,
 			units: 'km',

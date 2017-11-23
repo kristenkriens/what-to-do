@@ -145,6 +145,19 @@
     &-description {
       margin: 10px 0;
 
+      p:not(:last-of-type) {
+        margin-bottom: 10px;
+      }
+
+      a {
+        font-weight: 400;
+      }
+
+      ul {
+        padding-left: 20px;
+        margin: 0;
+      }
+
       &--scroll {
         max-height: 160px;
         overflow-y: scroll;
