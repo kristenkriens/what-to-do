@@ -100,6 +100,9 @@ app.setLocation = function() {
 
 			app.lat = homeMarker.position.lat();
 			app.lng = homeMarker.position.lng();
+
+      console.log(app.lat);
+      console.log(app.lng);
       app.latLngString = `${app.lat},${app.lng}`;
 
 			app.map.setCenter(homeMarker.position);
