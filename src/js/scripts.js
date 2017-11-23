@@ -253,35 +253,6 @@ app.restoreEventMarkerColour = function() {
 	}
 }
 
-// Changes the active tab based on which tab was clicked
-app.changeActiveTabClick = function(that) {
-  let tabTitle = that.data('title');
-
-  if(tabTitle) {
-    $('.options__tabs-item').removeClass('options__tabs-item--active');
-    that.addClass('options__tabs-item--active');
-
-    $('.options__content-item').removeClass('options__content-item--active');
-    $('.options__content-item').each(function(i) {
-      if($('.options__content-item').eq(i).data('title') === tabTitle) {
-        $(this).addClass('options__content-item--active');
-      }
-    });
-  }
-}
-
-// Changes the active tab based on which tab was clicked and enables disabled tabs once they have been active
-app.changeActiveTabNext = function(that) {
-	let currentIndex = that.parent().index();
-	let totalTabs = $('.options__tabs-item').length;
-
-	if(currentIndex > totalTabs - 2) {
-		currentIndex--;
-	}
-
-	$('.options__tabs-item').eq(currentIndex + 1).removeClass('options__tabs-item--disabled').click();
-}
-
 // Shows the Instructions tab and removes the active classes from other tabs
 app.showInstructions = function() {
 	$('.options__tabs-item').removeClass('options__tabs-item--active');
@@ -362,6 +333,35 @@ app.generateSelectedVenueEvents = function(selectedVenueEvent) {
   if($('.options__event-description').height() > 160) {
     $('.options__event-description').addClass('options__event-description--scroll');
   }
+}
+
+// Changes the active tab based on which tab was clicked
+app.changeActiveTabClick = function(that) {
+  let tabTitle = that.data('title');
+
+  if(tabTitle) {
+    $('.options__tabs-item').removeClass('options__tabs-item--active');
+    that.addClass('options__tabs-item--active');
+
+    $('.options__content-item').removeClass('options__content-item--active');
+    $('.options__content-item').each(function(i) {
+      if($('.options__content-item').eq(i).data('title') === tabTitle) {
+        $(this).addClass('options__content-item--active');
+      }
+    });
+  }
+}
+
+// Changes the active tab based on which tab was clicked and enables disabled tabs once they have been active
+app.changeActiveTabNext = function(that) {
+	let currentIndex = that.parent().index();
+	let totalTabs = $('.options__tabs-item').length;
+
+	if(currentIndex > totalTabs - 2) {
+		currentIndex--;
+	}
+
+	$('.options__tabs-item').eq(currentIndex + 1).removeClass('options__tabs-item--disabled').click();
 }
 
 // Disables next button if the input is empty
