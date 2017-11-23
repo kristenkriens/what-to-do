@@ -327,13 +327,37 @@ app.getSelectedVenueInfo = function(that) {
 	});
 }
 
-// Generates an event going on at the selected venue and displays the info in the Event Info tab
+// Generates an event going on at the selected venue, displays the info in the Event Info tab, and converts the returned date and time to a human-readable form
 app.generateSelectedVenueEvents = function(selectedVenueEvent) {
-  let selectedEvent = selectedVenueEvent.events.event[0];
-
   $('.options__event').empty();
 
-  $(`<a href="${selectedEvent.url}" target="_blank"><h4>${selectedEvent.title}</h4></a><p class="normal">${selectedEvent.venue_name}</p><p class="normal">${selectedEvent.venue_address}, ${selectedEvent.city_name}</p><p class="normal">${selectedEvent.start_time}</p><div class="options__event-description">${(selectedEvent.description ? selectedEvent.description : 'No Description')}</div><a href="${selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`).hide().appendTo('.options__event').fadeIn(500);
+  let selectedEvent = selectedVenueEvent.events.event[0];
+
+  selectedEvent.start_time = selectedEvent.start_time.slice(0, -3);
+
+  let months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  let selectedEventDate = selectedEvent.start_time.match(/^(\S+)\s(.*)/).slice(1);
+  let selectedEventDay = selectedEventDate[0];
+  let selectedEventTime = selectedEventDate[1];
+
+  selectedEventDay = selectedEventDay.split('-');
+  selectedEventDay = months[selectedEventDay[1]] + ' ' + selectedEventDay[2] + ', ' + selectedEventDay[0];
+
+  selectedEventTime = selectedEventTime.split(':');
+
+  let selectedEventHour = parseInt(selectedEventTime[0]);
+  let selectedEventMinute = selectedEventTime[1];
+  let selectedEventPeriod = '';
+
+  if(selectedEventHour > 12) {
+    selectedEventHour = selectedEventHour - 12;
+    selectedEventPeriod = 'pm';
+  } else {
+    selectedEventPeriod = 'am'
+  }
+
+  $(`<a href="${selectedEvent.url}" target="_blank"><h4>${selectedEvent.title}</h4></a><p class="normal">${selectedEvent.venue_name}</p><p class="normal">${selectedEvent.venue_address}, ${selectedEvent.city_name}</p><p class="normal">${selectedEventDay} at ${selectedEventHour}:${selectedEventMinute}${selectedEventPeriod}</p><div class="options__event-description">${(selectedEvent.description ? selectedEvent.description : 'No Description')}</div><a href="${selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`).hide().appendTo('.options__event').fadeIn(500);
 
   if($('.options__event-description').height() > 160) {
     $('.options__event-description').addClass('options__event-description--scroll');
