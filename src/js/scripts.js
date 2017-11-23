@@ -203,7 +203,7 @@ app.drawDistanceRadius = function() {
 	app.map.fitBounds(app.distanceRadius.getBounds());
 }
 
-// Generates event markers on map and removes spinner in Instructions tab
+// Generates event markers on map, removes spinner in Instructions tab, and gets venue id of selected venue
 app.generateEvents = function(events) {
 	let event = events.events.event;
 
@@ -222,7 +222,7 @@ app.generateEvents = function(events) {
 		eventMarker.addListener('click', app.changeEventMarkerColour);
 
     eventMarker.addListener('click', function() {
-      app.showEventInfoTab(this);
+      app.showEventInfoTab(event[i].venue_id);
     });
   }
 
@@ -262,7 +262,7 @@ app.showInstructions = function() {
 }
 
 // Shows the Event Info tab, removes the disabled class from the Directions tab, and removes the active class from other tabs
-app.showEventInfoTab = function(that) {
+app.showEventInfoTab = function(venueId) {
 	$('.options__tabs-item').removeClass('options__tabs-item--active');
 	$('.options__content-item').removeClass('options__content-item--active');
 
@@ -270,23 +270,20 @@ app.showEventInfoTab = function(that) {
 	$('.options__tabs-item[data-title="info"]').addClass('options__tabs-item--active').removeClass('options__tabs-item--disabled');
 	$('.options__content-item[data-title="info"]').addClass('options__content-item--active');
 
-  app.getSelectedVenueInfo(that);
+  app.getSelectedVenueInfo(venueId);
 }
 
-// Gets info about a specific venue from the Eventful API
-app.getSelectedVenueInfo = function(that) {
-  let eventLatLngString = `${that.position.lat()},${that.position.lng()}`;
-
+// Gets info about selected venue from the Eventful API
+app.getSelectedVenueInfo = function(venueId) {
   $.ajax({
 		url: `${app.eventApiUrl}/events/search`,
 		method: 'GET',
 		dataType: 'jsonp',
 		data: {
 			app_key: app.eventApiKey,
-      location: eventLatLngString,
+      location: venueId,
 			date: app.date,
       sort_order: 'popularity',
-      within: 0.001,
 			category: app.categories,
 			units: 'km',
       include: 'price',
