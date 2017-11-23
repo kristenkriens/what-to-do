@@ -25,12 +25,12 @@
 
     &-items {
       margin: 35px 0;
-      padding-bottom: 60px;
       position: relative;
     }
 
     &-item {
       display: none;
+      padding-bottom: 60px;
 
       h3 {
         margin-bottom: 20px;
@@ -41,6 +41,8 @@
       }
 
       &--ignore {
+        padding-bottom: 0;
+
         p:first-of-type {
           margin-bottom: 10px;
         }
