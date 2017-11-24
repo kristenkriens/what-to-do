@@ -37,6 +37,30 @@ app.generateMap = function() {
   app.map = new google.maps.Map(mapContainer, mapInfo);
 }
 
+// Gets all categories from Eventful API
+app.getCategories = function() {
+	$.ajax({
+		url: `${app.eventApiUrl}/categories/list`,
+		method: 'GET',
+		dataType: 'jsonp',
+		data: {
+			app_key: app.eventApiKey,
+		}
+	}).then(function(categories) {
+		app.generateCategories(categories);
+	});
+}
+
+// Generates categories in Interests tab
+app.generateCategories = function(categories) {
+	for (let i in categories.category) {
+		let id = categories.category[i].id;
+		let name = categories.category[i].name;
+
+		$('.options__checkbox-scroll').append(`<div><input type="checkbox" id="${id}" name="interests" value="${id}" class="accessible options__radio"><label for="${id}">${name}</label></div>`);
+	}
+}
+
 // Clears all markers and circles off the map
 app.clearMap = function() {
   if(typeof app.markers[0] !== "undefined") {
@@ -116,29 +140,6 @@ app.setLocation = function() {
       }
     }
   });
-}
-
-// Gets all categories from Eventful API
-app.getCategories = function() {
-	$.ajax({
-		url: `${app.eventApiUrl}/categories/list`,
-		method: 'GET',
-		dataType: 'jsonp',
-		data: {
-			app_key: app.eventApiKey,
-		}
-	}).then(function(categories) {
-		app.generateCategories(categories);
-	});
-}
-
-app.generateCategories = function(categories) {
-	for (let i in categories.category) {
-		let id = categories.category[i].id;
-		let name = categories.category[i].name;
-
-		$('.options__checkbox-scroll').append(`<div><input type="checkbox" id="${id}" name="interests" value="${id}" class="accessible options__radio"><label for="${id}">${name}</label></div>`);
-	}
 }
 
 // Gets info from Eventful API
