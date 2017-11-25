@@ -156,7 +156,7 @@ app.drawDistanceRadius = function() {
 
 	app.distance = $('.options__input--distance').val();
 
-	let radius = (parseInt(app.distance) * 1000);
+	let radius = (parseInt(app.distance) * 1000) + 100;
 
 	app.distanceRadius = new google.maps.Circle({
     strokeColor: '#ff751a',
@@ -250,11 +250,13 @@ app.generateEvents = function(events) {
   let event = events.events.event;
 
   for (let i in event) {
-    let icons = app.categoryIconNameArray.find(function(icon) {
+    const icons = app.categoryIconNameArray.find(function(icon) {
       return icon.name === event[i].categories.category[0].name;
     });
 
-    let iconName = icons.icon.replace("-", '_').toUpperCase();
+    let iconName = icons.icon.replace(/-|\s/g,"_").toUpperCase();
+    let iconColour = '#27b2d0';
+    let clickedIconColour = '#14192d';
 
     let eventMarker = new google.maps.Marker({
       map: app.map,
@@ -262,20 +264,15 @@ app.generateEvents = function(events) {
 				lat: parseFloat(event[i].latitude),
 				lng: parseFloat(event[i].longitude)
 			},
-      icon: {
-        path: fontawesome.markers[iconName],
-    		scale: 0.35,
-    		strokeWeight: 0,
-    		fillColor: '#27b2d0',
-    		fillOpacity: 1
-        // figure out how to add white background
-      }
+      icon: app.generateEventMarkerSymbol(iconColour, iconName),
+      originalColor: iconColour,
+      originalIcon: iconName
     });
 
     app.markers.push(eventMarker);
 
 		eventMarker.addListener('click', function() {
-      // call function that adds circle around marker
+      app.changeEventMarkerColour(this, clickedIconColour, iconName);
     });
 
     eventMarker.addListener('click', function() {
@@ -284,6 +281,31 @@ app.generateEvents = function(events) {
   }
 
   $('.spinner').remove();
+}
+
+// Generates the event marker symbol
+app.generateEventMarkerSymbol = function(colour, iconName) {
+  return {
+		path: fontawesome.markers[iconName],
+		scale: 0.35,
+		strokeWeight: 0,
+		fillColor: colour,
+		fillOpacity: 1
+  };
+}
+
+// Changes the colour of the active event marker
+app.changeEventMarkerColour = function(that, colour, iconName) {
+  app.restoreEventMarkerColour();
+
+  that.setIcon(app.generateEventMarkerSymbol(colour, iconName));
+}
+
+// Restores the colour of the event marker when it isn't the active one
+app.restoreEventMarkerColour = function() {
+	for (var i = 1; i < app.markers.length; i++) {
+  	app.markers[i].setIcon(app.generateEventMarkerSymbol(app.markers[i].originalColor, app.markers[i].originalIcon));
+	}
 }
 
 // Shows the Instructions tab and removes the active classes from other tabs
