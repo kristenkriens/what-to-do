@@ -156,7 +156,7 @@ app.drawDistanceRadius = function() {
 
 	app.distance = $('.options__input--distance').val();
 
-	let radius = (parseInt(app.distance) * 1000) + 100;
+	let radius = (parseInt(app.distance) * 1000);
 
 	app.distanceRadius = new google.maps.Circle({
     strokeColor: '#ff751a',
@@ -268,6 +268,7 @@ app.generateEvents = function(events) {
     		strokeWeight: 0,
     		fillColor: '#27b2d0',
     		fillOpacity: 1
+        // figure out how to add white background
       }
     });
 
