@@ -205,28 +205,42 @@ app.getEvents = function() {
 		if(events.total_items === '0') {
 			alert('Your search returned 0 results. Please try again with less strict restrictions.');
 		} else {
-      app.generateLegend(events);
+      app.removeDuplicateVenues(events);
 		}
 	});
 };
 
-// Generates alphabetical legend with categories for returned events and icons for each category
-app.generateLegend = function(events) {
-  let currentCategoriesNameArray = [];
+// Removes duplicate venues from events before they are added to the map
+app.removeDuplicateVenues = function(events) {
+  let eventArray = [];
+  var venueNames = [];
 
   for (let i in events.events.event) {
-    currentCategoriesNameArray.push(events.events.event[i].categories.category[0].name);
+    eventArray.push(events.events.event[i]);
   }
 
-  let uniqueCurrentCategoriesNameArray = currentCategoriesNameArray.filter(function(category, i) {
-    return currentCategoriesNameArray.indexOf(category) == i;
-  })
-
-  let uniqueFilteredCategoriesIconNameArray = app.categoryIconNameArray.filter(function(item) {
-    return uniqueCurrentCategoriesNameArray.indexOf(item.name) !== -1;
+  let uniqueEventArray = eventArray.filter(function(object) {
+    if (venueNames.indexOf(object.venue_name) !== -1) return false;
+    venueNames.push(object.venue_name);
+    return true;
   });
 
-  uniqueFilteredCategoriesIconNameArray.sort(function(a, b) {
+  app.generateLegend(uniqueEventArray);
+}
+
+// Generates alphabetical legend with categories for returned events and icons for each category
+app.generateLegend = function(events) {
+  let categoriesNameArray = [];
+
+  for (let i in events) {
+    categoriesNameArray.push(events[i].categories.category[0].name);
+  }
+
+  let filteredCategoriesIconNameArray = app.categoryIconNameArray.filter(function(item) {
+    return categoriesNameArray.indexOf(item.name) !== -1;
+  });
+
+  filteredCategoriesIconNameArray.sort(function(a, b) {
     if (a.name < b.name) {
       return -1;
     }
@@ -238,8 +252,8 @@ app.generateLegend = function(events) {
     return 0;
   });
 
-  for (let i in uniqueFilteredCategoriesIconNameArray) {
-    $('.map__legend').append(`<div class="map__legend-item"><i class="fa fa-${uniqueFilteredCategoriesIconNameArray[i].icon}" aria-hidden="true"></i> <span>${uniqueFilteredCategoriesIconNameArray[i].name}</span></div>`).removeClass('map__legend--hidden');
+  for (let i in filteredCategoriesIconNameArray) {
+    $('.map__legend').append(`<div class="map__legend-item"><i class="fa fa-${filteredCategoriesIconNameArray[i].icon}" aria-hidden="true"></i> <span>${filteredCategoriesIconNameArray[i].name}</span></div>`).removeClass('map__legend--hidden');
   }
 
   app.generateEvents(events);
@@ -247,11 +261,9 @@ app.generateLegend = function(events) {
 
 // Generates event markers on map, removes spinner in Instructions tab, and gets venue id of selected venue
 app.generateEvents = function(events) {
-  let event = events.events.event;
-
-  for (let i in event) {
+  for (let i in events) {
     const icons = app.categoryIconNameArray.find(function(icon) {
-      return icon.name === event[i].categories.category[0].name;
+      return icon.name === events[i].categories.category[0].name;
     });
 
     let iconName = icons.icon.replace(/-|\s/g,"_").toUpperCase();
@@ -261,8 +273,8 @@ app.generateEvents = function(events) {
     let eventMarker = new google.maps.Marker({
       map: app.map,
       position: {
-				lat: parseFloat(event[i].latitude),
-				lng: parseFloat(event[i].longitude)
+				lat: parseFloat(events[i].latitude),
+				lng: parseFloat(events[i].longitude)
 			},
       icon: app.generateEventMarkerSymbol(iconColour, iconName),
       originalColor: iconColour,
@@ -276,7 +288,7 @@ app.generateEvents = function(events) {
     });
 
     eventMarker.addListener('click', function() {
-      app.showEventInfoTab(event[i].venue_id);
+      app.showEventInfoTab(events[i].venue_id);
     });
   }
 
