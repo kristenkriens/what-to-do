@@ -250,9 +250,11 @@ app.generateEvents = function(events) {
   let event = events.events.event;
 
   for (let i in event) {
-    const icons = app.categoryIconNameArray.find(function(icon) {
+    let icons = app.categoryIconNameArray.find(function(icon) {
       return icon.name === event[i].categories.category[0].name;
     });
+
+    let iconName = icons.icon.replace("-", '_').toUpperCase();
 
     let eventMarker = new google.maps.Marker({
       map: app.map,
@@ -260,13 +262,19 @@ app.generateEvents = function(events) {
 				lat: parseFloat(event[i].latitude),
 				lng: parseFloat(event[i].longitude)
 			},
-      icon: app.generateEventMarkerSymbol('#27b2d0', icons.icon.replace("-", '_').toUpperCase())
+      icon: {
+        path: fontawesome.markers[iconName],
+    		scale: 0.35,
+    		strokeWeight: 0,
+    		fillColor: '#27b2d0',
+    		fillOpacity: 1
+      }
     });
 
     app.markers.push(eventMarker);
 
 		eventMarker.addListener('click', function() {
-      app.changeEventMarkerColour(this, '#14192d', 'CIRCLE');
+      // call function that adds circle around marker
     });
 
     eventMarker.addListener('click', function() {
@@ -275,31 +283,6 @@ app.generateEvents = function(events) {
   }
 
   $('.spinner').remove();
-}
-
-// Generates the event marker symbol
-app.generateEventMarkerSymbol = function(colour, iconName) {
-  return {
-		path: fontawesome.markers[iconName],
-		scale: 0.35,
-		strokeWeight: 0,
-		fillColor: colour,
-		fillOpacity: 1
-  };
-}
-
-// Changes the colour of the active event marker
-app.changeEventMarkerColour = function(that, colour, iconName) {
-  app.restoreEventMarkerColour('#27b2d0', 'CIRCLE');
-
-  that.setIcon(app.generateEventMarkerSymbol(colour, iconName));
-}
-
-// Restores the colour of the event marker when it isn't the active one
-app.restoreEventMarkerColour = function(colour, iconName) {
-	for (var i = 1; i < app.markers.length; i++) {
-  	app.markers[i].setIcon(app.generateEventMarkerSymbol(colour, iconName));
-	}
 }
 
 // Shows the Instructions tab and removes the active classes from other tabs
