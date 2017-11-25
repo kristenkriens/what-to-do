@@ -42,8 +42,8 @@
               <label for="nextWeek">Next Week</label>
             </div>
             <div>
-              <input type="radio" id="anytime" name="date" value="Future" class="accessible options__radio">
-              <label for="anytime">Anytime</label>
+              <input type="radio" id="noPreference" name="date" value="Future" class="accessible options__radio">
+              <label for="noPreference">No Preference</label>
             </div>
           </div>
           <button class="options__button options__button--date options__button--next">Next</button>
@@ -96,7 +96,12 @@
       <div class="options__tabs-item options__tabs-item--disabled" data-title="directions"><i class="fa fa-map-signs" aria-hidden="true"></i><span class="accessible">Directions</span></div>
     </div>
   </section>
-  <section class="map"></section>
+  <section class="map">
+    <div class="map__map"></div>
+    <div class="map__legend map__legend--hidden">
+      <h3>Legend</h3>
+    </div>
+  </section>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD_3oQBqRgHi7SAKpys-YF546vL_GpsYAc" type="text/javascript"></script>
   <script src="https://use.fontawesome.com/07dc8c3210.js"></script>

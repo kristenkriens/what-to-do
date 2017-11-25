@@ -13,12 +13,14 @@ app.date = '';
 app.distance = 0;
 app.categories = [];
 
+app.categoryIconNameArray = [];
+
 app.eventApiUrl = 'https://api.eventful.com/json';
 app.eventApiKey = 'srQBgzwWJzXwZcrM';
 
 // Generates the base map for the app
 app.generateMap = function() {
-  const mapContainer = $('.map')[0];
+  const mapContainer = $('.map__map')[0];
 
   const mapStyle = [{"featureType":"all","elementType":"labels.text.fill","stylers":[{"saturation":36},{"color":"#333333"},{"lightness":40}]},{"featureType":"all","elementType":"labels.text.stroke","stylers":[{"visibility":"on"},{"color":"#ffffff"},{"lightness":16}]},{"featureType":"all","elementType":"labels.icon","stylers":[{"visibility":"off"}]},{"featureType":"administrative","elementType":"geometry.fill","stylers":[{"color":"#fefefe"},{"lightness":20}]},{"featureType":"administrative","elementType":"geometry.stroke","stylers":[{"color":"#fefefe"},{"lightness":17},{"weight":1.2}]},{"featureType":"landscape","elementType":"geometry","stylers":[{"color":"#f5f5f5"},{"lightness":20}]},{"featureType":"poi","elementType":"geometry","stylers":[{"color":"#f5f5f5"},{"lightness":21}]},{"featureType":"poi.park","elementType":"geometry","stylers":[{"color":"#a0d683"},{"lightness":21}]},{"featureType":"road.highway","elementType":"geometry.fill","stylers":[{"color":"#ffffff"},{"lightness":17}]},{"featureType":"road.highway","elementType":"geometry.stroke","stylers":[{"color":"#ffffff"},{"lightness":29},{"weight":0.2}]},{"featureType":"road.arterial","elementType":"geometry","stylers":[{"color":"#ffffff"},{"lightness":18}]},{"featureType":"road.local","elementType":"geometry","stylers":[{"color":"#ffffff"},{"lightness":16}]},{"featureType":"transit","elementType":"geometry","stylers":[{"color":"#f2f2f2"},{"lightness":19}]},{"featureType":"water","elementType":"geometry","stylers":[{"color":"#b2e2f0"}]}];
 
@@ -58,6 +60,10 @@ app.generateCategories = function(categories) {
 		let name = categories.category[i].name;
 
 		$('.options__checkbox-scroll').append(`<div><input type="checkbox" id="${id}" name="interests" value="${id}" class="accessible options__radio"><label for="${id}">${name}</label></div>`);
+
+    let iconNameArray = ['music', 'users', 'smile-o', 'graduation-cap', 'child', 'ticket', 'film', 'cutlery', 'usd', 'paint-brush', 'heartbeat', 'tree', 'book', 'fort-awesome', 'home', 'comments', 'glass', 'university', 'sitemap', 'sun-o', 'microphone', 'paw', 'hand-rock-o', 'shopping-cart', 'flask', 'bell', 'soccer-ball-o', 'cogs', 'asterisk'];
+
+    app.categoryIconNameArray.push({icon: iconNameArray[i], name: name});
 	}
 }
 
@@ -142,41 +148,6 @@ app.setLocation = function() {
   });
 }
 
-// Gets info from Eventful API
-app.getEvents = function() {
-	app.date = $('input[name="date"]:checked').val();
-
-	app.categories = $('input[name="interests"]:checked').map(function() {
-		return this.value;
-	}).get().join(',');
-
-	$('.map__results-number').html('<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="accessible">Loading...</span>');
-
-	$.ajax({
-		url: `${app.eventApiUrl}/events/search`,
-		method: 'GET',
-		dataType: 'jsonp',
-		data: {
-			app_key: app.eventApiKey,
-      location: app.latLngString,
-			date: app.date,
-      sort_order: 'popularity',
-      within: app.distance,
-			category: app.categories,
-			units: 'km',
-      include: 'price',
-			page_size: 100,
-      change_multi_day_start: true
-		}
-	}).then(function(events) {
-		if(events.total_items === '0') {
-			alert('Your search returned 0 results. Please try again with less strict restrictions.');
-		} else {
-			app.generateEvents(events);
-		}
-	});
-};
-
 // Draws distance radius, clear previous distance radius if applicable, and automatically fits to map
 app.drawDistanceRadius = function() {
   if(typeof app.distanceRadius !== "undefined") {
@@ -202,6 +173,75 @@ app.drawDistanceRadius = function() {
   });
 
 	app.map.fitBounds(app.distanceRadius.getBounds());
+}
+
+// Gets info from Eventful API
+app.getEvents = function() {
+	app.date = $('input[name="date"]:checked').val();
+
+	app.categories = $('input[name="interests"]:checked').map(function() {
+		return this.value;
+	}).get().join(',');
+
+	$('.map__results-number').html('<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="accessible">Loading...</span>');
+
+	$.ajax({
+		url: `${app.eventApiUrl}/events/search`,
+		method: 'GET',
+		dataType: 'jsonp',
+		data: {
+			app_key: app.eventApiKey,
+      location: app.latLngString,
+			date: app.date,
+      sort_order: 'popularity',
+      within: app.distance,
+			category: app.categories,
+			units: 'km',
+      include: 'price,categories',
+			page_size: 100,
+      change_multi_day_start: true
+		}
+	}).then(function(events) {
+		if(events.total_items === '0') {
+			alert('Your search returned 0 results. Please try again with less strict restrictions.');
+		} else {
+      app.generateLegend(events);
+			app.generateEvents(events);
+		}
+	});
+};
+
+// Generates alphabetical legend with categories for returned events and icons for each category
+app.generateLegend = function(events) {
+  let currentCategoriesArray = [];
+
+  for (let i in events.events.event) {
+    currentCategoriesArray.push(events.events.event[i].categories.category[0].name);
+  }
+
+  let uniqueCurrentCategoriesArray = currentCategoriesArray.filter(function(category, i) {
+    return currentCategoriesArray.indexOf(category) == i;
+  })
+
+  let filteredCategoryIconNameArray = app.categoryIconNameArray.filter(function(item) {
+    return uniqueCurrentCategoriesArray.indexOf(item.name) !== -1;
+  });
+
+  filteredCategoryIconNameArray.sort(function(a, b) {
+    if (a.name < b.name) {
+      return -1;
+    }
+
+    if (a.name > b.name) {
+      return 1;
+    }
+
+    return 0;
+  });
+
+  for (let i in filteredCategoryIconNameArray) {
+    $('.map__legend').append(`<div class="map__legend-item"><i class="fa fa-${filteredCategoryIconNameArray[i].icon}" aria-hidden="true"></i> <span>${filteredCategoryIconNameArray[i].name}</span></div>`).removeClass('map__legend--hidden');
+  }
 }
 
 // Generates event markers on map, removes spinner in Instructions tab, and gets venue id of selected venue
@@ -287,7 +327,7 @@ app.getSelectedVenueInfo = function(venueId) {
       sort_order: 'popularity',
 			category: app.categories,
 			units: 'km',
-      include: 'price',
+      include: 'price,categories',
       page_size: 1,
       change_multi_day_start: true
 		}
