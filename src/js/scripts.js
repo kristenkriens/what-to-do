@@ -206,28 +206,28 @@ app.getEvents = function() {
 			alert('Your search returned 0 results. Please try again with less strict restrictions.');
 		} else {
       app.generateLegend(events);
-			app.generateEvents(events);
+      app.generateEvents(events);
 		}
 	});
 };
 
 // Generates alphabetical legend with categories for returned events and icons for each category
 app.generateLegend = function(events) {
-  let currentCategoriesArray = [];
+  let currentCategoriesNameArray = [];
 
   for (let i in events.events.event) {
-    currentCategoriesArray.push(events.events.event[i].categories.category[0].name);
+    currentCategoriesNameArray.push(events.events.event[i].categories.category[0].name);
   }
 
-  let uniqueCurrentCategoriesArray = currentCategoriesArray.filter(function(category, i) {
-    return currentCategoriesArray.indexOf(category) == i;
+  let uniqueCurrentCategoriesNameArray = currentCategoriesNameArray.filter(function(category, i) {
+    return currentCategoriesNameArray.indexOf(category) == i;
   })
 
-  let filteredCategoryIconNameArray = app.categoryIconNameArray.filter(function(item) {
-    return uniqueCurrentCategoriesArray.indexOf(item.name) !== -1;
+  let uniqueFilteredCategoriesIconNameArray = app.categoryIconNameArray.filter(function(item) {
+    return uniqueCurrentCategoriesNameArray.indexOf(item.name) !== -1;
   });
 
-  filteredCategoryIconNameArray.sort(function(a, b) {
+  uniqueFilteredCategoriesIconNameArray.sort(function(a, b) {
     if (a.name < b.name) {
       return -1;
     }
@@ -239,14 +239,14 @@ app.generateLegend = function(events) {
     return 0;
   });
 
-  for (let i in filteredCategoryIconNameArray) {
-    $('.map__legend').append(`<div class="map__legend-item"><i class="fa fa-${filteredCategoryIconNameArray[i].icon}" aria-hidden="true"></i> <span>${filteredCategoryIconNameArray[i].name}</span></div>`).removeClass('map__legend--hidden');
+  for (let i in uniqueFilteredCategoriesIconNameArray) {
+    $('.map__legend').append(`<div class="map__legend-item"><i class="fa fa-${uniqueFilteredCategoriesIconNameArray[i].icon}" aria-hidden="true"></i> <span>${uniqueFilteredCategoriesIconNameArray[i].name}</span></div>`).removeClass('map__legend--hidden');
   }
 }
 
 // Generates event markers on map, removes spinner in Instructions tab, and gets venue id of selected venue
 app.generateEvents = function(events) {
-	let event = events.events.event;
+  let event = events.events.event;
 
   for (let i in event) {
     let eventMarker = new google.maps.Marker({
