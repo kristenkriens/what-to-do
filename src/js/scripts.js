@@ -265,7 +265,9 @@ app.generateEvents = function(events) {
 
     app.markers.push(eventMarker);
 
-		eventMarker.addListener('click', app.changeEventMarkerColour);
+		eventMarker.addListener('click', function() {
+      app.changeEventMarkerColour(this, '#14192d', 'CIRCLE');
+    });
 
     eventMarker.addListener('click', function() {
       app.showEventInfoTab(event[i].venue_id);
@@ -287,15 +289,16 @@ app.generateEventMarkerSymbol = function(colour, iconName) {
 }
 
 // Changes the colour of the active event marker
-app.changeEventMarkerColour = function() {
-  app.restoreEventMarkerColour();
-  this.setIcon(app.generateEventMarkerSymbol('#14192d', 'CIRCLE'))
+app.changeEventMarkerColour = function(that, colour, iconName) {
+  app.restoreEventMarkerColour('#27b2d0', 'CIRCLE');
+
+  that.setIcon(app.generateEventMarkerSymbol(colour, iconName));
 }
 
 // Restores the colour of the event marker when it isn't the active one
-app.restoreEventMarkerColour = function() {
+app.restoreEventMarkerColour = function(colour, iconName) {
 	for (var i = 1; i < app.markers.length; i++) {
-  	app.markers[i].setIcon(app.generateEventMarkerSymbol('#27b2d0', 'CIRCLE'));
+  	app.markers[i].setIcon(app.generateEventMarkerSymbol(colour, iconName));
 	}
 }
 
