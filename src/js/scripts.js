@@ -156,7 +156,7 @@ app.drawDistanceRadius = function() {
 
 	app.distance = $('.options__input--distance').val();
 
-	let radius = parseInt(app.distance) * 1000;
+	let radius = (parseInt(app.distance) * 1000) + 100;
 
 	app.distanceRadius = new google.maps.Circle({
     strokeColor: '#ff751a',
@@ -206,7 +206,6 @@ app.getEvents = function() {
 			alert('Your search returned 0 results. Please try again with less strict restrictions.');
 		} else {
       app.generateLegend(events);
-      app.generateEvents(events);
 		}
 	});
 };
@@ -242,6 +241,8 @@ app.generateLegend = function(events) {
   for (let i in uniqueFilteredCategoriesIconNameArray) {
     $('.map__legend').append(`<div class="map__legend-item"><i class="fa fa-${uniqueFilteredCategoriesIconNameArray[i].icon}" aria-hidden="true"></i> <span>${uniqueFilteredCategoriesIconNameArray[i].name}</span></div>`).removeClass('map__legend--hidden');
   }
+
+  app.generateEvents(events);
 }
 
 // Generates event markers on map, removes spinner in Instructions tab, and gets venue id of selected venue
@@ -249,13 +250,17 @@ app.generateEvents = function(events) {
   let event = events.events.event;
 
   for (let i in event) {
+    const icons = app.categoryIconNameArray.find(function(icon) {
+      return icon.name === event[i].categories.category[0].name;
+    });
+
     let eventMarker = new google.maps.Marker({
       map: app.map,
       position: {
 				lat: parseFloat(event[i].latitude),
 				lng: parseFloat(event[i].longitude)
 			},
-      icon: app.generateEventMarkerSymbol('#27b2d0')
+      icon: app.generateEventMarkerSymbol('#27b2d0', icons.icon.replace("-", '_').toUpperCase())
     });
 
     app.markers.push(eventMarker);
@@ -271,9 +276,9 @@ app.generateEvents = function(events) {
 }
 
 // Generates the event marker symbol
-app.generateEventMarkerSymbol = function(colour) {
+app.generateEventMarkerSymbol = function(colour, iconName) {
   return {
-		path: fontawesome.markers.CIRCLE,
+		path: fontawesome.markers[iconName],
 		scale: 0.35,
 		strokeWeight: 0,
 		fillColor: colour,
@@ -284,13 +289,13 @@ app.generateEventMarkerSymbol = function(colour) {
 // Changes the colour of the active event marker
 app.changeEventMarkerColour = function() {
   app.restoreEventMarkerColour();
-  this.setIcon(app.generateEventMarkerSymbol('#14192d'));
+  this.setIcon(app.generateEventMarkerSymbol('#14192d', 'CIRCLE'))
 }
 
 // Restores the colour of the event marker when it isn't the active one
 app.restoreEventMarkerColour = function() {
 	for (var i = 1; i < app.markers.length; i++) {
-  	app.markers[i].setIcon(app.generateEventMarkerSymbol('#27b2d0'));
+  	app.markers[i].setIcon(app.generateEventMarkerSymbol('#27b2d0', 'CIRCLE'));
 	}
 }
 
