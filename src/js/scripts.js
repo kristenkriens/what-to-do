@@ -46,17 +46,22 @@ app.generateMap = function() {
     zoomControl: true
   };
 
+  app.map = new google.maps.Map(mapContainer, mapInfo);
+
+  app.enableRoutes();
+}
+
+// Enables routes displaying on the map
+app.enableRoutes = function() {
   app.directionsService = new google.maps.DirectionsService;
   app.directionsDisplay = new google.maps.DirectionsRenderer({
     suppressMarkers: true,
     polylineOptions: {
       strokeColor: app.googleBlue,
       strokeWeight: 5,
-      strokeOpacity: 0.9
+      strokeOpacity: 0.75
     }
   });
-
-  app.map = new google.maps.Map(mapContainer, mapInfo);
 
   app.directionsDisplay.setMap(app.map);
 }
@@ -307,6 +312,8 @@ app.generateEvents = function(events) {
 		eventMarker.addListener('click', function() {
       app.selectedEventLatLngString = `${events[i].latitude},${events[i].longitude}`;
 
+      app.clearRoute();
+
       app.changeEventMarkerColour(this, app.navy, iconName);
       app.showEventInfoTab(events[i].venue_id);
     });
@@ -446,10 +453,20 @@ app.generateRoute = function(route) {
   app.directionsDisplay.setDirections(route);
 }
 
+// Clears route on map and disables transportation and directions tabs
+app.clearRoute = function() {
+  app.directionsDisplay.setMap(null);
+
+  app.enableRoutes();
+
+  $('.options__tabs-item[data-title="transportation"], .options__tabs-item[data-title="directions"]').addClass('options__tabs-item--disabled');
+}
+
 // Generates the directions from home location to selected event in the directions tab
 app.generateDirections = function(directions, mode) {
-  console.log(directions);
   $('.mode').text(mode);
+
+  console.log(directions);
 }
 
 // Changes the active tab based on which tab was clicked
