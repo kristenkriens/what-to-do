@@ -135,7 +135,7 @@ app.setLocation = function() {
       app.latLngString = `${app.lat},${app.lng}`;
 
 			app.map.setCenter(homeMarker.position);
-			app.map.setZoom(12);
+			app.map.setZoom(15);
 
       google.maps.event.addDomListener(window, 'resize', function() {
         app.map.setCenter(homeMarker.position);
@@ -393,7 +393,7 @@ app.generateSelectedVenueEvents = function(selectedVenueEvent) {
     selectedEventPeriod = 'am'
   }
 
-  $(`<a href="${selectedEvent.url}" target="_blank"><h4>${selectedEvent.title}</h4></a><p class="normal">${selectedEvent.venue_name}</p><p class="normal">${selectedEvent.venue_address}, ${selectedEvent.city_name}</p><p class="normal">${selectedEventDay} at ${selectedEventHour}:${selectedEventMinute}${selectedEventPeriod}</p><div class="options__event-description">${(selectedEvent.description ? selectedEvent.description : 'No Description')}</div><a href="${selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`).hide().appendTo('.options__event').fadeIn(500);
+  $(`<a href="${selectedEvent.url}" target="_blank"><h4>${selectedEvent.title}</h4></a><p class="normal">${selectedEvent.venue_name}</p><p class="normal">${selectedEvent.venue_address}, ${selectedEvent.city_name}</p><p class="normal">${selectedEventDay} at ${selectedEventHour}:${selectedEventMinute}${selectedEventPeriod}</p><div class="options__event-description">${(selectedEvent.description ? selectedEvent.description : '')}</div><a href="${selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`).hide().appendTo('.options__event').fadeIn(500);
 
   if($('.options__event-description').height() > 160) {
     $('.options__event-description').addClass('options__event-description--scroll');
@@ -412,7 +412,7 @@ app.getDirectionsRoute = function(mode) {
   let directionsService = new google.maps.DirectionsService;
   let directionsDisplay = new google.maps.DirectionsRenderer;
 
-  // Need to figure out way to clear directions and mapping route on map on clicking search button again
+  // Need to figure out way to clear directions and mapping route on map upon clicking search button again
 
   directionsDisplay.setMap(app.map);
 
