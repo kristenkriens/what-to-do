@@ -277,8 +277,6 @@ app.generateEvents = function(events) {
       return icon.name === events[i].categories.category[0].name;
     });
 
-    app.selectedEventLatLngString = `${events[i].latitude},${events[i].longitude}`;
-
     let iconName = icons.icon.replace(/-|\s/g,"_").toUpperCase();
     let iconColour = '#27b2d0';
     let clickedIconColour = '#14192d';
@@ -297,6 +295,8 @@ app.generateEvents = function(events) {
     app.markers.push(eventMarker);
 
 		eventMarker.addListener('click', function() {
+      app.selectedEventLatLngString = `${events[i].latitude},${events[i].longitude}`;
+
       app.changeEventMarkerColour(this, clickedIconColour, iconName);
       app.showEventInfoTab(events[i].venue_id);
     });
