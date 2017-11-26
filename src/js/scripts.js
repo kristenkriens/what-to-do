@@ -42,7 +42,7 @@ app.generateMap = function() {
   };
 
   app.directionsService = new google.maps.DirectionsService;
-  app.directionsDisplay = new google.maps.DirectionsRenderer;
+  app.directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
 
   app.map = new google.maps.Map(mapContainer, mapInfo);
 
