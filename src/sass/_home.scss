@@ -288,6 +288,14 @@
     right: 20px;
     width: 225px;
 
+    @media (min-width: $md-width-plus) and (max-width: $lg-width) {
+      display: none;
+    }
+
+    @media (max-width: 650px) {
+      display: none;
+    }
+
     &--hidden {
       display: none;
     }
