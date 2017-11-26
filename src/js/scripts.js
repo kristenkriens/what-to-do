@@ -18,6 +18,9 @@ app.categoryIconNameArray = [];
 app.eventApiUrl = 'https://api.eventful.com/json';
 app.eventApiKey = 'srQBgzwWJzXwZcrM';
 
+app.directionsApiUrl = 'https://maps.googleapis.com/maps/api/directions/json';
+app.directionsApiKey = 'AIzaSyCd5mGXsG9F1l3f88jkDNNV1cKu4KZZGgM';
+
 // Generates the base map for the app
 app.generateMap = function() {
   const mapContainer = $('.map__map')[0];
@@ -266,16 +269,18 @@ app.generateEvents = function(events) {
       return icon.name === events[i].categories.category[0].name;
     });
 
+    let position = {
+      lat: parseFloat(events[i].latitude),
+      lng: parseFloat(events[i].longitude)
+    };
+
     let iconName = icons.icon.replace(/-|\s/g,"_").toUpperCase();
     let iconColour = '#27b2d0';
     let clickedIconColour = '#14192d';
 
     let eventMarker = new google.maps.Marker({
       map: app.map,
-      position: {
-				lat: parseFloat(events[i].latitude),
-				lng: parseFloat(events[i].longitude)
-			},
+      position: position,
       icon: app.generateEventMarkerSymbol(iconColour, iconName),
       originalColor: iconColour,
       originalIcon: iconName
@@ -285,10 +290,8 @@ app.generateEvents = function(events) {
 
 		eventMarker.addListener('click', function() {
       app.changeEventMarkerColour(this, clickedIconColour, iconName);
-    });
-
-    eventMarker.addListener('click', function() {
       app.showEventInfoTab(events[i].venue_id);
+      app.getDirections(position);
     });
   }
 
@@ -397,6 +400,32 @@ app.generateSelectedVenueEvents = function(selectedVenueEvent) {
   if($('.options__event-description').height() > 160) {
     $('.options__event-description').addClass('options__event-description--scroll');
   }
+}
+
+// Gets directions from home location to selected event from Google Maps Directions API
+app.getDirections = function(position) {
+  let address = `${position.lat},${position.lng}`;
+
+  $.ajax({
+    url: 'http://proxy.hackeryou.com',
+    method: 'GET',
+    dataType: 'json',
+    data: {
+      reqUrl: app.directionsApiUrl,
+  		params: {
+        key: app.directionsApiKey,
+        origin: app.latLngString,
+        destination: address
+  		},
+  		proxyHeaders: {
+  			'Some-Header': 'goes here'
+  		},
+  		xmlToJSON: false,
+  		useCache: false
+    }
+  }).then(function(directions) {
+    console.log(directions);
+  });
 }
 
 // Changes the active tab based on which tab was clicked
