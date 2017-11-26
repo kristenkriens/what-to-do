@@ -213,6 +213,17 @@
       cursor: pointer;
       transition: 200ms color ease, 200ms background-color ease;
 
+      @media (max-width: $sm-width) {
+        width: calc(100% / 7);
+        height: 50px;
+        font-size: 25px;
+      }
+
+      @media (max-width: $xs-width) {
+        height: 45px;
+        font-size: 20px;
+      }
+
       &:last-of-type {
         position: absolute;
         bottom: 0;
@@ -239,8 +250,20 @@
         }
       }
 
-      @media (max-width: $sm-width) {
-        width: calc(100% / 6);
+      &:nth-last-of-type(3) {
+        position: absolute;
+        bottom: 130px;
+        right: 0;
+
+        @media (max-width: $md-width) {
+          bottom: 0;
+          right: 130px;
+        }
+
+        @media (max-width: $sm-width) {
+          position: relative;
+          right: 0;
+        }
       }
 
       &:hover, &:active, &:focus {

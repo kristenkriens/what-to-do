@@ -15,11 +15,10 @@ app.categories = [];
 
 app.categoryIconNameArray = [];
 
+app.selectedEventLatLngString = '';
+
 app.eventApiUrl = 'https://api.eventful.com/json';
 app.eventApiKey = 'srQBgzwWJzXwZcrM';
-
-app.directionsApiUrl = 'https://maps.googleapis.com/maps/api/directions/json';
-app.directionsApiKey = 'AIzaSyCd5mGXsG9F1l3f88jkDNNV1cKu4KZZGgM';
 
 // Generates the base map for the app
 app.generateMap = function() {
@@ -163,7 +162,7 @@ app.drawDistanceRadius = function() {
 
 	app.distanceRadius = new google.maps.Circle({
     strokeColor: '#ff751a',
-    strokeOpacity: 0.8,
+    strokeOpacity: 1,
     strokeWeight: 2,
     fillColor: '#ff751a',
     fillOpacity: 0.35,
@@ -172,7 +171,8 @@ app.drawDistanceRadius = function() {
 			lat: app.lat,
 			lng: app.lng
 		},
-    radius: radius
+    radius: radius,
+    zIndex: -1
   });
 
 	app.map.fitBounds(app.distanceRadius.getBounds());
@@ -269,10 +269,7 @@ app.generateEvents = function(events) {
       return icon.name === events[i].categories.category[0].name;
     });
 
-    let position = {
-      lat: parseFloat(events[i].latitude),
-      lng: parseFloat(events[i].longitude)
-    };
+    app.selectedEventLatLngString = `${events[i].latitude},${events[i].longitude}`;
 
     let iconName = icons.icon.replace(/-|\s/g,"_").toUpperCase();
     let iconColour = '#27b2d0';
@@ -280,7 +277,10 @@ app.generateEvents = function(events) {
 
     let eventMarker = new google.maps.Marker({
       map: app.map,
-      position: position,
+      position: {
+        lat: parseFloat(events[i].latitude),
+        lng: parseFloat(events[i].longitude)
+      },
       icon: app.generateEventMarkerSymbol(iconColour, iconName),
       originalColor: iconColour,
       originalIcon: iconName
@@ -291,7 +291,6 @@ app.generateEvents = function(events) {
 		eventMarker.addListener('click', function() {
       app.changeEventMarkerColour(this, clickedIconColour, iconName);
       app.showEventInfoTab(events[i].venue_id);
-      app.getDirections(position);
     });
   }
 
@@ -331,12 +330,11 @@ app.showInstructions = function() {
 	$('.options__content-item[data-title="instructions"]').addClass('options__content-item--active');
 }
 
-// Shows the Event Info tab, removes the disabled class from the Directions tab, and removes the active class from other tabs
+// Shows the Event Info tab and removes the active class from other tabs
 app.showEventInfoTab = function(venueId) {
 	$('.options__tabs-item').removeClass('options__tabs-item--active');
 	$('.options__content-item').removeClass('options__content-item--active');
 
-	$('.options__tabs-item[data-title="directions"]').removeClass('options__tabs-item--disabled');
 	$('.options__tabs-item[data-title="info"]').addClass('options__tabs-item--active').removeClass('options__tabs-item--disabled');
 	$('.options__content-item[data-title="info"]').addClass('options__content-item--active');
 
@@ -402,29 +400,33 @@ app.generateSelectedVenueEvents = function(selectedVenueEvent) {
   }
 }
 
-// Gets directions from home location to selected event from Google Maps Directions API
-app.getDirections = function(position) {
-  let address = `${position.lat},${position.lng}`;
+// Gets users mode of transportation selection and calls function thta gets directions
+app.getTransportationMode = function() {
+  let mode = $('input[name="transportation"]:checked').val();
 
-  $.ajax({
-    url: 'http://proxy.hackeryou.com',
-    method: 'GET',
-    dataType: 'json',
-    data: {
-      reqUrl: app.directionsApiUrl,
-  		params: {
-        key: app.directionsApiKey,
-        origin: app.latLngString,
-        destination: address
-  		},
-  		proxyHeaders: {
-  			'Some-Header': 'goes here'
-  		},
-  		xmlToJSON: false,
-  		useCache: false
+  app.getDirectionsRoute(mode);
+}
+
+// Gets directions from home location to selected event and maps them
+app.getDirectionsRoute = function(mode) {
+  let directionsService = new google.maps.DirectionsService;
+  let directionsDisplay = new google.maps.DirectionsRenderer;
+
+  // Need to figure out way to clear directions and mapping route on map on clicking search button again
+
+  directionsDisplay.setMap(app.map);
+
+  directionsService.route({
+    origin: app.latLngString,
+    destination: app.selectedEventLatLngString,
+    travelMode: mode
+  }, function(directions, status) {
+    if (status === 'OK') {
+      directionsDisplay.setDirections(directions);
+      console.log(directions);
+    } else {
+      alert('Directions request failed due to ' + status);
     }
-  }).then(function(directions) {
-    console.log(directions);
   });
 }
 
@@ -450,7 +452,7 @@ app.changeActiveTabNext = function(that) {
 	let currentIndex = that.parent().index();
 	let totalTabs = $('.options__tabs-item').length;
 
-	if(currentIndex > totalTabs - 2) {
+	if(currentIndex > totalTabs - 3) {
 		currentIndex--;
 	}
 
@@ -494,6 +496,10 @@ app.init = function() {
 	$('.options__button--submit').on('click', function() {
     app.showInstructions();
 		app.getEvents(app.latLngString);
+  });
+
+  $('.options__button--transportation').on('click', function() {
+    app.getTransportationMode();
   });
 
   $('.options__tabs-item').on('click', function() {

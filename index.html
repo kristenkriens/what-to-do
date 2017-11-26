@@ -80,10 +80,34 @@
         <div class="options__content-item" data-title="info">
           <h3>Event Info</h3>
           <div class="options__event"></div>
-          <button class="options__button options__button--info options__button--next">Get Directions</button>
+          <button class="options__button options__button--info options__button--next">Directions</button>
+        </div>
+        <div class="options__content-item" data-title="transportation">
+          <h3>Transportation</h3>
+          <div class="options__question" role="group">
+            <legend>How are you getting there?</legend>
+            <div>
+              <input type="radio" id="driving" name="transportation" value="DRIVING" class="accessible options__radio" checked>
+              <label for="driving">Driving</label>
+            </div>
+            <div>
+              <input type="radio" id="walking" name="transportation" value="WALKING" class="accessible options__radio">
+              <label for="walking">Walking</label>
+            </div>
+            <div>
+              <input type="radio" id="bicycling" name="transportation" value="BICYCLING" class="accessible options__radio">
+              <label for="bicycling">Bicycling</label>
+            </div>
+            <div>
+              <input type="radio" id="transit" name="transportation" value="TRANSIT" class="accessible options__radio">
+              <label for="transit">Transit</label>
+            </div>
+          </div>
+          <button class="options__button options__button--transportation options__button--next">Search</button>
         </div>
         <div class="options__content-item" data-title="directions">
           <h3>Directions</h3>
+          <div class="options__directions"></div>
           <button class="options__button options__button--directions options__button--next">Send <i class="fa fa-envelope" aria-hidden="true"></i></button>
         </div>
       </div>
@@ -97,6 +121,7 @@
       <div class="options__tabs-item options__tabs-item--disabled" data-title="distance"><i class="fa fa-street-view" aria-hidden="true"></i><span class="accessible">Distance</span></div>
       <div class="options__tabs-item options__tabs-item--disabled" data-title="interests"><i class="fa fa-heart" aria-hidden="true"></i><span class="accessible">Interests</span></div>
       <div class="options__tabs-item options__tabs-item--disabled" data-title="info"><i class="fa fa-info" aria-hidden="true"></i><span class="accessible">Event Info</span></div>
+      <div class="options__tabs-item options__tabs-item--disabled" data-title="transportation"><i class="fa fa-car" aria-hidden="true"></i><span class="accessible">Transportation</span></div>
       <div class="options__tabs-item options__tabs-item--disabled" data-title="directions"><i class="fa fa-map-signs" aria-hidden="true"></i><span class="accessible">Directions</span></div>
     </div>
   </section>
