@@ -20,6 +20,11 @@ app.categoryIconNameArray = [];
 
 app.selectedEventLatLngString = '';
 
+app.blue = '#27b2d0';
+app.navy = '#14192d';
+app.orange = '#ff751a';
+app.googleBlue = '#3e91ce';
+
 app.eventApiUrl = 'https://api.eventful.com/json';
 app.eventApiKey = 'srQBgzwWJzXwZcrM';
 
@@ -42,7 +47,14 @@ app.generateMap = function() {
   };
 
   app.directionsService = new google.maps.DirectionsService;
-  app.directionsDisplay = new google.maps.DirectionsRenderer({suppressMarkers: true});
+  app.directionsDisplay = new google.maps.DirectionsRenderer({
+    suppressMarkers: true,
+    polylineOptions: {
+      strokeColor: app.googleBlue,
+      strokeWeight: 5,
+      strokeOpacity: 0.9
+    }
+  });
 
   app.map = new google.maps.Map(mapContainer, mapInfo);
 
@@ -131,7 +143,7 @@ app.setLocation = function() {
         icon: {
           path: fontawesome.markers.MAP_MARKER,
           strokeWeight: 0,
-          fillColor: '#ff751a',
+          fillColor: app.orange,
           fillOpacity: 1
         }
       });
@@ -169,10 +181,10 @@ app.drawDistanceRadius = function() {
 	let radius = (parseInt(app.distance) * 1000) + 100;
 
 	app.distanceRadius = new google.maps.Circle({
-    strokeColor: '#ff751a',
+    strokeColor: app.orange,
     strokeOpacity: 1,
     strokeWeight: 2,
-    fillColor: '#ff751a',
+    fillColor: app.orange,
     fillOpacity: 0.35,
     map: app.map,
     center: {
@@ -278,8 +290,6 @@ app.generateEvents = function(events) {
     });
 
     let iconName = icons.icon.replace(/-|\s/g,"_").toUpperCase();
-    let iconColour = '#27b2d0';
-    let clickedIconColour = '#14192d';
 
     let eventMarker = new google.maps.Marker({
       map: app.map,
@@ -287,8 +297,8 @@ app.generateEvents = function(events) {
         lat: parseFloat(events[i].latitude),
         lng: parseFloat(events[i].longitude)
       },
-      icon: app.generateEventMarkerSymbol(iconColour, iconName),
-      originalColor: iconColour,
+      icon: app.generateEventMarkerSymbol(app.blue, iconName),
+      originalColor: app.blue,
       originalIcon: iconName
     });
 
@@ -297,7 +307,7 @@ app.generateEvents = function(events) {
 		eventMarker.addListener('click', function() {
       app.selectedEventLatLngString = `${events[i].latitude},${events[i].longitude}`;
 
-      app.changeEventMarkerColour(this, clickedIconColour, iconName);
+      app.changeEventMarkerColour(this, app.navy, iconName);
       app.showEventInfoTab(events[i].venue_id);
     });
   }
@@ -415,20 +425,31 @@ app.getTransportationMode = function() {
   app.getDirectionsRoute(mode);
 }
 
-// Gets directions from home location to selected event and maps them
+// Gets directions and route from home location to selected event
 app.getDirectionsRoute = function(mode) {
   app.directionsService.route({
     origin: app.latLngString,
     destination: app.selectedEventLatLngString,
-    travelMode: mode
-  }, function(directions, status) {
+    travelMode: mode.toUpperCase()
+  }, function(results, status) {
     if (status === 'OK') {
-      app.directionsDisplay.setDirections(directions);
-      console.log(directions);
+      app.generateRoute(results);
+      app.generateDirections(results, mode);
     } else {
       alert('Directions request failed due to ' + status);
     }
   });
+}
+
+// Generates the route from home location to selected event on the map
+app.generateRoute = function(route) {
+  app.directionsDisplay.setDirections(route);
+}
+
+// Generates the directions from home location to selected event in the directions tab
+app.generateDirections = function(directions, mode) {
+  console.log(directions);
+  $('.mode').text(mode);
 }
 
 // Changes the active tab based on which tab was clicked

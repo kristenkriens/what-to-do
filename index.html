@@ -87,19 +87,19 @@
           <div class="options__question" role="group">
             <legend>How are you getting there?</legend>
             <div>
-              <input type="radio" id="driving" name="transportation" value="DRIVING" class="accessible options__radio" checked>
+              <input type="radio" id="driving" name="transportation" value="Driving" class="accessible options__radio" checked>
               <label for="driving">Driving</label>
             </div>
             <div>
-              <input type="radio" id="walking" name="transportation" value="WALKING" class="accessible options__radio">
+              <input type="radio" id="walking" name="transportation" value="Walking" class="accessible options__radio">
               <label for="walking">Walking</label>
             </div>
             <div>
-              <input type="radio" id="bicycling" name="transportation" value="BICYCLING" class="accessible options__radio">
+              <input type="radio" id="bicycling" name="transportation" value="Bicycling" class="accessible options__radio">
               <label for="bicycling">Bicycling</label>
             </div>
             <div>
-              <input type="radio" id="transit" name="transportation" value="TRANSIT" class="accessible options__radio">
+              <input type="radio" id="transit" name="transportation" value="Transit" class="accessible options__radio">
               <label for="transit">Transit</label>
             </div>
           </div>
@@ -107,7 +107,9 @@
         </div>
         <div class="options__content-item" data-title="directions">
           <h3>Directions</h3>
-          <div class="options__directions"></div>
+          <div class="options__directions">
+            <p><span class="normal">Mode:</span> <span class="mode"></span></p>
+          </div>
           <button class="options__button options__button--directions options__button--next">Send <i class="fa fa-envelope" aria-hidden="true"></i></button>
         </div>
       </div>
