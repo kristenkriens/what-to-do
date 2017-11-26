@@ -1,5 +1,8 @@
 const app = {};
 
+app.directionsService;
+app.directionsDisplay;
+
 app.map;
 
 app.markers = [];
@@ -38,7 +41,12 @@ app.generateMap = function() {
     zoomControl: true
   };
 
+  app.directionsService = new google.maps.DirectionsService;
+  app.directionsDisplay = new google.maps.DirectionsRenderer;
+
   app.map = new google.maps.Map(mapContainer, mapInfo);
+
+  app.directionsDisplay.setMap(app.map);
 }
 
 // Gets all categories from Eventful API
@@ -409,20 +417,13 @@ app.getTransportationMode = function() {
 
 // Gets directions from home location to selected event and maps them
 app.getDirectionsRoute = function(mode) {
-  let directionsService = new google.maps.DirectionsService;
-  let directionsDisplay = new google.maps.DirectionsRenderer;
-
-  // Need to figure out way to clear directions and mapping route on map upon clicking search button again
-
-  directionsDisplay.setMap(app.map);
-
-  directionsService.route({
+  app.directionsService.route({
     origin: app.latLngString,
     destination: app.selectedEventLatLngString,
     travelMode: mode
   }, function(directions, status) {
     if (status === 'OK') {
-      directionsDisplay.setDirections(directions);
+      app.directionsDisplay.setDirections(directions);
       console.log(directions);
     } else {
       alert('Directions request failed due to ' + status);
