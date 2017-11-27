@@ -503,8 +503,6 @@ app.clearRoute = function() {
 
 // Generates the directions from home location to selected event in the directions tab
 app.generateDirections = function(directions, mode) {
-  console.log(directions);
-
   $('.options__directions-info').empty();
   $('.options__directions-items').empty();
 
