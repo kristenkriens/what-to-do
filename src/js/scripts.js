@@ -5,6 +5,12 @@ app.directionsDisplay;
 
 app.map;
 
+app.buttonClicks = 0;
+
+app.location = false;
+app.distance = false;
+app.submit = false;
+
 app.markers = [];
 
 app.distanceRadius;
@@ -143,7 +149,6 @@ app.setLocation = function() {
 
       let homeMarker = new google.maps.Marker({
         map: app.map,
-        animation: google.maps.Animation.DROP,
         position: results[0].geometry.location,
         icon: {
           path: fontawesome.markers.MAP_MARKER,
@@ -160,7 +165,11 @@ app.setLocation = function() {
       app.latLngString = `${app.lat},${app.lng}`;
 
 			app.map.setCenter(homeMarker.position);
-			app.map.setZoom(15);
+      if(app.buttonClicks === 0) {
+        app.map.setZoom(15);
+      }
+
+      app.buttonClicks++;
 
       google.maps.event.addDomListener(window, 'resize', function() {
         app.map.setCenter(homeMarker.position);
@@ -206,6 +215,8 @@ app.drawDistanceRadius = function() {
 // Gets info from Eventful API
 app.getEvents = function() {
 	app.date = $('input[name="date"]:checked').val();
+
+  app.distance = $('.options__input--distance').val();
 
 	app.categories = $('input[name="interests"]:checked').map(function() {
 		return this.value;
@@ -325,7 +336,21 @@ app.generateEvents = function(events) {
     });
   }
 
-  $('.spinner').remove();
+  $('.spinner').hide();
+}
+
+// Redraws the distance radius (if applicable), hides the legend and removes the items, shows the spinner again, and clears event markers
+app.clearEvents = function() {
+  $('.map__legend').addClass('map__legend--hidden');
+  $('.map__legend-item').remove();
+
+  $('.spinner').show();
+
+  for (var i = 1; i < app.markers.length; i++) {
+    app.markers[i].setMap(null);
+  }
+
+  app.markers.splice(1);
 }
 
 // Generates the event marker symbol
@@ -532,15 +557,18 @@ app.init = function() {
 
   $('.options__button--location').on('click', function() {
     app.setLocation();
+    app.location = true;
   });
 
 	$('.options__button--distance').on('click', function() {
     app.drawDistanceRadius();
+    app.distance = true;
   });
 
 	$('.options__button--submit').on('click', function() {
     app.showInstructions();
-		app.getEvents(app.latLngString);
+		app.getEvents();
+    app.submit = true;
   });
 
   $('.options__button--transportation').on('click', function() {
@@ -549,6 +577,20 @@ app.init = function() {
 
   $('.options__tabs-item').on('click', function() {
     app.changeActiveTabClick($(this));
+
+    if(app.location) {
+      app.setLocation();
+    }
+
+    if(app.distance) {
+      app.drawDistanceRadius();
+    }
+
+    if(app.submit) {
+      app.setLocation();
+      app.drawDistanceRadius();
+      app.clearEvents();
+    }
   });
 
 	$('.options__button--next:not(.options__button--submit)').on('click', function() {
