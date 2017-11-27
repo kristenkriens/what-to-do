@@ -518,7 +518,7 @@ app.generateDirections = function(directions, mode) {
     $('.options__directions-items').append(`<li>${steps[i].instructions}</li>`);
   }
 
-  if($('.options__directions-items').height() > 250) {
+  if($('.options__directions-items').height() > 235) {
     $('.options__directions-items').addClass('options__directions-items--scroll');
   }
 }
