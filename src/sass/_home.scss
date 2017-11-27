@@ -102,7 +102,7 @@
     }
   }
 
-  &__checkbox-scroll {
+  &__checkbox {
     overflow-y: scroll;
     max-height: 185px;
     margin-top: 13px;
@@ -281,6 +281,27 @@
 
       &--disabled {
         pointer-events: none;
+      }
+    }
+  }
+
+  &__directions {
+    &-items {
+      margin: 10px 0 0;
+      padding-left: 15px;
+
+      &--scroll {
+        max-height: 250px;
+        overflow-y: scroll;
+        padding-right: 15px;
+      }
+
+      li {
+        margin-top: 5px;
+      }
+
+      b {
+        font-weight: 300;
       }
     }
   }

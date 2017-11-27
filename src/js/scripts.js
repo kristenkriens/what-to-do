@@ -92,7 +92,7 @@ app.generateCategories = function(categories) {
 		let id = categories.category[i].id;
 		let name = categories.category[i].name;
 
-		$('.options__checkbox-scroll').append(`<div><input type="checkbox" id="${id}" name="interests" value="${id}" class="accessible options__radio"><label for="${id}">${name}</label></div>`);
+		$('.options__checkbox').append(`<div><input type="checkbox" id="${id}" name="interests" value="${id}" class="accessible options__radio"><label for="${id}">${name}</label></div>`);
 
     let iconNameArray = ['music', 'users', 'smile-o', 'mortar-board', 'child', 'ticket', 'film', 'cutlery', 'usd', 'paint-brush', 'heartbeat', 'tree', 'book', 'fort-awesome', 'home', 'comments', 'glass', 'university', 'sitemap', 'sun-o', 'microphone', 'paw', 'hand-rock-o', 'shopping-cart', 'flask', 'bell', 'soccer-ball-o', 'cogs', 'asterisk'];
 
@@ -100,7 +100,7 @@ app.generateCategories = function(categories) {
 	}
 }
 
-// Clears all markers and circles off the map
+// Clears all markers and routes off the map and disables info tab
 app.clearMap = function() {
   if(typeof app.markers[0] !== "undefined") {
     for(let i = 0; i < app.markers.length; i++) {
@@ -109,6 +109,10 @@ app.clearMap = function() {
 
     app.markers.splice(0, app.markers.length);
   }
+
+  app.clearRoute();
+
+  $('.options__tabs-item[data-title="info"]').addClass('options__tabs-item--disabled');
 }
 
 // Gets location via geolocation and adds address to location input
@@ -453,7 +457,7 @@ app.generateSelectedVenueEvents = function(selectedVenueEvent) {
     selectedEventPeriod = 'am'
   }
 
-  $(`<a href="${selectedEvent.url}" target="_blank"><h4>${selectedEvent.title}</h4></a><p class="normal">${selectedEvent.venue_name}</p><p class="normal">${selectedEvent.venue_address}, ${selectedEvent.city_name}</p><p class="normal">${selectedEventDay} at ${selectedEventHour}:${selectedEventMinute}${selectedEventPeriod}</p><div class="options__event-description">${(selectedEvent.description ? selectedEvent.description : '')}</div><a href="${selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`).hide().appendTo('.options__event').fadeIn(500);
+  $('.options__event').append(`<a href="${selectedEvent.url}" target="_blank"><h4>${selectedEvent.title}</h4></a><p class="normal">${selectedEvent.venue_name}</p><p class="normal">${selectedEvent.venue_address}, ${selectedEvent.city_name}</p><p class="normal">${selectedEventDay} at ${selectedEventHour}:${selectedEventMinute}${selectedEventPeriod}</p><div class="options__event-description">${(selectedEvent.description ? selectedEvent.description : '')}</div><a href="${selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`);
 
   if($('.options__event-description').height() > 160) {
     $('.options__event-description').addClass('options__event-description--scroll');
@@ -499,9 +503,24 @@ app.clearRoute = function() {
 
 // Generates the directions from home location to selected event in the directions tab
 app.generateDirections = function(directions, mode) {
+  $('.options__directions-info').empty();
+  $('.options__directions-items').empty();
+
+  $('.options__directions-info').append('<p><span class="normal">Mode:</span> <span class="mode"></span></p><p><span class="normal">Distance:</span> <span class="distance"></span></p><p><span class="normal">Time:</span> <span class="time"></span></p>');
+
   $('.mode').text(mode);
 
-  console.log(directions);
+  let steps = directions.routes[0].legs[0].steps;
+
+  for (let i in steps) {
+    $('.distance').text(steps[i].distance.text);
+    $('.time').text(steps[i].duration.text);
+    $('.options__directions-items').append(`<li>${steps[i].instructions}</li>`);
+  }
+
+  if($('.options__directions-items').height() > 250) {
+    $('.options__directions-items').addClass('options__directions-items--scroll');
+  }
 }
 
 // Changes the active tab based on which tab was clicked
