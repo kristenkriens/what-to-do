@@ -88,7 +88,7 @@ app.generateCategories = function(categories) {
 
 		$('.options__checkbox-scroll').append(`<div><input type="checkbox" id="${id}" name="interests" value="${id}" class="accessible options__radio"><label for="${id}">${name}</label></div>`);
 
-    let iconNameArray = ['music', 'users', 'smile-o', 'graduation-cap', 'child', 'ticket', 'film', 'cutlery', 'usd', 'paint-brush', 'heartbeat', 'tree', 'book', 'fort-awesome', 'home', 'comments', 'glass', 'university', 'sitemap', 'sun-o', 'microphone', 'paw', 'hand-rock-o', 'shopping-cart', 'flask', 'bell', 'soccer-ball-o', 'cogs', 'asterisk'];
+    let iconNameArray = ['music', 'users', 'smile-o', 'mortar-board', 'child', 'ticket', 'film', 'cutlery', 'usd', 'paint-brush', 'heartbeat', 'tree', 'book', 'fort-awesome', 'home', 'comments', 'glass', 'university', 'sitemap', 'sun-o', 'microphone', 'paw', 'hand-rock-o', 'shopping-cart', 'flask', 'bell', 'soccer-ball-o', 'cogs', 'asterisk'];
 
     app.categoryIconNameArray.push({icon: iconNameArray[i], name: name});
 	}
@@ -241,15 +241,21 @@ app.getEvents = function() {
 // Removes duplicate venues from events before they are added to the map
 app.removeDuplicateVenues = function(events) {
   let eventArray = [];
-  var venueNames = [];
+  let venueLatitudes = [];
+  let venueLongitudes = [];
 
   for (let i in events.events.event) {
     eventArray.push(events.events.event[i]);
   }
 
   let uniqueEventArray = eventArray.filter(function(object) {
-    if (venueNames.indexOf(object.venue_name) !== -1) return false;
-    venueNames.push(object.venue_name);
+    if (venueLatitudes.indexOf(object.latitude) !== -1 && venueLongitudes.indexOf(object.longitude) !== -1) {
+      return false;
+    }
+
+    venueLatitudes.push(object.latitude);
+    venueLongitudes.push(object.longitude);
+
     return true;
   });
 
@@ -425,7 +431,7 @@ app.generateSelectedVenueEvents = function(selectedVenueEvent) {
   }
 }
 
-// Gets users mode of transportation selection and calls function thta gets directions
+// Gets users mode of transportation selection and calls function that gets directions
 app.getTransportationMode = function() {
   let mode = $('input[name="transportation"]:checked').val();
 
