@@ -601,3 +601,5 @@ app.init = function() {
 $(function() {
   app.init();
 });
+
+// Need to figure out how to get drawDistanceRadius to fire immediately after click on another tab
