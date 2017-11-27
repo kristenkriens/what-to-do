@@ -577,7 +577,9 @@ app.init = function() {
 
   $('.options__tabs-item').on('click', function() {
     app.changeActiveTabClick($(this));
+  });
 
+  $('.options__tabs-item:not([data-title="info"], [data-title="transportation"], [data-title="directions"])').on('click', function() {
     if(app.location) {
       app.setLocation();
     }
@@ -602,4 +604,4 @@ $(function() {
   app.init();
 });
 
-// Need to figure out how to get drawDistanceRadius to fire immediately after click on another tab
+// Need to figure out how to get drawDistanceRadius to fire immediately after click on another tab OR stop editing and just add restart button
