@@ -503,6 +503,8 @@ app.clearRoute = function() {
 
 // Generates the directions from home location to selected event in the directions tab
 app.generateDirections = function(directions, mode) {
+  console.log(directions);
+
   $('.options__directions-info').empty();
   $('.options__directions-items').empty();
 
@@ -515,7 +517,7 @@ app.generateDirections = function(directions, mode) {
   for (let i in steps) {
     $('.distance').text(steps[i].distance.text);
     $('.time').text(steps[i].duration.text);
-    $('.options__directions-items').append(`<li>${steps[i].instructions}</li>`);
+    $('.options__directions-items').append(`<p>${parseInt(i) + 1}. ${steps[i].instructions}</p>`);
   }
 
   if($('.options__directions-items').height() > 235) {
