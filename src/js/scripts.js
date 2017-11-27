@@ -174,6 +174,10 @@ app.setLocation = function() {
       google.maps.event.addDomListener(window, 'resize', function() {
         app.map.setCenter(homeMarker.position);
       });
+
+      if(app.distance) {
+        app.drawDistanceRadius();
+      }
     } else {
       if(status === 'ZERO_RESULTS') {
         alert('Your search location could not be found. Please try again.')
@@ -584,13 +588,7 @@ app.init = function() {
       app.setLocation();
     }
 
-    if(app.distance) {
-      app.drawDistanceRadius();
-    }
-
     if(app.submit) {
-      app.setLocation();
-      app.drawDistanceRadius();
       app.clearEvents();
     }
   });
@@ -603,5 +601,3 @@ app.init = function() {
 $(function() {
   app.init();
 });
-
-// Need to figure out how to get drawDistanceRadius to fire immediately after click on another tab OR stop editing and just add restart button
