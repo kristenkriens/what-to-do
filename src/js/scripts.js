@@ -457,9 +457,15 @@ app.generateSelectedVenueEvents = function(selectedVenueEvent) {
     selectedEventPeriod = 'am'
   }
 
-  $('.options__event').append(`<a href="${selectedEvent.url}" target="_blank"><h4>${selectedEvent.title}</h4></a><p class="normal">${selectedEvent.venue_name}</p><p class="normal">${selectedEvent.venue_address}, ${selectedEvent.city_name}</p><p class="normal">${selectedEventDay} at ${selectedEventHour}:${selectedEventMinute}${selectedEventPeriod}</p><div class="options__event-description">${(selectedEvent.description ? selectedEvent.description : '')}</div><a href="${selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`);
+  $('.options__event').append(`<a href="${selectedEvent.url}" target="_blank"><h4>${selectedEvent.title}</h4></a><p class="normal">${selectedEvent.venue_name}</p><p class="normal">${selectedEvent.venue_address}, ${selectedEvent.city_name}</p><p class="normal">${selectedEventDay} <span class="event-time">at ${selectedEventHour}:${selectedEventMinute}${selectedEventPeriod}</span></p><div class="options__event-description">${(selectedEvent.description ? selectedEvent.description : '')}</div><a href="${selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`);
 
-  if($('.options__event-description').height() > 160) {
+  if(selectedEventHour == 0) {
+    $('.event-time').addClass('event-time--hidden');
+  } else {
+    $('.event-time').removeClass('event-time--hidden');
+  }
+
+  if($('.options__event-description').height() > 140) {
     $('.options__event-description').addClass('options__event-description--scroll');
   }
 }
