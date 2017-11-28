@@ -149,6 +149,8 @@
 
     &-description {
       margin: 10px 0;
+      overflow-wrap: break-word;
+      word-wrap: break-word;
       hyphens: manual;
 
       p:not(:last-of-type) {
@@ -169,7 +171,7 @@
       }
 
       &--scroll {
-        max-height: 160px;
+        max-height: 140px;
         overflow-y: scroll;
         padding-right: 15px;
       }
@@ -177,6 +179,10 @@
 
     .fa {
       font-size: 12px;
+    }
+
+    .event-time--hidden {
+      display: none;
     }
   }
 
