@@ -85,7 +85,9 @@ select {
 	background-color: transparent;
 	outline: none;
 	font-weight: 300;
+	appearance: none;
 	-webkit-appearance: none;
+	-moz-appearance:none;
 	border-radius: 0;
 	padding: 0;
 	margin: 0;
