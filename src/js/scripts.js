@@ -192,6 +192,63 @@ app.setLocation = function() {
   });
 }
 
+// Shows the custom date boxes and disables the next button if Custom is selected for the date
+app.showCustomDate = function(that) {
+  let dateValue = that.val();
+
+  if(dateValue === 'Custom') {
+    $('.options__date').removeClass('options__date--hidden');
+  } else {
+    $('.options__date').addClass('options__date--hidden');
+  }
+
+  app.generateDates();
+}
+
+// Generates dates in the select tags if Custom is selected for the date and sets selected date to current date
+app.generateDates = function() {
+  let currentDate = new Date();
+
+  let currentYear = currentDate.getFullYear();
+  let currentDay = currentDate.getDate();
+  let currentMonth = currentDate.getMonth() + 1;
+
+  let years = [];
+
+  let months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  for(let i = 1; i <= 12; i++) {
+    let month = i;
+
+    if(month < 10) {
+      month = '0' + month;
+    }
+
+    $('.options__input--month').append(`<option value="${month}" ${i == currentMonth ? 'selected' : ''}>${months[i - 1]}</option>`);
+  }
+
+  for(let i = 1; i <= 31; i++) {
+    let day = i;
+
+    if(i < 10) {
+      day = '0' + day;
+    }
+
+    $('.options__input--day').append(`<option value="${day}" ${i == currentDay ? 'selected' : ''}>${i}</option>`);
+  }
+
+  for(let i = 0; i <= 2; i++) {
+    let year = currentYear + i;
+    years.push(year);
+
+    $('.options__input--year').append(`<option value="${years[i]}" ${years[i] == currentYear ? 'selected' : ''}>${years[i]}</option>`);
+  }
+}
+
+app.showCustomDateRange = function() {
+  $('.options__date-end').toggleClass('options__date-end--hidden');
+}
+
 // Draws distance radius, clear previous distance radius if applicable, and automatically fits to map
 app.drawDistanceRadius = function() {
   if(typeof app.distanceRadius !== "undefined") {
@@ -220,9 +277,34 @@ app.drawDistanceRadius = function() {
 	app.map.fitBounds(app.distanceRadius.getBounds());
 }
 
+// Gets dates from select boxes if Custom is selected for the date
+app.getCustomDate = function() {
+  let startDay = $('.options__date-start .options__input--day').val();
+  let startMonth = $('.options__date-start .options__input--month').val();
+  let startYear = $('.options__date-start .options__input--year').val();
+
+  let endDay = startDay;
+  let endMonth = startMonth;
+  let endYear = startYear;
+
+  if($('.options__date .options__checkbox').is(':checked')) {
+    endDay = $('.options__date-end .options__input--day').val();
+    endMonth = $('.options__date-end .options__input--month').val();
+    endYear = $('.options__date-end .options__input--year').val();
+  }
+
+  app.date = `${startYear}${startMonth}${startDay}00-${endYear}${endMonth}${endDay}00`;
+
+  return app.date;
+}
+
 // Gets info from Eventful API
 app.getEvents = function() {
 	app.date = $('input[name="date"]:checked').val();
+
+  if(app.date === 'Custom') {
+    app.getCustomDate();
+  }
 
   app.distance = $('.options__input--distance').val();
 
@@ -582,6 +664,14 @@ app.init = function() {
 
 	$('.options__input--distance').on('keyup', function() {
 		app.disableNextButton($(this), 'distance');
+  });
+
+  $('input[name="date"]').on('click', function() {
+		app.showCustomDate($(this));
+  });
+
+  $('.options__date .options__checkbox').on('click', function() {
+		app.showCustomDateRange();
   });
 
   $('.options__button--location').on('click', function() {

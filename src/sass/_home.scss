@@ -102,6 +102,48 @@
     }
   }
 
+  &__date {
+    &-start, &-end {
+      margin: 0;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+
+      &--hidden {
+        display: none;
+      }
+    }
+
+    &-end {
+      margin-bottom: 10px;
+    }
+
+    &--hidden {
+      display: none;
+    }
+
+    .options__input {
+      background-image: url('../images/arrow-down.svg');
+      background-repeat: no-repeat;
+      background-size: 9px 9px;
+      background-position: right 10px center;
+      padding: 5px 10px;
+
+      &--year {
+        width: calc(31% - 5px);
+      }
+
+      &--month {
+        width: calc(45% - 5px);
+      }
+
+      &--day {
+        width: calc(24% - 5px);
+      }
+    }
+  }
+
   &__checkbox {
     overflow-y: scroll;
     max-height: 185px;

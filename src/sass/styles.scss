@@ -32,7 +32,7 @@ img {
 	color: transparent;
 }
 
-input[type="text"], input[type="number"] {
+input[type="text"], input[type="number"], .options__input {
 	color: $navy;
 	background-color: $white;
 	border: none;
@@ -77,6 +77,20 @@ input[type="checkbox"] {
 	&:checked ~ label:before {
 		content: "\f046";
 	}
+}
+
+select {
+	border: none;
+	color: $navy;
+	background-color: transparent;
+	outline: none;
+	font-weight: 300;
+	-webkit-appearance: none;
+	border-radius: 0;
+	padding: 0;
+	margin: 0;
+	width: 100%;
+	height: 100%;
 }
 
 button {

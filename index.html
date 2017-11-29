@@ -45,6 +45,24 @@
               <input type="radio" id="noPreference" name="date" value="Future" class="accessible options__radio">
               <label for="noPreference">No Preference</label>
             </div>
+            <div>
+              <input type="radio" id="custom" name="date" value="Custom" class="accessible options__radio">
+              <label for="custom">Custom</label>
+            </div>
+            <div class="options__date options__date--hidden">
+              <div class="options__date-start">
+                <select id="startMonth" class="options__input options__input--month"></select>
+                <select id="startDay" class="options__input options__input--day"></select>
+                <select id="startYear" class="options__input options__input--year"></select>
+              </div>
+              <div class="options__date-end options__date-end--hidden">
+                <select id="endMonth" class="options__input options__input--month"></select>
+                <select id="endDay" class="options__input options__input--day"></select>
+                <select id="endYear" class="options__input options__input--year"></select>
+              </div>
+              <input type="checkbox" id="dateRange" value="Date Range" class="accessible options__checkbox">
+              <label for="dateRange">Date Range</label>
+            </div>
           </div>
           <button class="options__button options__button--date options__button--next">Next</button>
         </div>
