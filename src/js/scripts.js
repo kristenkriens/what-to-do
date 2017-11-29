@@ -96,7 +96,7 @@ app.generateCategories = function(categories) {
 		let id = categories.category[i].id;
 		let name = categories.category[i].name;
 
-		$('.options__checkbox').append(`<div><input type="checkbox" id="${id}" name="interests" value="${id}" class="accessible options__radio"><label for="${id}">${name}</label></div>`);
+		$('.options__categories').append(`<div><input type="checkbox" id="${id}" name="interests" value="${id}" class="accessible"><label for="${id}">${name}</label></div>`);
 
     let iconNameArray = ['music', 'users', 'smile-o', 'mortar-board', 'child', 'ticket', 'film', 'cutlery', 'usd', 'paint-brush', 'heartbeat', 'tree', 'book', 'fort-awesome', 'home', 'comments', 'glass', 'university', 'sitemap', 'sun-o', 'microphone', 'paw', 'hand-rock-o', 'shopping-cart', 'flask', 'bell', 'soccer-ball-o', 'cogs', 'asterisk'];
 
@@ -291,7 +291,7 @@ app.getCustomDate = function() {
   let endMonth = startMonth;
   let endYear = startYear;
 
-  if($('.options__date .options__checkbox').is(':checked')) {
+  if($('.options__date input[type="checkbox"]').is(':checked')) {
     endDay = $('.options__date-end .options__input--day').val();
     endMonth = $('.options__date-end .options__input--month').val();
     endYear = $('.options__date-end .options__input--year').val();
@@ -684,7 +684,7 @@ app.init = function() {
 		app.showCustomDate($(this));
   });
 
-  $('.options__date .options__checkbox').on('click', function() {
+  $('.options__date input[type="checkbox"]').on('click', function() {
 		app.showCustomDateRange();
   });
 
