@@ -86,6 +86,10 @@ app.getCategories = function() {
 	});
 }
 
+app.generateOverlay = function(text) {
+  $(`<div class="overlay"><div class="overlay__content"><p class="overlay__text">${text}</p><button class="overlay__button">Close</button></div></div>`).hide().appendTo('body').fadeIn(500);
+}
+
 // Generates categories in Interests tab
 app.generateCategories = function(categories) {
 	for (let i in categories.category) {
@@ -139,7 +143,7 @@ app.getGeolocation = function() {
       });
     });
   } else {
-    alert('Error: The Geolocation service failed. Please enter your location manually.')
+    app.generateOverlay('Error: The Geolocation service failed. Please enter your location manually.')
   }
 }
 
@@ -184,9 +188,9 @@ app.setLocation = function() {
       }
     } else {
       if(status === 'ZERO_RESULTS') {
-        alert('Your search location could not be found. Please try again.')
+        app.generateOverlay('Your search location could not be found. Please try again.')
       } else {
-        alert('Geocode was not successful for the following reason: ' + status);
+        app.generateOverlay('Geocode was not successful for the following reason: ' + status);
       }
     }
   });
@@ -332,7 +336,7 @@ app.getEvents = function() {
 		}
 	}).then(function(events) {
 		if(events.total_items === '0') {
-			alert('Your search returned 0 results. Please try again with less strict restrictions.');
+			app.generateOverlay('Your search returned 0 results. Please try again with less strict restrictions.');
 		} else {
       app.removeDuplicateVenues(events);
 		}
@@ -570,7 +574,7 @@ app.getDirectionsRoute = function(mode) {
       app.generateRoute(results);
       app.generateDirections(results, mode);
     } else {
-      alert('Directions request failed due to ' + status);
+      app.generateOverlay('Directions request failed due to ' + status);
     }
   });
 }
@@ -653,6 +657,16 @@ app.disableNextButton = function(that, type) {
 app.init = function() {
   app.generateMap();
 	app.getCategories();
+
+  $('button').on('click', function(e) {
+    e.preventDefault();
+  });
+
+  $('body').on('click', '.overlay__button', function() {
+    $('.overlay').fadeOut(250, function() {
+      $(this).remove();
+    });
+  });
 
   $('.options__units--geolocate').on('click', function() {
     app.getGeolocation();

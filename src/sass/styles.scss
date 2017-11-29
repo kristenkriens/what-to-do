@@ -21,6 +21,7 @@ body {
 	line-height: 1.25;
   display: flex;
   flex-wrap: wrap;
+	position: relative;
 
 	@media (max-width: $md-width) {
     flex-direction: column;
