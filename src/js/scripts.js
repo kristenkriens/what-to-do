@@ -543,7 +543,7 @@ app.convertEventDate = function(date) {
   time = `${hour}:${minute}${period}`;
 
   if (hour !== 0) {
-    date = day + ' at ' + time;
+    date = `${day} at ${time}`;
   } else {
     date = day;
   }
