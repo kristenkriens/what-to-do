@@ -740,7 +740,7 @@ app.init = function() {
     app.changeActiveTabClick($(this));
   });
 
-  $('body').on('change', '.options__question input, .options__question select', function() {
+  $('body').on('change', '.options__question input:not([name="transportation"]), .options__question select', function() {
     if(app.location) {
       app.setLocation();
     }
