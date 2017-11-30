@@ -410,27 +410,30 @@ app.generateEvents = function(events) {
 
     let iconName = icons.icon.replace(/-|\s/g,"_").toUpperCase();
 
-    let eventMarker = new google.maps.Marker({
-      map: app.map,
-      position: {
-        lat: parseFloat(events[i].latitude),
-        lng: parseFloat(events[i].longitude)
-      },
-      icon: app.generateEventMarkerSymbol(app.blue, iconName),
-      originalColor: app.blue,
-      originalIcon: iconName
-    });
+    window.setTimeout(function() {
+      let eventMarker = new google.maps.Marker({
+        map: app.map,
+        position: {
+          lat: parseFloat(events[i].latitude),
+          lng: parseFloat(events[i].longitude)
+        },
+        animation: google.maps.Animation.DROP,
+        icon: app.generateEventMarkerSymbol(app.blue, iconName),
+        originalColor: app.blue,
+        originalIcon: iconName
+      });
 
-    app.markers.push(eventMarker);
+      app.markers.push(eventMarker);
 
-		eventMarker.addListener('click', function() {
-      app.selectedEventLatLngString = `${events[i].latitude},${events[i].longitude}`;
+  		eventMarker.addListener('click', function() {
+        app.selectedEventLatLngString = `${events[i].latitude},${events[i].longitude}`;
 
-      app.clearRoute();
+        app.clearRoute();
 
-      app.changeEventMarkerColour(this, app.navy, iconName);
-      app.showEventInfoTab(events[i].venue_id);
-    });
+        app.changeEventMarkerColour(this, app.navy, iconName);
+        app.showEventInfoTab(events[i].venue_id);
+      });
+    }, i * 50);
   }
 
   $('.spinner').hide();
