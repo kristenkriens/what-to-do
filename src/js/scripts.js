@@ -104,7 +104,7 @@ app.generateCategories = function(categories) {
 	}
 }
 
-// Clears all markers and routes off the map and disables info tab
+// Clears all markers and routes off the map and disables More Info tab
 app.clearMap = function() {
   if(typeof app.markers[0] !== "undefined") {
     for(let i = 0; i < app.markers.length; i++) {
@@ -139,11 +139,16 @@ app.getGeolocation = function() {
       }, 500);
 
       new google.maps.Geocoder().geocode({'location': myLatLng}, function(results, status) {
-        $('.options__input--location').val(results[0].formatted_address);
+        if (status === 'OK') {
+          $('.options__input--location').val(results[0].formatted_address);
+          console.log(myLatLng, results);
+        } else {
+          app.generateOverlay('Geocoder failed due to: ' + status  + '. Please enter your location manually.');
+        }
       });
     });
   } else {
-    app.generateOverlay('Error: The Geolocation service failed. Please enter your location manually.')
+    app.generateOverlay('The Geolocation service failed. Please enter your location manually.')
   }
 }
 
