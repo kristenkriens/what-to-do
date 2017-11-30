@@ -166,7 +166,9 @@ app.setLocation = function() {
           path: fontawesome.markers.MAP_MARKER,
           strokeWeight: 0,
           fillColor: app.orange,
-          fillOpacity: 1
+          fillOpacity: 1,
+          origin: new google.maps.Point(0, 0),
+          anchor: new google.maps.Point(10, -10)
         }
       });
 
