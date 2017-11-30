@@ -75,22 +75,25 @@
           </div>
           <button class="options__button options__button--distance options__button--next" disabled>Next</button>
         </div>
-        <div class="options__content-item" data-title="interests">
-          <h3>Interests</h3>
+        <div class="options__content-item" data-title="categories">
+          <h3>Categories</h3>
           <div class="options__question" role="group">
             <legend>Which of the following interest you? (Select all that apply)</legend>
             <div class="options__categories"></div>
           </div>
-          <button class="options__button options__button--interests options__button--submit options__button--next">View Events</button>
+          <button class="options__button options__button--categories options__button--submit options__button--next">View Events</button>
         </div>
         <div class="options__content-item options__content-item--instructions" data-title="instructions">
           <h3>Instructions</h3>
           <p>Click or tap the icons on the map to find out about the events going on!</p>
-          <p class="italic"><span class="normal">Notes:</span>
-          <ul>
-            <li>Be patient, the events might take a few seconds to load!</li>
-            <li>The actual event location can vary slightly from it's rendered location on the map.</li>
-          </ul>
+          <div class="notes">
+            <p class="italic"><span class="normal">Notes:</span>
+            <ul>
+              <li>Be patient, the events may take a few seconds to load!</li>
+              <li>The actual event location can vary slightly from it's location on the map.</li>
+              <li>If you selected categories and others are appearing, don't worry. They're still from the one(s) you chose but their main category is as shown!</li>
+            </ul>
+          </div>
           <div class="spinner">
             <i class="fa fa-spinner fa-pulse fa-fw"></i><span class="accessible">Loading...</span>
           </div>
@@ -138,7 +141,7 @@
       <div class="options__tabs-item options__tabs-item--active" data-title="location"><i class="fa fa-globe" aria-hidden="true"></i><span class="accessible">Location</span></div>
       <div class="options__tabs-item options__tabs-item--disabled" data-title="date"><i class="fa fa-calendar" aria-hidden="true"></i><span class="accessible">Date</span></div>
       <div class="options__tabs-item options__tabs-item--disabled" data-title="distance"><i class="fa fa-street-view" aria-hidden="true"></i><span class="accessible">Distance</span></div>
-      <div class="options__tabs-item options__tabs-item--disabled" data-title="interests"><i class="fa fa-heart" aria-hidden="true"></i><span class="accessible">Interests</span></div>
+      <div class="options__tabs-item options__tabs-item--disabled" data-title="categories"><i class="fa fa-tags" aria-hidden="true"></i><span class="accessible">Categories</span></div>
       <div class="options__tabs-item options__tabs-item--disabled" data-title="info"><i class="fa fa-info" aria-hidden="true"></i><span class="accessible">Event Info</span></div>
       <div class="options__tabs-item options__tabs-item--disabled" data-title="transportation"><i class="fa fa-car" aria-hidden="true"></i><span class="accessible">Transportation</span></div>
       <div class="options__tabs-item options__tabs-item--disabled" data-title="directions"><i class="fa fa-map-signs" aria-hidden="true"></i><span class="accessible">Directions</span></div>

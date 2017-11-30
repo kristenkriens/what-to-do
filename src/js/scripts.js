@@ -90,13 +90,13 @@ app.generateOverlay = function(text) {
   $(`<div class="overlay"><div class="overlay__content"><p class="overlay__text">${text}</p><button class="overlay__button">Close</button></div></div>`).hide().appendTo('body').fadeIn(500);
 }
 
-// Generates categories in Interests tab
+// Generates categories in Categories tab
 app.generateCategories = function(categories) {
 	for (let i in categories.category) {
 		let id = categories.category[i].id;
 		let name = categories.category[i].name;
 
-		$('.options__categories').append(`<div><input type="checkbox" id="${id}" name="interests" value="${id}" class="accessible"><label for="${id}">${name}</label></div>`);
+		$('.options__categories').append(`<div><input type="checkbox" id="${id}" name="categories" value="${id}" class="accessible"><label for="${id}">${name}</label></div>`);
 
     let iconNameArray = ['music', 'users', 'smile-o', 'mortar-board', 'child', 'ticket', 'film', 'cutlery', 'usd', 'paint-brush', 'heartbeat', 'tree', 'book', 'fort-awesome', 'home', 'comments', 'glass', 'university', 'sitemap', 'sun-o', 'microphone', 'paw', 'hand-rock-o', 'shopping-cart', 'flask', 'bell', 'soccer-ball-o', 'cogs', 'asterisk'];
 
@@ -316,7 +316,7 @@ app.getEvents = function() {
 
   app.distance = $('.options__input--distance').val();
 
-	app.categories = $('input[name="interests"]:checked').map(function() {
+	app.categories = $('input[name="categories"]:checked').map(function() {
 		return this.value;
 	}).get().join(',');
 
