@@ -525,7 +525,8 @@ app.convertEventDate = function(date) {
   let time = date[1];
 
   day = day.split('-');
-  day = months[day[1]] + ' ' + day[2] + ', ' + day[0];
+
+  day = months[parseInt(day[1])] + ' ' + day[2] + ', ' + day[0];
 
   time = time.split(':');
 
