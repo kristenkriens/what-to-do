@@ -141,7 +141,6 @@ app.getGeolocation = function() {
       new google.maps.Geocoder().geocode({'location': myLatLng}, function(results, status) {
         if (status === 'OK') {
           $('.options__input--location').val(results[0].formatted_address);
-          console.log(myLatLng, results);
         } else {
           app.generateOverlay('Geocoder failed due to: ' + status  + '. Please enter your location manually.');
         }
@@ -517,7 +516,7 @@ app.getSelectedVenueInfo = function(venueId) {
 }
 
 // Converts date from what is returned by Eventful API to plain English
-app.convertDate = function(date) {
+app.convertEventDate = function(date) {
   let months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
   date = date.match(/^(\S+)\s(.*)/).slice(1);
@@ -558,18 +557,22 @@ app.generateSelectedVenueEvents = function(selectedVenueEvent) {
 
   let selectedEvent = selectedVenueEvent.events.event[0];
 
-  selectedEvent.start_date = app.convertDate(selectedEvent.start_time);
+  selectedEvent.start_date = app.convertEventDate(selectedEvent.start_time);
 
   if(selectedEvent.stop_time == null) {
     selectedEvent.stop_date = '';
   } else {
-    selectedEvent.stop_date = app.convertDate(selectedEvent.stop_time);
+    selectedEvent.stop_date = app.convertEventDate(selectedEvent.stop_time);
   }
 
-  $('.options__event').append(`<a href="${selectedEvent.url}" target="_blank"><h4>${selectedEvent.title}</h4></a><p class="normal">${selectedEvent.venue_name}</p><p class="normal">${selectedEvent.venue_address}, ${selectedEvent.city_name}</p><p class="normal">${selectedEvent.start_date}<span class="end-date"> - ${selectedEvent.stop_date}</span></p><div class="options__event-description">${(selectedEvent.description ? selectedEvent.description : '')}</div><a href="${selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`);
+  $('.options__event').append(`<a href="${selectedEvent.url}" target="_blank"><h4>${selectedEvent.title}</h4></a><p class="normal">${selectedEvent.venue_name}</p><p class="normal">${selectedEvent.venue_address}, ${selectedEvent.city_name}</p><p class="normal">${selectedEvent.start_date}<span class="end-date"> - ${selectedEvent.stop_date}</span></p><div class="options__event-description">${selectedEvent.description}</div><a href="${selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`);
 
   if(selectedEvent.stop_date === '') {
     $('.end-date').remove();
+  }
+
+  if(selectedEvent.description === null) {
+    $('.options__event-description').remove();
   }
 
   if($('.options__event-description').height() > 140) {
