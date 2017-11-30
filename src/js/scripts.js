@@ -336,8 +336,7 @@ app.getEvents = function() {
 			category: app.categories,
 			units: 'km',
       include: 'price,categories',
-			page_size: 100,
-      change_multi_day_start: true
+			page_size: 100
 		}
 	}).then(function(events) {
 		if(events.total_items === '0') {
@@ -510,12 +509,47 @@ app.getSelectedVenueInfo = function(venueId) {
 			category: app.categories,
 			units: 'km',
       include: 'price,categories',
-      page_size: 1,
-      change_multi_day_start: true
+      page_size: 1
 		}
 	}).then(function(selectedVenueEvent) {
     app.generateSelectedVenueEvents(selectedVenueEvent)
 	});
+}
+
+// Converts date from what is returned by Eventful API to plain English
+app.convertDate = function(date) {
+  let months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+  date = date.match(/^(\S+)\s(.*)/).slice(1);
+
+  let day = date[0];
+  let time = date[1];
+
+  day = day.split('-');
+  day = months[day[1]] + ' ' + day[2] + ', ' + day[0];
+
+  time = time.split(':');
+
+  let hour = parseInt(time[0]);
+  let minute = time[1];
+  let period = '';
+
+  if(hour > 12) {
+    hour = hour - 12;
+    period = 'pm';
+  } else {
+    period = 'am'
+  }
+
+  time = `${hour}:${minute}${period}`;
+
+  if (hour !== 0) {
+    date = day + ' at ' + time;
+  } else {
+    date = day;
+  }
+
+  return date;
 }
 
 // Generates an event going on at the selected venue, displays the info in the Event Info tab, and converts the returned date and time to a human-readable form
@@ -524,36 +558,18 @@ app.generateSelectedVenueEvents = function(selectedVenueEvent) {
 
   let selectedEvent = selectedVenueEvent.events.event[0];
 
-  selectedEvent.start_time = selectedEvent.start_time.slice(0, -3);
+  selectedEvent.start_date = app.convertDate(selectedEvent.start_time);
 
-  let months = ['', 'January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
-
-  let selectedEventDate = selectedEvent.start_time.match(/^(\S+)\s(.*)/).slice(1);
-  let selectedEventDay = selectedEventDate[0];
-  let selectedEventTime = selectedEventDate[1];
-
-  selectedEventDay = selectedEventDay.split('-');
-  selectedEventDay = months[selectedEventDay[1]] + ' ' + selectedEventDay[2] + ', ' + selectedEventDay[0];
-
-  selectedEventTime = selectedEventTime.split(':');
-
-  let selectedEventHour = parseInt(selectedEventTime[0]);
-  let selectedEventMinute = selectedEventTime[1];
-  let selectedEventPeriod = '';
-
-  if(selectedEventHour > 12) {
-    selectedEventHour = selectedEventHour - 12;
-    selectedEventPeriod = 'pm';
+  if(selectedEvent.stop_time == null) {
+    selectedEvent.stop_date = '';
   } else {
-    selectedEventPeriod = 'am'
+    selectedEvent.stop_date = app.convertDate(selectedEvent.stop_time);
   }
 
-  $('.options__event').append(`<a href="${selectedEvent.url}" target="_blank"><h4>${selectedEvent.title}</h4></a><p class="normal">${selectedEvent.venue_name}</p><p class="normal">${selectedEvent.venue_address}, ${selectedEvent.city_name}</p><p class="normal">${selectedEventDay} <span class="event-time">at ${selectedEventHour}:${selectedEventMinute}${selectedEventPeriod}</span></p><div class="options__event-description">${(selectedEvent.description ? selectedEvent.description : '')}</div><a href="${selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`);
+  $('.options__event').append(`<a href="${selectedEvent.url}" target="_blank"><h4>${selectedEvent.title}</h4></a><p class="normal">${selectedEvent.venue_name}</p><p class="normal">${selectedEvent.venue_address}, ${selectedEvent.city_name}</p><p class="normal">${selectedEvent.start_date}<span class="end-date"> - ${selectedEvent.stop_date}</span></p><div class="options__event-description">${(selectedEvent.description ? selectedEvent.description : '')}</div><a href="${selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`);
 
-  if(selectedEventHour == 0) {
-    $('.event-time').addClass('event-time--hidden');
-  } else {
-    $('.event-time').removeClass('event-time--hidden');
+  if(selectedEvent.stop_date === '') {
+    $('.end-date').remove();
   }
 
   if($('.options__event-description').height() > 140) {
