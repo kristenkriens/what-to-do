@@ -633,12 +633,13 @@ app.generateDirections = function(directions, mode) {
 
   $('.mode').text(mode);
 
-  let steps = directions.routes[0].legs[0].steps;
+  let legs = directions.routes[0].legs[0];
 
-  for (let i in steps) {
-    $('.distance').text(steps[i].distance.text);
-    $('.time').text(steps[i].duration.text);
-    $('.options__directions-items').append(`<p>${parseInt(i) + 1}. ${steps[i].instructions}</p>`);
+  $('.distance').text(legs.distance.text);
+  $('.time').text(legs.duration.text);
+
+  for (let i in legs.steps) {
+    $('.options__directions-items').append(`<p>${parseInt(i) + 1}. ${legs.steps[i].instructions} (${legs.steps[i].distance.text} for ${legs.steps[i].duration.text})</p>`);
   }
 
   if($('.options__directions-items').height() > 235) {
