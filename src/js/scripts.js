@@ -342,7 +342,7 @@ app.getEvents = function() {
 		}
 	}).then(function(events) {
 		if(events.total_items === '0') {
-			app.generateOverlay('Your search returned 0 results. Please try again with less strict restrictions.');
+			app.generateOverlay('Your search returned no results. Please try again with less restrictions or a wider search area.');
 		} else {
       app.removeDuplicateVenues(events);
 		}
