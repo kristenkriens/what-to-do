@@ -646,6 +646,12 @@ app.generateDirections = function(directions, mode) {
   }
 }
 
+// Moves the user to the first tab
+app.moveToFirstTab = function() {
+  $('.options__tabs-item').removeClass('options__tabs-item--active');
+  $('.options__tabs-item:first-of-type').click();
+}
+
 // Changes the active tab based on which tab was clicked
 app.changeActiveTabClick = function(that) {
   let tabTitle = that.data('title');
@@ -697,6 +703,8 @@ app.init = function() {
     $('.overlay').fadeOut(250, function() {
       $(this).remove();
     });
+
+    app.moveToFirstTab();
   });
 
   $('.options__units--geolocate').on('click', function() {
