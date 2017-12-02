@@ -55,6 +55,21 @@ app.generateMap = function() {
   app.map = new google.maps.Map(mapContainer, mapInfo);
 
   app.enableRoutes();
+  app.enableAutocomplete();
+}
+
+// Enables address/location autocomplete from Google Maps Places API
+app.enableAutocomplete = function() {
+  let input = $('.options__input--location')[0];
+  let searchBox = new google.maps.places.SearchBox(input);
+
+  searchBox.addListener('places_changed', function() {
+    var places = searchBox.getPlaces();
+
+    if (places.length == 0) {
+      return;
+    }
+  });
 }
 
 // Enables routes displaying on the map
