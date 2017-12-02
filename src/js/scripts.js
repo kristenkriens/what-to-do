@@ -227,8 +227,6 @@ app.showCustomDate = function(that) {
   } else {
     $('.options__date').addClass('options__date--hidden');
   }
-
-  app.generateDates();
 }
 
 // Generates dates in the select tags if Custom is selected for the date and sets selected date to current date
@@ -710,6 +708,7 @@ app.disableNextButton = function(that, type) {
 app.init = function() {
   app.generateMap();
 	app.getCategories();
+  app.generateDates();
 
   $('button').on('click', function(e) {
     e.preventDefault();
