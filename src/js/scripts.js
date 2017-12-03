@@ -677,6 +677,39 @@ app.generateDirections = function(directions, mode) {
   }
 }
 
+// Checks if email address is valid
+app.checkEmail = function(email) {
+  let testEmail = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+
+  if(testEmail.test(email)) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+// Sends email to user with directions
+app.sendEmail = function() {
+  let email = $('.overlay__input--email').val();
+
+  $.ajax({
+    type: 'POST',
+    url: app.emailApiUrl,
+    dataType: 'json',
+    data: {
+      apikey: app.emailApiKey,
+      subject: `Directions to ${app.selectedEvent.title}`,
+      from: 'kristen@kristenkriens.com',
+      fromName: 'What To Do',
+      to: email,
+      bodyHtml: `<h2>Event Info</h2><h3>${app.selectedEvent.title}</h3><p>${app.selectedEvent.venue_name}</p><p>${app.selectedEvent.venue_address}, ${app.selectedEvent.city_name}</p><p>${app.selectedEvent.date}</p><p>${app.selectedEvent.description}</p><a href="${app.selectedEvent.url}" target="_blank" class="options__event-link">More Info</a><h2>Directions</h2>`
+    }
+  }).done(function() {
+    app.removeOverlay();
+    app.generateOverlay('Your email has been sent!');
+  });
+}
+
 // Changes the active tab based on which tab was clicked
 app.changeActiveTabClick = function(that) {
   let tabTitle = that.data('title');
@@ -720,39 +753,6 @@ app.disableButton = function(that, type) {
   	} else {
   		$(`.options__button--${type}`).attr('disabled', 'disabled');
   	}
-  }
-}
-
-// Sends email to user
-app.sendEmail = function() {
-  let email = $('.overlay__input--email').val();
-
-  $.ajax({
-    type: 'POST',
-    url: app.emailApiUrl,
-    dataType: 'json',
-    data: {
-      apikey: app.emailApiKey,
-      subject: `Directions to ${app.selectedEvent.title}`,
-      from: 'kristen@kristenkriens.com',
-      fromName: 'What To Do',
-      to: email,
-      bodyHtml: `<h2>Event Info</h2><h3>${app.selectedEvent.title}</h3><p>${app.selectedEvent.venue_name}</p><p>${app.selectedEvent.venue_address}, ${app.selectedEvent.city_name}</p><p>${app.selectedEvent.date}</p><p>${app.selectedEvent.description}</p><a href="${app.selectedEvent.url}" target="_blank" class="options__event-link">More Info</a><h2>Directions</h2>`
-    }
-  }).done(function() {
-    app.removeOverlay();
-    app.generateOverlay('Your email has been sent!');
-  });
-}
-
-// Checks if email is valid
-app.checkEmail = function(email) {
-  let testEmail = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
-
-  if(!testEmail.test(email)) {
-    return false;
-  } else {
-    return true;
   }
 }
 
