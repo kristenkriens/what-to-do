@@ -200,7 +200,7 @@ app.setLocation = function() {
           fillColor: app.orange,
           fillOpacity: 1,
           origin: new google.maps.Point(0, 0),
-          anchor: new google.maps.Point(10, -10)
+          anchor: new google.maps.Point(18, -5)
         }
       });
 
