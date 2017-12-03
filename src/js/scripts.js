@@ -592,18 +592,18 @@ app.generateSelectedVenueEvents = function(selectedVenueEvent) {
   app.selectedEvent = selectedVenueEvent.events.event[0];
 
   app.selectedEvent.start_date = app.convertEventDate(app.selectedEvent.start_time);
+  app.selectedEvent.stop_date;
+  app.selectedEvent.date;
 
-  if(app.selectedEvent.stop_time == null) {
+  if(app.selectedEvent.stop_time === null) {
     app.selectedEvent.stop_date = '';
+    app.selectedEvent.date = app.selectedEvent.start_date;
   } else {
     app.selectedEvent.stop_date = app.convertEventDate(app.selectedEvent.stop_time);
+    app.selectedEvent.date = `${app.selectedEvent.start_date} - ${app.selectedEvent.stop_date}`;
   }
 
-  $('.options__event').append(`<a href="${app.selectedEvent.url}" target="_blank"><h4>${app.selectedEvent.title}</h4></a><p class="normal">${app.selectedEvent.venue_name}</p><p class="normal">${app.selectedEvent.venue_address}, ${app.selectedEvent.city_name}</p><p class="normal">${app.selectedEvent.start_date}<span class="end-date"> - ${app.selectedEvent.stop_date}</span></p><div class="options__event-description">${app.selectedEvent.description}</div><a href="${app.selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`);
-
-  if(app.selectedEvent.stop_date === '') {
-    $('.end-date').remove();
-  }
+  $('.options__event').append(`<a href="${app.selectedEvent.url}" target="_blank"><h4>${app.selectedEvent.title}</h4></a><p class="normal">${app.selectedEvent.venue_name}</p><p class="normal">${app.selectedEvent.venue_address}, ${app.selectedEvent.city_name}</p><p class="normal">${app.selectedEvent.date}</p><div class="options__event-description">${app.selectedEvent.description}</div><a href="${app.selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`);
 
   if(app.selectedEvent.description === null) {
     $('.options__event-description').remove();
@@ -734,7 +734,7 @@ app.sendEmail = function() {
       from: 'kristen@kristenkriens.com',
       fromName: 'What To Do',
       to: email,
-      bodyHtml: `<h4>${app.selectedEvent.title}</h4><p>${app.selectedEvent.venue_name}</p><p>${app.selectedEvent.venue_address}, ${app.selectedEvent.city_name}</p><p>${app.selectedEvent.start_date}</p><p>${app.selectedEvent.description}</p><a href="${app.selectedEvent.url}" target="_blank" class="options__event-link">More Info</button>`
+      bodyHtml: `<h4>${app.selectedEvent.title}</h4><p>${app.selectedEvent.venue_name}</p><p>${app.selectedEvent.venue_address}, ${app.selectedEvent.city_name}</p><p>${app.selectedEvent.date}</p><p>${app.selectedEvent.description}</p><a href="${app.selectedEvent.url}" target="_blank" class="options__event-link">More Info</button>`
     }
   }).done(function() {
     app.removeOverlay();
