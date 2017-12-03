@@ -26,6 +26,8 @@ app.categoryIconNameArray = [];
 
 app.selectedEventLatLngString = '';
 
+app.selectedEvent = {};
+
 app.blue = '#27b2d0';
 app.navy = '#14192d';
 app.orange = '#ff751a';
@@ -101,8 +103,20 @@ app.getCategories = function() {
 	});
 }
 
-app.generateOverlay = function(text) {
-  $(`<div class="overlay"><div class="overlay__content"><p class="overlay__text">${text}</p><button class="overlay__button">Close</button></div></div>`).hide().appendTo('body').fadeIn(500);
+// Generates an overlay
+app.generateOverlay = function(text, email) {
+  if(email) {
+    $(`<div class="overlay overlay--email"><div class="overlay__content"><p>Please enter the email you would like the directions sent to!</p><input type="email" placeholder="e.g. example@gmail.com" class="overlay__input overlay__input--email"><button class="overlay__button overlay__button--email" disabled>Send Email</button><button class="overlay__button overlay__button--close">Cancel</button></div></div>`).hide().appendTo('body').fadeIn(500);
+  } else {
+    $(`<div class="overlay"><div class="overlay__content"><p class="overlay__text">${text}</p><button class="overlay__button overlay__button--close">Close</button></div></div>`).hide().appendTo('body').fadeIn(500);
+  }
+}
+
+// Removes the overlay
+app.removeOverlay = function() {
+  $('.overlay').fadeOut(250, function() {
+    $(this).remove();
+  });
 }
 
 // Generates categories in Categories tab
@@ -575,23 +589,23 @@ app.convertEventDate = function(date) {
 app.generateSelectedVenueEvents = function(selectedVenueEvent) {
   $('.options__event').empty();
 
-  let selectedEvent = selectedVenueEvent.events.event[0];
+  app.selectedEvent = selectedVenueEvent.events.event[0];
 
-  selectedEvent.start_date = app.convertEventDate(selectedEvent.start_time);
+  app.selectedEvent.start_date = app.convertEventDate(app.selectedEvent.start_time);
 
-  if(selectedEvent.stop_time == null) {
-    selectedEvent.stop_date = '';
+  if(app.selectedEvent.stop_time == null) {
+    app.selectedEvent.stop_date = '';
   } else {
-    selectedEvent.stop_date = app.convertEventDate(selectedEvent.stop_time);
+    app.selectedEvent.stop_date = app.convertEventDate(app.selectedEvent.stop_time);
   }
 
-  $('.options__event').append(`<a href="${selectedEvent.url}" target="_blank"><h4>${selectedEvent.title}</h4></a><p class="normal">${selectedEvent.venue_name}</p><p class="normal">${selectedEvent.venue_address}, ${selectedEvent.city_name}</p><p class="normal">${selectedEvent.start_date}<span class="end-date"> - ${selectedEvent.stop_date}</span></p><div class="options__event-description">${selectedEvent.description}</div><a href="${selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`);
+  $('.options__event').append(`<a href="${app.selectedEvent.url}" target="_blank"><h4>${app.selectedEvent.title}</h4></a><p class="normal">${app.selectedEvent.venue_name}</p><p class="normal">${app.selectedEvent.venue_address}, ${app.selectedEvent.city_name}</p><p class="normal">${app.selectedEvent.start_date}<span class="end-date"> - ${app.selectedEvent.stop_date}</span></p><div class="options__event-description">${app.selectedEvent.description}</div><a href="${app.selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`);
 
-  if(selectedEvent.stop_date === '') {
+  if(app.selectedEvent.stop_date === '') {
     $('.end-date').remove();
   }
 
-  if(selectedEvent.description === null) {
+  if(app.selectedEvent.description === null) {
     $('.options__event-description').remove();
   }
 
@@ -660,12 +674,6 @@ app.generateDirections = function(directions, mode) {
   }
 }
 
-// Moves the user to the first tab
-app.moveToFirstTab = function() {
-  $('.options__tabs-item').removeClass('options__tabs-item--active');
-  $('.options__tabs-item:first-of-type').click();
-}
-
 // Changes the active tab based on which tab was clicked
 app.changeActiveTabClick = function(that) {
   let tabTitle = that.data('title');
@@ -696,12 +704,53 @@ app.changeActiveTabNext = function(that) {
 }
 
 // Disables next button if the input is empty
-app.disableNextButton = function(that, type) {
-	if(that.val() !== '') {
-		$(`.options__button--${type}`).removeAttr('disabled');
-	} else {
-		$(`.options__button--${type}`).attr('disabled', 'disabled');
-	}
+app.disableButton = function(that, type) {
+  if(type === 'email') {
+    if(app.checkEmail(that.val()) && that.val() !== '') {
+      $(`.overlay__button--email`).removeAttr('disabled');
+  	} else {
+      $(`.overlay__button--email`).attr('disabled', 'disabled');
+  	}
+  } else {
+    if(that.val() !== '') {
+  		$(`.options__button--${type}`).removeAttr('disabled');
+  	} else {
+  		$(`.options__button--${type}`).attr('disabled', 'disabled');
+  	}
+  }
+}
+
+// Sends email to user
+app.sendEmail = function() {
+  let email = $('.overlay__input--email').val();
+
+  $.ajax({
+    type: 'POST',
+    url: 'https://api.elasticemail.com/v2/email/send',
+    dataType: 'json',
+    data: {
+      apikey: '5d043e12-0cbd-4da7-b0bb-ed5ec2a22030',
+      subject: `Directions to ${app.selectedEvent.title}`,
+      from: 'kristen@kristenkriens.com',
+      fromName: 'What To Do',
+      to: email,
+      bodyHtml: `<h4>${app.selectedEvent.title}</h4><p>${app.selectedEvent.venue_name}</p><p>${app.selectedEvent.venue_address}, ${app.selectedEvent.city_name}</p><p>${app.selectedEvent.start_date}</p><p>${app.selectedEvent.description}</p><a href="${app.selectedEvent.url}" target="_blank" class="options__event-link">More Info</button>`
+    }
+  }).done(function() {
+    app.removeOverlay();
+    app.generateOverlay('Your email has been sent!');
+  });
+}
+
+// Checks if email is valid
+app.checkEmail = function(email) {
+  let testEmail = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
+
+  if(!testEmail.test(email)) {
+    return false;
+  } else {
+    return true;
+  }
 }
 
 // Initializes app
@@ -714,12 +763,12 @@ app.init = function() {
     e.preventDefault();
   });
 
-  $('body').on('click', '.overlay__button', function() {
-    $('.overlay').fadeOut(250, function() {
-      $(this).remove();
-    });
+  $('body').on('click', '.overlay__button--close', function() {
+    app.removeOverlay();
+  });
 
-    app.moveToFirstTab();
+  $('body').on('click', '.overlay__button--email', function() {
+    app.sendEmail();
   });
 
   $('.options__units--geolocate').on('click', function() {
@@ -727,11 +776,15 @@ app.init = function() {
   });
 
   $('.options__input--location').on('keyup', function() {
-		app.disableNextButton($(this), 'location');
+		app.disableButton($(this), 'location');
   });
 
 	$('.options__input--distance').on('keyup', function() {
-		app.disableNextButton($(this), 'distance');
+		app.disableButton($(this), 'distance');
+  });
+
+  $('body').on('keyup', '.overlay__input--email', function() {
+		app.disableButton($(this), 'email');
   });
 
   $('input[name="date"]').on('click', function() {
@@ -779,6 +832,10 @@ app.init = function() {
 	$('.options__button--next:not(.options__button--submit)').on('click', function() {
 		app.changeActiveTabNext($(this));
 	});
+
+  $('.options__button--email').on('click', function() {
+    app.generateOverlay('', true);
+  });
 }
 
 $(function() {

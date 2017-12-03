@@ -464,11 +464,23 @@
     margin-bottom: 20px;
   }
 
-  &__button:not([disabled]) {
-    &:hover, &:active, &:focus {
-      background-color: $blue;
-      color: $white;
-      font-weight: 300;
+  &__input[type="email"] {
+    display: block;
+    border: 1px solid $navy;
+    width: 100%;
+    max-width: 250px;
+    margin: 30px auto 20px auto;
+  }
+
+  &__button {
+    margin: 5px;
+
+    &:not([disabled]) {
+      &:hover, &:active, &:focus {
+        background-color: $blue;
+        color: $white;
+        font-weight: 300;
+      }
     }
   }
 }

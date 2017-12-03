@@ -45,7 +45,7 @@ input, select, label {
   margin-bottom: 10px;
 }
 
-input[type="text"], input[type="number"], .options__input {
+input[type="text"], input[type="number"], input[type="email"], .options__input {
 	color: $navy;
 	background-color: $white;
 	border: none;
@@ -176,6 +176,14 @@ div::-webkit-scrollbar-thumb, ol::-webkit-scrollbar-thumb {
 ::placeholder {
   color: $navy;
 	opacity: 0.75;
+}
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none; 
+  margin: 0;
 }
 
 .pac {
