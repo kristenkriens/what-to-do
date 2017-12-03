@@ -36,6 +36,9 @@ app.googleBlue = '#3e91ce';
 app.eventApiUrl = 'https://api.eventful.com/json';
 app.eventApiKey = 'srQBgzwWJzXwZcrM';
 
+app.emailApiUrl = 'https://api.elasticemail.com/v2/email/send';
+app.emailApiKey = '5d043e12-0cbd-4da7-b0bb-ed5ec2a22030';
+
 // Generates the base map for the app
 app.generateMap = function() {
   const mapContainer = $('.map__map')[0];
@@ -603,7 +606,7 @@ app.generateSelectedVenueEvents = function(selectedVenueEvent) {
     app.selectedEvent.date = `${app.selectedEvent.start_date} - ${app.selectedEvent.stop_date}`;
   }
 
-  $('.options__event').append(`<a href="${app.selectedEvent.url}" target="_blank"><h4>${app.selectedEvent.title}</h4></a><p class="normal">${app.selectedEvent.venue_name}</p><p class="normal">${app.selectedEvent.venue_address}, ${app.selectedEvent.city_name}</p><p class="normal">${app.selectedEvent.date}</p><div class="options__event-description">${app.selectedEvent.description}</div><a href="${app.selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></button>`);
+  $('.options__event').append(`<a href="${app.selectedEvent.url}" target="_blank"><h4>${app.selectedEvent.title}</h4></a><p class="normal">${app.selectedEvent.venue_name}</p><p class="normal">${app.selectedEvent.venue_address}, ${app.selectedEvent.city_name}</p><p class="normal">${app.selectedEvent.date}</p><div class="options__event-description">${app.selectedEvent.description}</div><a href="${app.selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></a>`);
 
   if(app.selectedEvent.description === null) {
     $('.options__event-description').remove();
@@ -726,15 +729,15 @@ app.sendEmail = function() {
 
   $.ajax({
     type: 'POST',
-    url: 'https://api.elasticemail.com/v2/email/send',
+    url: app.emailApiUrl,
     dataType: 'json',
     data: {
-      apikey: '5d043e12-0cbd-4da7-b0bb-ed5ec2a22030',
+      apikey: app.emailApiKey,
       subject: `Directions to ${app.selectedEvent.title}`,
       from: 'kristen@kristenkriens.com',
       fromName: 'What To Do',
       to: email,
-      bodyHtml: `<h4>${app.selectedEvent.title}</h4><p>${app.selectedEvent.venue_name}</p><p>${app.selectedEvent.venue_address}, ${app.selectedEvent.city_name}</p><p>${app.selectedEvent.date}</p><p>${app.selectedEvent.description}</p><a href="${app.selectedEvent.url}" target="_blank" class="options__event-link">More Info</button>`
+      bodyHtml: `<h2>Event Info</h2><h3>${app.selectedEvent.title}</h3><p>${app.selectedEvent.venue_name}</p><p>${app.selectedEvent.venue_address}, ${app.selectedEvent.city_name}</p><p>${app.selectedEvent.date}</p><p>${app.selectedEvent.description}</p><a href="${app.selectedEvent.url}" target="_blank" class="options__event-link">More Info</a><h2>Directions</h2>`
     }
   }).done(function() {
     app.removeOverlay();
