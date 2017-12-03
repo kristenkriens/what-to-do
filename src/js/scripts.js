@@ -466,13 +466,17 @@ app.generateEvents = function(events) {
         app.changeEventMarkerColour(this, app.navy, iconName);
         app.showEventInfoTab(events[i].venue_id);
       });
+
+      eventMarker.addListener('dblclick', function() {
+        app.zoomMarker(this);
+      });
     }, i * 50);
   }
 
   $('.spinner').hide();
 }
 
-// Redraws the distance radius (if applicable), hides the legend and removes the items, shows the spinner again, and clears event markers
+// Clears and redraws the distance radius (if applicable), hides the legend and removes the items, shows the spinner again, and clears event markers
 app.clearEvents = function() {
   $('.map__legend').addClass('map__legend--hidden');
   $('.map__legend-item').remove();
@@ -484,6 +488,15 @@ app.clearEvents = function() {
   }
 
   app.markers.splice(1);
+}
+
+// Zooms map in to selected marker if it isn't already zoomed in further than 16
+app.zoomMarker = function(that) {
+  if(app.map.getZoom() < 16) {
+    app.map.setZoom(16);
+  }
+
+  app.map.setCenter(that.getPosition());
 }
 
 // Generates the event marker symbol
