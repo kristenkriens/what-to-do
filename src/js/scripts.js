@@ -818,10 +818,6 @@ app.init = function() {
     app.getTransportationMode();
   });
 
-  $('.options__tabs-item').on('click', function() {
-    app.changeActiveTabClick($(this));
-  });
-
   $('body').on('change', '.options__question input:not([name="transportation"]), .options__question select', function() {
     if(app.location) {
       app.setLocation();
@@ -830,6 +826,10 @@ app.init = function() {
     if(app.submit) {
       app.clearEvents();
     }
+  });
+
+  $('.options__tabs-item').on('click', function() {
+    app.changeActiveTabClick($(this));
   });
 
 	$('.options__button--next:not(.options__button--submit)').on('click', function() {
