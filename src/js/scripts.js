@@ -25,6 +25,7 @@ app.categories = [];
 app.categoryIconNameArray = [];
 
 app.selectedEventLatLngString = '';
+app.selectedEventLatLngArray = [];
 
 app.selectedEvent = {};
 
@@ -461,10 +462,15 @@ app.generateEvents = function(events) {
   		eventMarker.addListener('click', function() {
         app.selectedEventLatLngString = `${events[i].latitude},${events[i].longitude}`;
 
-        app.clearRoute();
+        app.selectedEventLatLngArray.push(app.selectedEventLatLngString);
+        app.selectedEventLatLngArray.splice(0, app.selectedEventLatLngArray.length - 2);
+
+        if(app.selectedEventLatLngArray[0] !== app.selectedEventLatLngArray[1]) {
+          app.clearRoute();
+          app.showEventInfoTab(events[i].venue_id);
+        }
 
         app.changeEventMarkerColour(this, app.navy, iconName);
-        app.showEventInfoTab(events[i].venue_id);
       });
 
       eventMarker.addListener('dblclick', function() {
