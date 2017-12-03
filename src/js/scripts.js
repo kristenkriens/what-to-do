@@ -109,7 +109,7 @@ app.getCategories = function() {
 // Generates an overlay
 app.generateOverlay = function(text, email) {
   if(email) {
-    $(`<div class="overlay overlay--email"><div class="overlay__content"><p>Please enter the email you would like the directions sent to!</p><input type="email" placeholder="e.g. example@gmail.com" class="overlay__input overlay__input--email"><button class="overlay__button overlay__button--email" disabled>Send Email</button><button class="overlay__button overlay__button--close">Cancel</button></div></div>`).hide().appendTo('body').fadeIn(500);
+    $(`<div class="overlay overlay--email"><div class="overlay__content"><p>Please enter the email you would like the directions sent to!</p><input type="email" placeholder="e.g. example@gmail.com" class="overlay__input overlay__input--email"><button class="overlay__button overlay__button--email" disabled>Send</button><button class="overlay__button overlay__button--close">Cancel</button></div></div>`).hide().appendTo('body').fadeIn(500);
   } else {
     $(`<div class="overlay"><div class="overlay__content"><p class="overlay__text">${text}</p><button class="overlay__button overlay__button--close">Close</button></div></div>`).hide().appendTo('body').fadeIn(500);
   }
