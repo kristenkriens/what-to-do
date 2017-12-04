@@ -29,6 +29,9 @@ app.selectedEventLatLngArray = [];
 
 app.selectedEvent = {};
 
+app.mode = '';
+app.legs = {};
+
 app.blue = '#27b2d0';
 app.navy = '#14192d';
 app.orange = '#ff751a';
@@ -643,21 +646,21 @@ app.generateSelectedVenueEvents = function(selectedVenueEvent) {
 
 // Gets users mode of transportation selection and calls function that gets directions
 app.getTransportationMode = function() {
-  let mode = $('input[name="transportation"]:checked').val();
+  app.mode = $('input[name="transportation"]:checked').val();
 
-  app.getDirectionsRoute(mode);
+  app.getDirectionsRoute();
 }
 
 // Gets directions and route from home location to selected event
-app.getDirectionsRoute = function(mode) {
+app.getDirectionsRoute = function() {
   app.directionsService.route({
     origin: app.latLngString,
     destination: app.selectedEventLatLngString,
-    travelMode: mode.toUpperCase()
+    travelMode: app.mode.toUpperCase()
   }, function(results, status) {
     if (status === 'OK') {
       app.generateRoute(results);
-      app.generateDirections(results, mode);
+      app.generateDirections(results);
     } else {
       app.generateOverlay('Directions request failed due to ' + status);
     }
@@ -679,21 +682,21 @@ app.clearRoute = function() {
 }
 
 // Generates the directions from home location to selected event in the directions tab
-app.generateDirections = function(directions, mode) {
+app.generateDirections = function(directions) {
   $('.options__directions-info').empty();
   $('.options__directions-items').empty();
 
   $('.options__directions-info').append('<p><span class="normal">Mode:</span> <span class="mode"></span></p><p><span class="normal">Distance:</span> <span class="distance"></span></p><p><span class="normal">Time:</span> <span class="time"></span></p>');
 
-  $('.mode').text(mode);
+  $('.mode').text(app.mode);
 
-  let legs = directions.routes[0].legs[0];
+  app.legs = directions.routes[0].legs[0];
 
-  $('.distance').text(legs.distance.text);
-  $('.time').text(legs.duration.text);
+  $('.distance').text(app.legs.distance.text);
+  $('.time').text(app.legs.duration.text);
 
-  for (let i in legs.steps) {
-    $('.options__directions-items').append(`<p>${parseInt(i) + 1}. ${legs.steps[i].instructions} (${legs.steps[i].distance.text} - ${legs.steps[i].duration.text})</p>`);
+  for (let i in app.legs.steps) {
+    $('.options__directions-items').append(`<p>${parseInt(i) + 1}. ${app.legs.steps[i].instructions} (${app.legs.steps[i].distance.text} - ${app.legs.steps[i].duration.text})</p>`);
   }
 
   if($('.options__directions-items').height() > 235) {
@@ -716,6 +719,12 @@ app.checkEmail = function(email) {
 app.sendEmail = function() {
   let email = $('.overlay__input--email').val();
 
+  let directionsList = '';
+
+  for (let i in app.legs.steps) {
+    directionsList = directionsList + `<p>${parseInt(i) + 1}. ${app.legs.steps[i].instructions} (${app.legs.steps[i].distance.text} - ${app.legs.steps[i].duration.text})</p>`;
+  }
+
   $.ajax({
     type: 'POST',
     url: app.emailApiUrl,
@@ -726,7 +735,7 @@ app.sendEmail = function() {
       from: 'kristen@kristenkriens.com',
       fromName: 'What To Do',
       to: email,
-      bodyHtml: `<h2>Event Info</h2><h3>${app.selectedEvent.title}</h3><p>${app.selectedEvent.venue_name}</p><p>${app.selectedEvent.venue_address}, ${app.selectedEvent.city_name}</p><p>${app.selectedEvent.date}</p><p>${app.selectedEvent.description}</p><a href="${app.selectedEvent.url}" target="_blank" class="options__event-link">More Info</a><h2>Directions</h2>`
+      bodyHtml: `<h2>Event Info</h2><h3>${app.selectedEvent.title}</h3><p>${app.selectedEvent.venue_name}</p><p>${app.selectedEvent.venue_address}, ${app.selectedEvent.city_name}</p><p>${app.selectedEvent.date}</p><p>${app.selectedEvent.description}</p><a href="${app.selectedEvent.url}" target="_blank" class="options__event-link">More Info</a><h2>Directions</h2><p>From: ${app.legs.start_address}</p><p>Mode: ${app.mode}</p><p>Distance: ${app.legs.distance.text}</p><p>Time: ${app.legs.duration.text}</p>${directionsList}`
     }
   }).done(function() {
     app.removeOverlay();
