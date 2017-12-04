@@ -5,11 +5,11 @@ app.directionsDisplay;
 
 app.map;
 
-app.buttonClicks = 0;
+app.initialClick = 0;
 
-app.location = false;
-app.distance = false;
-app.submit = false;
+app.locationClicked = false;
+app.distanceClicked = false;
+app.submitClicked = false;
 
 app.markers = [];
 
@@ -212,18 +212,23 @@ app.setLocation = function() {
       app.latLngString = `${app.lat},${app.lng}`;
 
 			app.map.setCenter(homeMarker.position);
-      if(app.buttonClicks === 0) {
-        app.map.setZoom(15);
+
+      if(app.initialClick === 0) {
+        app.map.setZoom(16);
         homeMarker.setAnimation(google.maps.Animation.DROP);
       }
 
-      app.buttonClicks++;
+      app.initialClick = 1;
 
       google.maps.event.addDomListener(window, 'resize', function() {
         app.map.setCenter(homeMarker.position);
       });
 
-      if(app.distance) {
+      homeMarker.addListener('dblclick', function() {
+        app.zoomMarker(this);
+      });
+
+      if(app.distanceClicked) {
         app.drawDistanceRadius();
       }
     } else {
@@ -819,18 +824,18 @@ app.init = function() {
 
   $('.options__button--location').on('click', function() {
     app.setLocation();
-    app.location = true;
+    app.locationClicked = true;
   });
 
 	$('.options__button--distance').on('click', function() {
     app.drawDistanceRadius();
-    app.distance = true;
+    app.distanceClicked = true;
   });
 
 	$('.options__button--submit').on('click', function() {
     app.showInstructions();
 		app.getEvents();
-    app.submit = true;
+    app.submitClicked = true;
   });
 
   $('.options__button--transportation').on('click', function() {
@@ -838,11 +843,11 @@ app.init = function() {
   });
 
   $('body').on('change', '.options__question input:not([name="transportation"]), .options__question select', function() {
-    if(app.location) {
+    if(app.locationClicked) {
       app.setLocation();
     }
 
-    if(app.submit) {
+    if(app.submitClicked) {
       app.clearEvents();
     }
   });
