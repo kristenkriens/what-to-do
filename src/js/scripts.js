@@ -214,7 +214,7 @@ app.setLocation = function() {
 			app.map.setCenter(homeMarker.position);
 
       if(app.initialClick === 0) {
-        app.map.setZoom(16);
+        app.map.setZoom(13);
         homeMarker.setAnimation(google.maps.Animation.DROP);
       }
 
