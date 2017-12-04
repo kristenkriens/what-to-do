@@ -636,7 +636,7 @@ app.generateSelectedVenueEvents = function(selectedVenueEvent) {
   $('.options__event').append(`<a href="${app.selectedEvent.url}" target="_blank"><h4>${app.selectedEvent.title}</h4></a><p class="normal">${app.selectedEvent.venue_name}</p><p class="normal">${app.selectedEvent.venue_address}, ${app.selectedEvent.city_name}</p><p class="normal">${app.selectedEvent.date}</p><div class="options__event-description">${app.selectedEvent.description}</div><a href="${app.selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></a>`);
 
   if(app.selectedEvent.description === null) {
-    app.selectedEvent.description = '';
+    app.selectedEvent.description = 'No event description found';
 
     $('.options__event-description').remove();
   }
@@ -737,7 +737,18 @@ app.sendEmail = function() {
       from: 'kristen@kristenkriens.com',
       fromName: 'What To Do',
       to: email,
-      bodyHtml: `<h2>Event Info</h2><h3>${app.selectedEvent.title}</h3><p>${app.selectedEvent.venue_name}</p><p>${app.selectedEvent.venue_address}, ${app.selectedEvent.city_name}</p><p>${app.selectedEvent.date}</p><p>${app.selectedEvent.description}</p><a href="${app.selectedEvent.url}" target="_blank" class="options__event-link">More Info</a><h2>Directions</h2><p>From: ${app.legs.start_address}</p><p>Mode: ${app.mode}</p><p>Distance: ${app.legs.distance.text}</p><p>Time: ${app.legs.duration.text}</p>${directionsList}`
+      template: 'What To Do',
+      merge_eventname: app.selectedEvent.title,
+      merge_eventvenue: app.selectedEvent.venue_name,
+      merge_eventaddress: `${app.selectedEvent.venue_address}, ${app.selectedEvent.city_name}`,
+      merge_eventdate: app.selectedEvent.date,
+      merge_eventinfo: app.selectedEvent.description,
+      merge_eventlink: app.selectedEvent.url,
+      merge_homeaddress: app.legs.start_address,
+      merge_mode: app.mode,
+      merge_distance: app.legs.distance.text,
+      merge_time: app.legs.duration.text,
+      merge_directions: directionsList
     }
   }).done(function() {
     app.removeOverlay();
