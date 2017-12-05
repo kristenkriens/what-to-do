@@ -110,6 +110,20 @@ app.getCategories = function() {
 	});
 }
 
+// Generates categories in Categories tab
+app.generateCategories = function(categories) {
+	for (let i in categories.category) {
+		let id = categories.category[i].id;
+		let name = categories.category[i].name;
+
+		$('.options__categories').append(`<div><input type="checkbox" id="${id}" name="categories" value="${id}" class="accessible"><label for="${id}">${name}</label></div>`);
+
+    let iconNameArray = ['music', 'users', 'smile-o', 'mortar-board', 'child', 'ticket', 'film', 'cutlery', 'usd', 'paint-brush', 'heartbeat', 'tree', 'book', 'fort-awesome', 'home', 'comments', 'glass', 'university', 'sitemap', 'sun-o', 'microphone', 'paw', 'hand-rock-o', 'shopping-cart', 'flask', 'bell', 'soccer-ball-o', 'cogs', 'asterisk'];
+
+    app.categoryIconNameArray.push({icon: iconNameArray[i], name: name});
+	}
+}
+
 // Generates an overlay
 app.generateOverlay = function(text, email) {
   if(email) {
@@ -124,20 +138,6 @@ app.removeOverlay = function() {
   $('.overlay').fadeOut(250, function() {
     $(this).remove();
   });
-}
-
-// Generates categories in Categories tab
-app.generateCategories = function(categories) {
-	for (let i in categories.category) {
-		let id = categories.category[i].id;
-		let name = categories.category[i].name;
-
-		$('.options__categories').append(`<div><input type="checkbox" id="${id}" name="categories" value="${id}" class="accessible"><label for="${id}">${name}</label></div>`);
-
-    let iconNameArray = ['music', 'users', 'smile-o', 'mortar-board', 'child', 'ticket', 'film', 'cutlery', 'usd', 'paint-brush', 'heartbeat', 'tree', 'book', 'fort-awesome', 'home', 'comments', 'glass', 'university', 'sitemap', 'sun-o', 'microphone', 'paw', 'hand-rock-o', 'shopping-cart', 'flask', 'bell', 'soccer-ball-o', 'cogs', 'asterisk'];
-
-    app.categoryIconNameArray.push({icon: iconNameArray[i], name: name});
-	}
 }
 
 // Clears all markers and routes off the map and disables More Info tab
@@ -244,17 +244,6 @@ app.setLocation = function() {
   });
 }
 
-// Shows the custom date boxes and disables the next button if Custom is selected for the date
-app.showCustomDate = function(that) {
-  let dateValue = that.val();
-
-  if(dateValue === 'Custom') {
-    $('.options__date').removeClass('options__date--hidden');
-  } else {
-    $('.options__date').addClass('options__date--hidden');
-  }
-}
-
 // Generates dates in the select tags if Custom is selected for the date and sets selected date to current date
 app.generateDates = function() {
   let currentDate = new Date();
@@ -295,11 +284,23 @@ app.generateDates = function() {
   }
 }
 
+// Shows the custom date boxes and disables the next button if Custom is selected for the date
+app.showCustomDate = function(that) {
+  let dateValue = that.val();
+
+  if(dateValue === 'Custom') {
+    $('.options__date').removeClass('options__date--hidden');
+  } else {
+    $('.options__date').addClass('options__date--hidden');
+  }
+}
+
+// Shows the second date box so it is a date range
 app.showCustomDateRange = function() {
   $('.options__date-end').toggleClass('options__date-end--hidden');
 }
 
-// Draws distance radius, clear previous distance radius if applicable, and automatically fits to map
+// Draws distance radius, clears previous distance radius if applicable, and automatically fits to map
 app.drawDistanceRadius = function() {
   if(typeof app.distanceRadius !== "undefined") {
     app.distanceRadius.setMap(null);
@@ -812,14 +813,6 @@ app.init = function() {
     e.preventDefault();
   });
 
-  $('body').on('click', '.overlay__button--close', function() {
-    app.removeOverlay();
-  });
-
-  $('body').on('click', '.overlay__button--email', function() {
-    app.sendEmail();
-  });
-
   $('.options__units--geolocate').on('click', function() {
     app.getGeolocation();
   });
@@ -884,6 +877,14 @@ app.init = function() {
 
   $('.options__button--email').on('click', function() {
     app.generateOverlay('', true);
+  });
+
+  $('body').on('click', '.overlay__button--close', function() {
+    app.removeOverlay();
+  });
+
+  $('body').on('click', '.overlay__button--email', function() {
+    app.sendEmail();
   });
 }
 
