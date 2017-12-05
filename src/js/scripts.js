@@ -216,6 +216,10 @@ app.setLocation = function() {
 
 			app.map.setCenter(homeMarker.position);
 
+      if(app.distanceClicked) {
+        app.drawDistanceRadius();
+      }
+
       if(app.initialClick === 0) {
         app.map.setZoom(13);
         homeMarker.setAnimation(google.maps.Animation.DROP);
@@ -226,14 +230,6 @@ app.setLocation = function() {
       google.maps.event.addDomListener(window, 'resize', function() {
         app.map.setCenter(homeMarker.position);
       });
-
-      homeMarker.addListener('dblclick', function() {
-        app.zoomMarker(this);
-      });
-
-      if(app.distanceClicked) {
-        app.drawDistanceRadius();
-      }
     } else {
       if(status === 'ZERO_RESULTS') {
         app.generateOverlay('Your search location could not be found. Please try again.')
