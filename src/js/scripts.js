@@ -142,7 +142,7 @@ app.removeOverlay = function() {
 
 // Clears all markers and routes off the map and disables More Info tab
 app.clearMap = function() {
-  if(typeof app.markers[0] !== "undefined") {
+  if(typeof app.markers[0] !== 'undefined') {
     for(let i = 0; i < app.markers.length; i++) {
       app.markers[i].setMap(null);
     }
