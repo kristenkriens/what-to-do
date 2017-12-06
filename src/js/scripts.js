@@ -711,7 +711,7 @@ app.generateDirections = function(directions) {
 app.checkEmail = function(email) {
   let testEmail = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
 
-  if(testEmail.test(email)) {
+  if(testEmail.test(email) && email !== '') {
     return true;
   } else {
     return false;
@@ -753,7 +753,7 @@ app.sendEmail = function() {
     }
   }).done(function() {
     app.removeOverlay();
-    app.generateOverlay('Your email has been sent!');
+    app.generateOverlay(`Your email has been sent to ${email}!`);
   });
 }
 
@@ -789,7 +789,7 @@ app.changeActiveTabNext = function(that) {
 // Disables next button if the input is empty
 app.disableButton = function(that, type) {
   if(type === 'email') {
-    if(app.checkEmail(that.val()) && that.val() !== '') {
+    if(app.checkEmail(that.val())) {
       $(`.overlay__button--email`).removeAttr('disabled');
   	} else {
       $(`.overlay__button--email`).attr('disabled', 'disabled');
