@@ -183,7 +183,7 @@ app.getGeolocation = function() {
       });
     });
   } else {
-    app.generateOverlay('The Geolocation service failed. Please enter your location manually.')
+    app.generateOverlay('The Geolocation service failed. Please enter your location manually.');
   }
 }
 
@@ -238,7 +238,7 @@ app.setLocation = function() {
       if(status === 'ZERO_RESULTS') {
         app.generateOverlay('Your search location could not be found. Please try again.')
       } else {
-        app.generateOverlay('Geocode was not successful for the following reason: ' + status);
+        app.generateOverlay('Geocoder failed due to: ' + status  + '. Please enter your location manually.');
       }
     }
   });
@@ -665,7 +665,7 @@ app.getDirectionsRoute = function() {
       app.generateRoute(results);
       app.generateDirections(results);
     } else {
-      app.generateOverlay('Directions request failed due to ' + status);
+      app.generateOverlay('Directions request failed due to: ' + status);
     }
   });
 }
