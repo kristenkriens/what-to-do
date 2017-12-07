@@ -134,10 +134,16 @@ app.generateOverlay = function(text, email) {
 }
 
 // Removes the overlay
-app.removeOverlay = function() {
+app.removeOverlay = function(that) {
   $('.overlay').fadeOut(250, function() {
     $(this).remove();
   });
+
+  if(that) {
+    if(!that.parent().parent().hasClass('overlay--email')) {
+      app.changeActiveTabClick($('.options__tabs-item:first-of-type'));
+    }
+  }
 }
 
 // Clears all markers and routes off the map and disables More Info tab
@@ -912,7 +918,7 @@ app.init = function() {
   });
 
   $('body').on('click', '.overlay__button--close', function() {
-    app.removeOverlay();
+    app.removeOverlay($(this));
   });
 
   $('body').on('click', '.overlay__button--email', function() {
