@@ -221,7 +221,7 @@ app.setLocation = function() {
 
       infoWindow.open(app.map, homeMarker);
 
-      if(infoWindow.getMap() === null && typeof infoWindow.getMap() === "undefined") {
+      if(infoWindow.getMap() === null && typeof infoWindow.getMap() === 'undefined') {
         infoWindow.close();
       }
 
