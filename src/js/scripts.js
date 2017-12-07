@@ -261,6 +261,10 @@ app.setLocation = function() {
         $('.options__input--location').val(`${this.position.lat()}, ${this.position.lng()}`);
 
         app.setLocation();
+
+        if($('.options__content-item[data-title="instructions"]').hasClass('options__content-item--active')) {
+          app.changeActiveTabClick($('.options__tabs-item[data-title="categories"]'));
+        }
       });
     } else {
       if(status === 'ZERO_RESULTS') {
@@ -802,7 +806,7 @@ app.changeActiveTabClick = function(that) {
   }
 }
 
-// Changes the active tab based on which tab was clicked and enables disabled tabs once they have been active
+// Changes the active tab based on which next button was clicked and enables disabled tabs once they have been active
 app.changeActiveTabNext = function(that) {
 	let currentIndex = that.parent().index();
 	let totalTabs = $('.options__tabs-item').length;
