@@ -254,23 +254,7 @@ app.setLocation = function() {
       });
 
       homeMarker.addListener('dragend', function() {
-        if(app.submitClicked) {
-          app.clearEvents();
-        }
-
-        if(app.distanceClicked) {
-          app.drawDistanceRadius();
-        }
-
-  			app.map.setCenter(this.position);
-
-        $('.options__input--location').val(`${this.position.lat()}, ${this.position.lng()}`);
-
-        app.setLocation();
-
-        if($('.options__content-item[data-title="instructions"]').hasClass('options__content-item--active')) {
-          app.changeActiveTabClick($('.options__tabs-item[data-title="categories"]'));
-        }
+        app.setNewMarkerLocation(this);
       });
     } else {
       if(status === 'ZERO_RESULTS') {
@@ -280,6 +264,27 @@ app.setLocation = function() {
       }
     }
   });
+}
+
+// Sets new marker location and changes active tab to Categories if on Instructions tab
+app.setNewMarkerLocation = function(that) {
+  if(app.submitClicked) {
+    app.clearEvents();
+  }
+
+  if(app.distanceClicked) {
+    app.drawDistanceRadius();
+  }
+
+  app.map.setCenter(that.position);
+
+  $('.options__input--location').val(`${that.position.lat()}, ${that.position.lng()}`);
+
+  app.setLocation();
+
+  if($('.options__content-item[data-title="instructions"]').hasClass('options__content-item--active')) {
+    app.changeActiveTabClick($('.options__tabs-item[data-title="categories"]'));
+  }
 }
 
 // Generates dates in the select tags if Custom is selected for the date and sets selected date to current date
