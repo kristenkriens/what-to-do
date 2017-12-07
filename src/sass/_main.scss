@@ -437,8 +437,13 @@
   }
 
   .gm-style, .gm-style-iw {
+    color: $navy;
     font-family: 'Lato', sans-serif;
     font-weight: 300;
+  }
+
+  .gm-style-iw {
+    border: none;
   }
 }
 

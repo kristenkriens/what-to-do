@@ -215,7 +215,14 @@ app.setLocation = function() {
 
       if(app.initialClick === 0) {
         app.map.setZoom(13);
+
         homeMarker.setAnimation(google.maps.Animation.DROP);
+
+        let infowindow = new google.maps.InfoWindow({
+          content: `I'm draggable!`
+        });
+
+        infowindow.open(app.map, homeMarker);
       }
 
       app.initialClick = 1;
