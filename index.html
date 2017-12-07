@@ -25,6 +25,15 @@
           </div>
           <button class="options__button options__button--location options__button--next" disabled>Next</button>
         </div>
+        <div class="options__content-item" data-title="distance">
+          <h3>Distance</h3>
+          <div class="options__question options__question--units" role="group">
+            <legend>How far are you willing to travel?</legend>
+            <input type="number" id="distance" placeholder="e.g. 10" class="options__input options__input--distance">
+            <label for="distance" class="options__units">km</label>
+          </div>
+          <button class="options__button options__button--distance options__button--next" disabled>Next</button>
+        </div>
         <div class="options__content-item" data-title="date">
           <h3>Date</h3>
           <div class="options__question" role="group">
@@ -65,15 +74,6 @@
             </div>
           </div>
           <button class="options__button options__button--date options__button--next">Next</button>
-        </div>
-        <div class="options__content-item" data-title="distance">
-          <h3>Distance</h3>
-          <div class="options__question options__question--units" role="group">
-            <legend>How far are you willing to travel?</legend>
-            <input type="number" id="distance" placeholder="e.g. 10" class="options__input options__input--distance">
-            <label for="distance" class="options__units">km</label>
-          </div>
-          <button class="options__button options__button--distance options__button--next" disabled>Next</button>
         </div>
         <div class="options__content-item" data-title="categories">
           <h3>Categories</h3>
@@ -142,8 +142,8 @@
     </div>
     <div class="options__tabs">
       <div class="options__tabs-item options__tabs-item--active" data-title="location"><i class="fa fa-globe" aria-hidden="true"></i><span class="accessible">Location</span></div>
-      <div class="options__tabs-item options__tabs-item--disabled" data-title="date"><i class="fa fa-calendar" aria-hidden="true"></i><span class="accessible">Date</span></div>
       <div class="options__tabs-item options__tabs-item--disabled" data-title="distance"><i class="fa fa-street-view" aria-hidden="true"></i><span class="accessible">Distance</span></div>
+      <div class="options__tabs-item options__tabs-item--disabled" data-title="date"><i class="fa fa-calendar" aria-hidden="true"></i><span class="accessible">Date</span></div>
       <div class="options__tabs-item options__tabs-item--disabled" data-title="categories"><i class="fa fa-tags" aria-hidden="true"></i><span class="accessible">Categories</span></div>
       <div class="options__tabs-item options__tabs-item--disabled" data-title="info"><i class="fa fa-info" aria-hidden="true"></i><span class="accessible">Event Info</span></div>
       <div class="options__tabs-item options__tabs-item--disabled" data-title="transportation"><i class="fa fa-car" aria-hidden="true"></i><span class="accessible">Transportation</span></div>

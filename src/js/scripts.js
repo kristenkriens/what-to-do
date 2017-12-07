@@ -156,7 +156,7 @@ app.clearMap = function() {
 }
 
 // Gets location via geolocation and adds address to location input
-app.getGeolocation = function() {
+app.getGeolocation = function(newMyLatLng) {
 	$('.options__button--location').attr('disabled', 'disabled');
   $('.options__units--geolocate').html('<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="accessible">Loading...</span>');
 
@@ -173,6 +173,10 @@ app.getGeolocation = function() {
           $('.options__button--location').removeAttr('disabled');
         }
       }, 500);
+
+      if(newMyLatLng) {
+        myLatLng = newMyLatLng;
+      }
 
       new google.maps.Geocoder().geocode({'location': myLatLng}, function(results, status) {
         if (status === 'OK') {
@@ -198,6 +202,7 @@ app.setLocation = function() {
       let homeMarker = new google.maps.Marker({
         map: app.map,
         position: results[0].geometry.location,
+        draggable: true,
         icon: {
           path: fontawesome.markers.MAP_MARKER,
           strokeWeight: 0,
@@ -208,6 +213,13 @@ app.setLocation = function() {
         }
       });
 
+      if(app.initialClick === 0) {
+        app.map.setZoom(13);
+        homeMarker.setAnimation(google.maps.Animation.DROP);
+      }
+
+      app.initialClick = 1;
+
       app.markers.push(homeMarker);
 
 			app.lat = homeMarker.position.lat();
@@ -216,12 +228,9 @@ app.setLocation = function() {
 
 			app.map.setCenter(homeMarker.position);
 
-      if(app.initialClick === 0) {
-        app.map.setZoom(13);
-        homeMarker.setAnimation(google.maps.Animation.DROP);
+      if(app.distanceClicked) {
+        app.drawDistanceRadius();
       }
-
-      app.initialClick = 1;
 
       google.maps.event.addDomListener(window, 'resize', function() {
         app.map.setCenter(homeMarker.position);
@@ -231,9 +240,29 @@ app.setLocation = function() {
         app.zoomMarker(this);
       });
 
-      if(app.distanceClicked) {
-        app.drawDistanceRadius();
-      }
+      homeMarker.addListener('dragend', function() {
+        if(app.submitClicked) {
+          app.clearEvents();
+        }
+
+        app.lat = this.position.lat();
+  			app.lng = this.position.lng();
+
+  			app.map.setCenter(this.position);
+
+        let newMyLatLng = {
+          lat: app.lat,
+          lng: app.lng
+        }
+
+        if(app.distanceClicked) {
+          app.drawDistanceRadius();
+        }
+
+        app.getGeolocation(newMyLatLng);
+
+        app.changeActiveTabClick($('.options__tabs-item[data-title="location"]'));
+      });
     } else {
       if(status === 'ZERO_RESULTS') {
         app.generateOverlay('Your search location could not be found. Please try again.')
@@ -302,7 +331,7 @@ app.showCustomDateRange = function() {
 
 // Draws distance radius, clears previous distance radius if applicable, and automatically fits to map
 app.drawDistanceRadius = function() {
-  if(typeof app.distanceRadius !== "undefined") {
+  if(typeof app.distanceRadius !== 'undefined') {
     app.distanceRadius.setMap(null);
   }
 
@@ -491,7 +520,7 @@ app.generateEvents = function(events) {
   $('.spinner').hide();
 }
 
-// Clears and redraws the distance radius (if applicable), hides the legend and removes the items, shows the spinner again, and clears event markers
+// Hides the legend and removes the items, shows the spinner again, and clears event markers
 app.clearEvents = function() {
   $('.map__legend').addClass('map__legend--hidden');
   $('.map__legend-item').remove();
