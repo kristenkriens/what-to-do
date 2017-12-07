@@ -156,7 +156,7 @@ app.clearMap = function() {
 }
 
 // Gets location via geolocation and adds address to location input
-app.getGeolocation = function(newMyLatLng) {
+app.getGeolocation = function() {
 	$('.options__button--location').attr('disabled', 'disabled');
   $('.options__units--geolocate').html('<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="accessible">Loading...</span>');
 
@@ -173,10 +173,6 @@ app.getGeolocation = function(newMyLatLng) {
           $('.options__button--location').removeAttr('disabled');
         }
       }, 500);
-
-      if(newMyLatLng) {
-        myLatLng = newMyLatLng;
-      }
 
       new google.maps.Geocoder().geocode({'location': myLatLng}, function(results, status) {
         if (status === 'OK') {
@@ -252,23 +248,15 @@ app.setLocation = function() {
           app.clearEvents();
         }
 
-        app.lat = this.position.lat();
-  			app.lng = this.position.lng();
-
-  			app.map.setCenter(this.position);
-
-        let newMyLatLng = {
-          lat: app.lat,
-          lng: app.lng
-        }
-
         if(app.distanceClicked) {
           app.drawDistanceRadius();
         }
 
-        app.getGeolocation(newMyLatLng);
+  			app.map.setCenter(this.position);
 
-        app.changeActiveTabClick($('.options__tabs-item[data-title="location"]'));
+        $('.options__input--location').val(`${this.position.lat()}, ${this.position.lng()}`);
+
+        app.setLocation();
       });
     } else {
       if(status === 'ZERO_RESULTS') {
