@@ -402,9 +402,13 @@ app.getEvents = function() {
 
   app.distance = $('.options__input--distance').val();
 
-	app.categories = $('input[name="categories"]:checked').map(function() {
-		return this.value;
-	}).get().join(',');
+  if($('.options__categories input:checked').val() === 'No Preference') {
+    app.categories = '';
+  } else {
+    app.categories = $('input[name="categories"]:checked').map(function() {
+  		return this.value;
+  	}).get().join(',');
+  }
 
 	$('.map__results-number').html('<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="accessible">Loading...</span>');
 
@@ -888,6 +892,15 @@ app.init = function() {
 	$('.options__button--distance').on('click', function() {
     app.drawDistanceRadius();
     app.distanceClicked = true;
+  });
+
+  $('.options__categories').on('click', 'input', function() {
+    $('.options__categories input#noCategoryPreference').prop('checked', false).removeAttr('checked');
+  });
+
+  $('.options__categories').on('click', 'input#noCategoryPreference', function() {
+    $('.options__categories input').prop('checked', false).removeAttr('checked');
+    $(this).prop('checked', true).attr('checked', 'checked');
   });
 
 	$('.options__button--submit').on('click', function() {
