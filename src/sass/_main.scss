@@ -164,6 +164,11 @@
     width: 100%;
     padding-right: 15px;
 
+    div:first-of-type label {
+      border-bottom: 1px dashed $white;
+      padding-bottom: 7px;
+    }
+
     @media (min-width: $sm-width-plus) and (max-width: $md-width) {
       display: flex;
       flex-wrap: wrap;
