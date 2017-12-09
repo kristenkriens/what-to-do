@@ -143,18 +143,12 @@
     }
 
     .options__input {
-      background-image: url('../images/arrow-down.svg');
-      background-repeat: no-repeat;
-      background-size: 9px 9px;
-      background-position: right 10px center;
-      padding: 5px 10px;
-
       &--year {
-        width: calc(31% - 5px);
+        width: calc(32% - 5px);
       }
 
       &--month {
-        width: calc(45% - 5px);
+        width: calc(44% - 5px);
       }
 
       &--day {
