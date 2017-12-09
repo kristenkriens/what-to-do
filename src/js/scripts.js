@@ -216,20 +216,16 @@ app.setLocation = function() {
         }
       });
 
-      if(app.initialClick === 0) {
-        app.map.setZoom(13);
-
-        homeMarker.setAnimation(google.maps.Animation.DROP);
-      }
-
       let infoWindow = new google.maps.InfoWindow({
         content: `I'm draggable!`
       });
 
-      infoWindow.open(app.map, homeMarker);
+      if(app.initialClick === 0) {
+        app.map.setZoom(13);
 
-      if(infoWindow.getMap() === null && typeof infoWindow.getMap() === 'undefined') {
-        infoWindow.close();
+        homeMarker.setAnimation(google.maps.Animation.DROP);
+
+        infoWindow.open(app.map, homeMarker);
       }
 
       app.initialClick = 1;
