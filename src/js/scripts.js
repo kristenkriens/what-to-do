@@ -367,7 +367,7 @@ app.drawDistanceRadius = function() {
     distanceMultiplier = 1000 * 1.60934;
   }
 
-	let radius = (parseInt(app.distance) * distanceMultiplier) + 100;
+	let radius = (parseFloat(app.distance) * distanceMultiplier) + 100;
 
 	app.distanceRadius = new google.maps.Circle({
     strokeColor: app.orange,
