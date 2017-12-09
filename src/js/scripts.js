@@ -719,7 +719,6 @@ app.getTransportationMode = function() {
 
 // Gets directions and route from home location to selected event
 app.getDirectionsRoute = function() {
-  console.log(app.distanceUnits);
   app.directionsService.route({
     origin: app.latLngString,
     destination: app.selectedEventLatLngString,
