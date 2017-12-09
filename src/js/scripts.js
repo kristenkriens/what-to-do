@@ -118,7 +118,7 @@ app.generateCategories = function(categories) {
 
 		$('.options__categories').append(`<div><input type="checkbox" id="${id}" name="categories" value="${id}" class="accessible"><label for="${id}">${name}</label></div>`);
 
-    let iconNameArray = ['music', 'users', 'smile-o', 'mortar-board', 'child', 'ticket', 'film', 'cutlery', 'usd', 'paint-brush', 'heartbeat', 'tree', 'book', 'fort-awesome', 'home', 'comments', 'glass', 'university', 'sitemap', 'sun-o', 'microphone', 'paw', 'hand-rock-o', 'shopping-cart', 'flask', 'bell', 'soccer-ball-o', 'cogs', 'asterisk'];
+    let iconNameArray = ['music', 'users', 'smile-o', 'mortar-board', 'child', 'ticket', 'film', 'cutlery', 'usd', 'paint-brush', 'heartbeat', 'tree', 'book', 'fort-awesome', 'home', 'comments', 'glass', 'university', 'sitemap', 'sun-o', 'microphone', 'paw', 'hand-rock-o', 'shopping-cart', 'flask', 'bell', 'soccer-ball-o', 'desktop', 'asterisk'];
 
     app.categoryIconNameArray.push({icon: iconNameArray[i], name: name});
 	}
