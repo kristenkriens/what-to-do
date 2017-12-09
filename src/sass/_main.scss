@@ -108,23 +108,32 @@
     }
   }
 
-  &__question {
-    position: relative;
+  &__input {
+    color: $navy;
+  	background-color: $white;
+  	border: none;
+  	outline: none;
+  	padding: 10px;
+  	width: 100%;
+  	height: 35px;
+  	font-weight: 300;
 
-    &--units  {
+    &-units  {
+      position: relative;
       max-width: 265px;
 
-      input[type="text"], input[type="number"] {
+      input {
         padding-right: 35px;
+      }
+
+      label {
+        margin-bottom: 0;
       }
 
       .options__units {
         right: 0;
-        box-shadow: -15px 0px 10px -5px $white;
-      }
-
-      button {
         bottom: 10px;
+        box-shadow: -15px 0px 10px -5px $white;
       }
     }
   }

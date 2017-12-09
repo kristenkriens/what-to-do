@@ -18,10 +18,12 @@
       <div class="options__content-items">
         <div class="options__content-item options__content-item--active" data-title="location">
           <h3>Location</h3>
-          <div class="options__question options__question--units" role="group">
+          <div class="options__question" role="group">
             <legend>Where are you located?</legend>
-            <input type="text" id="location" placeholder="e.g. 123 Fake Street, Toronto" class="options__input options__input--location">
-            <button class="options__units options__units--geolocate"><i class="fa fa-location-arrow" aria-hidden="true"></i><span class="accessible">Use Current Location</span></button>
+            <div class="options__input-units">
+              <input type="text" id="location" placeholder="e.g. 123 Fake Street, Toronto" class="options__input options__input--location">
+              <button class="options__units options__units--geolocate"><i class="fa fa-location-arrow" aria-hidden="true"></i><span class="accessible">Use Current Location</span></button>
+            </div>
           </div>
           <button class="options__button options__button--location options__button--next" disabled>Next</button>
         </div>
@@ -29,8 +31,10 @@
           <h3>Distance</h3>
           <div class="options__question options__question--units" role="group">
             <legend>How far are you willing to travel?</legend>
-            <input type="number" id="distance" placeholder="e.g. 10" class="options__input options__input--distance">
-            <label for="distance" class="options__units">km</label>
+            <div class="options__input-units">
+              <input type="number" id="distance" placeholder="e.g. 10" class="options__input options__input--distance">
+              <label for="distance" class="options__units">km</label>
+            </div>
           </div>
           <button class="options__button options__button--distance options__button--next" disabled>Next</button>
         </div>
