@@ -124,6 +124,7 @@
 
       input {
         padding-right: 35px;
+        margin-bottom: 0;
       }
 
       label {
@@ -132,8 +133,12 @@
 
       .options__units {
         right: 0;
-        bottom: 10px;
+        bottom: 0;
         box-shadow: -15px 0px 10px -5px $white;
+      }
+
+      + input + label {
+        margin-top: 7px;
       }
     }
   }
