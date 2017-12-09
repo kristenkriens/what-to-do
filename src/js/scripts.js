@@ -13,6 +13,7 @@ app.submitClicked = false;
 
 app.markers = [];
 
+app.distanceUnits = 'km';
 app.distanceRadius;
 
 app.lat = 0;
@@ -287,6 +288,13 @@ app.setNewMarkerLocation = function(that) {
   }
 }
 
+// Sets the distance units to kilometers or miles
+app.setDistanceUnits = function(that) {
+  app.distanceUnits = (app.distanceUnits === 'km' ? 'mi' : 'km');
+
+  $('.options__content-item[data-title="distance"] .options__input-units label').text(app.distanceUnits);
+}
+
 // Generates dates in the select tags if Custom is selected for the date and sets selected date to current date
 app.generateDates = function() {
   let currentDate = new Date();
@@ -351,7 +359,15 @@ app.drawDistanceRadius = function() {
 
 	app.distance = $('.options__input--distance').val();
 
-	let radius = (parseInt(app.distance) * 1000) + 100;
+  let distanceMultiplier;
+
+  if(app.distanceUnits === 'km') {
+    distanceMultiplier = 1000;
+  } else {
+    distanceMultiplier = 1000 * 1.60934;
+  }
+
+	let radius = (parseInt(app.distance) * distanceMultiplier) + 100;
 
 	app.distanceRadius = new google.maps.Circle({
     strokeColor: app.orange,
@@ -423,7 +439,7 @@ app.getEvents = function() {
       sort_order: 'popularity',
       within: app.distance,
 			category: app.categories,
-			units: 'km',
+			units: app.distanceUnits,
       include: 'price,categories',
 			page_size: 100
 		}
@@ -617,7 +633,7 @@ app.getSelectedVenueInfo = function(venueId) {
 			date: app.date,
       sort_order: 'popularity',
 			category: app.categories,
-			units: 'km',
+			units: app.distanceUnits,
       include: 'price,categories',
       page_size: 1
 		}
@@ -703,10 +719,12 @@ app.getTransportationMode = function() {
 
 // Gets directions and route from home location to selected event
 app.getDirectionsRoute = function() {
+  console.log(app.distanceUnits);
   app.directionsService.route({
     origin: app.latLngString,
     destination: app.selectedEventLatLngString,
-    travelMode: app.mode.toUpperCase()
+    travelMode: app.mode.toUpperCase(),
+    unitSystem: (app.distanceUnits === 'km' ? google.maps.UnitSystem.METRIC : google.maps.UnitSystem.IMPERIAL)
   }, function(results, status) {
     if (status === 'OK') {
       app.generateRoute(results);
@@ -888,6 +906,10 @@ app.init = function() {
     app.setLocation();
     app.locationClicked = true;
   });
+
+  $('.options__content-item[data-title="distance"] input[type="checkbox"]').on('click', function() {
+    app.setDistanceUnits($(this));
+  })
 
 	$('.options__button--distance').on('click', function() {
     app.drawDistanceRadius();
