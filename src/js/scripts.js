@@ -693,7 +693,7 @@ app.generateSelectedVenueEvents = function(selectedVenueEvent) {
     app.selectedEvent.date = `${app.selectedEvent.start_date} - ${app.selectedEvent.stop_date}`;
   }
 
-  $('.options__event').append(`<a href="${app.selectedEvent.url}" target="_blank"><h4>${app.selectedEvent.title}</h4></a><p class="normal">${app.selectedEvent.venue_name}</p><p class="normal">${app.selectedEvent.venue_address}, ${app.selectedEvent.city_name}</p><p class="normal">${app.selectedEvent.date}</p><div class="options__event-description">${app.selectedEvent.description}</div><a href="${app.selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></a>`);
+  $(`<a href="${app.selectedEvent.url}" target="_blank"><h4>${app.selectedEvent.title}</h4></a><p class="normal">${app.selectedEvent.venue_name}</p><p class="normal">${app.selectedEvent.venue_address}, ${app.selectedEvent.city_name}</p><p class="normal">${app.selectedEvent.date}</p><div class="options__event-description">${app.selectedEvent.description}</div><a href="${app.selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></a>`).hide().appendTo('.options__event').fadeIn(500);
 
   if(app.selectedEvent.description === null) {
     app.selectedEvent.description = 'No event description found';
