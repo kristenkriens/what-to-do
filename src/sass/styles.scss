@@ -45,7 +45,7 @@ input, select, label {
   margin-bottom: 10px;
 }
 
-input[type="text"], input[type="number"], input[type="email"] {
+input[type="text"], input[type="number"], input[type="email"], select {
 	color: $navy;
 	background-color: $white;
 	border: none;
@@ -91,14 +91,12 @@ input[type="checkbox"] {
 }
 
 select {
-	border: none;
 	border-radius: 0;
 	background-image: url('../images/arrow-down.svg');
 	background-repeat: no-repeat;
 	background-size: 10px;
 	background-position: right 10px center;
 	padding: 5px 10px;
-	outline: none;
 	appearance: none;
 	-webkit-appearance: none;
 	-moz-appearance:none;
