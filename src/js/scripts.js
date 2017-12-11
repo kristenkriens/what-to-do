@@ -423,8 +423,6 @@ app.getEvents = function() {
   	}).get().join(',');
   }
 
-	$('.map__results-number').html('<i class="fa fa-spinner fa-pulse fa-fw"></i><span class="accessible">Loading...</span>');
-
 	$.ajax({
 		url: `${app.eventApiUrl}/events/search`,
 		method: 'GET',
