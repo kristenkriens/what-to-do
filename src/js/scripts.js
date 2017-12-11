@@ -58,6 +58,7 @@ app.generateMap = function() {
     scrollwheel: false,
     zoom: 3,
     styles: mapStyle,
+    zoomControl: false,
     streetViewControl: false,
     rotateControl: false,
     fullscreenControl: false
@@ -96,6 +97,17 @@ app.enableRoutes = function() {
   });
 
   app.directionsDisplay.setMap(app.map);
+}
+
+// Zooms in and out on map by one (used for click of plus and minus buttons)
+app.zoomInOutMap = function(type) {
+  let currentZoomLevel = app.map.getZoom();
+
+  if(currentZoomLevel != 0 && type === 'in') {
+    app.map.setZoom(currentZoomLevel + 1);
+  } else {
+    app.map.setZoom(currentZoomLevel - 1);
+  }
 }
 
 // Gets all categories from Eventful API
@@ -867,6 +879,14 @@ app.init = function() {
   app.generateMap();
 	app.getCategories();
   app.generateDates();
+
+  $('.map__zoom-in').on('click', function() {
+    app.zoomInOutMap('in');
+  });
+
+  $('.map__zoom-out').on('click', function() {
+    app.zoomInOutMap('out');
+  });
 
   $('button').on('click', function(e) {
     e.preventDefault();

@@ -394,6 +394,28 @@
     height: 100%;
   }
 
+  &__zoom {
+    border: 1px solid $medium-grey;
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+
+    &-in, &-out {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: $white;
+      color: $navy;
+      width: 30px;
+      height: 30px;
+      cursor: pointer;
+    }
+
+    &-in {
+      border-bottom: 1px solid $medium-grey;
+    }
+  }
+
   &__legend {
     background-color: $transparent-white;
     color: $navy;
