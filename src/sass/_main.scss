@@ -394,6 +394,38 @@
     height: 100%;
   }
 
+  &__type {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid $medium-grey;
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    font-size: 14px;
+
+    &-map, &-satellite {
+      padding: 10px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-direction: column;
+      background-color: $white;
+      color: $navy;
+      height: 30px;
+      cursor: pointer;
+      transition: 200ms background-color ease;
+
+      &.active, &:hover {
+        background-color: $light-grey;
+      }
+    }
+
+    &-map {
+      border-right: 1px solid $medium-grey;
+    }
+  }
+
   &__zoom {
     border: 1px solid $medium-grey;
     position: absolute;

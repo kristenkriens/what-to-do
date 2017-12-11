@@ -58,10 +58,7 @@ app.generateMap = function() {
     scrollwheel: false,
     zoom: 3,
     styles: mapStyle,
-    zoomControl: false,
-    streetViewControl: false,
-    rotateControl: false,
-    fullscreenControl: false
+    disableDefaultUI: true
   };
 
   app.map = new google.maps.Map(mapContainer, mapInfo);
@@ -99,14 +96,26 @@ app.enableRoutes = function() {
   app.directionsDisplay.setMap(app.map);
 }
 
-// Zooms in and out on map by one (used for click of plus and minus buttons)
-app.zoomInOutMap = function(type) {
+// Zooms in and out on map by one (used on click of plus and minus buttons)
+app.zoomInOutMap = function(that) {
   let currentZoomLevel = app.map.getZoom();
 
-  if(currentZoomLevel != 0 && type === 'in') {
+  if(currentZoomLevel != 0 && that.hasClass('map__zoom-in')) {
     app.map.setZoom(currentZoomLevel + 1);
   } else {
     app.map.setZoom(currentZoomLevel - 1);
+  }
+}
+
+// Sets the map type (used on click of map and satellite buttons)
+app.setMapType = function(that) {
+  that.parent().children().removeClass('active');
+  that.addClass('active');
+
+  if(that.hasClass('map__type-map')) {
+    app.map.setMapTypeId('roadmap');
+  } else {
+    app.map.setMapTypeId('hybrid');
   }
 }
 
@@ -881,11 +890,19 @@ app.init = function() {
   app.generateDates();
 
   $('.map__zoom-in').on('click', function() {
-    app.zoomInOutMap('in');
+    app.zoomInOutMap($(this));
   });
 
   $('.map__zoom-out').on('click', function() {
-    app.zoomInOutMap('out');
+    app.zoomInOutMap($(this));
+  });
+
+  $('.map__type-map').on('click', function() {
+    app.setMapType($(this));
+  });
+
+  $('.map__type-satellite').on('click', function() {
+    app.setMapType($(this));
   });
 
   $('button').on('click', function(e) {
