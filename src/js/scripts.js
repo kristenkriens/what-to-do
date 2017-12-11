@@ -58,8 +58,9 @@ app.generateMap = function() {
     scrollwheel: false,
     zoom: 3,
     styles: mapStyle,
-    disableDefaultUI: true,
-    zoomControl: true
+    streetViewControl: false,
+    rotateControl: false,
+    fullscreenControl: false
   };
 
   app.map = new google.maps.Map(mapContainer, mapInfo);
