@@ -769,7 +769,7 @@ app.generateDirections = function(directions) {
   $('.options__directions-info').empty();
   $('.options__directions-items').empty();
 
-  $('.options__directions-info').append('<p><span class="normal">Mode:</span> <span class="mode"></span></p><p><span class="normal">Distance:</span> <span class="distance"></span></p><p><span class="normal">Time:</span> <span class="time"></span></p>');
+  $('<p><span class="normal">Mode:</span> <span class="mode"></span></p><p><span class="normal">Distance:</span> <span class="distance"></span></p><p><span class="normal">Time:</span> <span class="time"></span></p>').hide().appendTo('.options__directions-info').fadeIn(500);
 
   $('.mode').text(app.mode);
 
