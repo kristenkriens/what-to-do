@@ -169,7 +169,7 @@ app.removeOverlay = function(that) {
   }
 }
 
-// Clears all markers and routes off the map and disables More Info tab
+// Clears all markers and routes off the map and disables Info tab
 app.clearMap = function() {
   if(typeof app.markers[0] !== 'undefined') {
     for(let i = 0; i < app.markers.length; i++) {
@@ -626,13 +626,14 @@ app.showInstructions = function() {
 	$('.options__content-item[data-title="instructions"]').addClass('options__content-item--active');
 }
 
-// Shows the Event Info tab and removes the active class from other tabs
+// Shows the Event Info tab, removes the active class from instructions tab, and enables directions tab
 app.showEventInfoTab = function(venueId) {
-	$('.options__tabs-item').removeClass('options__tabs-item--active');
-	$('.options__content-item').removeClass('options__content-item--active');
+	$('.options__content-item[data-title="instructions"]').removeClass('options__content-item--active');
 
 	$('.options__tabs-item[data-title="info"]').addClass('options__tabs-item--active').removeClass('options__tabs-item--disabled');
 	$('.options__content-item[data-title="info"]').addClass('options__content-item--active');
+
+  $('.options__tabs-item[data-title="directions"]').removeClass('options__tabs-item--disabled');
 
   app.getSelectedVenueInfo(venueId);
 }
@@ -713,7 +714,7 @@ app.generateSelectedVenueEvents = function(selectedVenueEvent) {
     app.selectedEvent.date = `${app.selectedEvent.start_date} - ${app.selectedEvent.stop_date}`;
   }
 
-  $(`<a href="${app.selectedEvent.url}" target="_blank"><h4>${app.selectedEvent.title}</h4></a><p class="normal">${app.selectedEvent.venue_name}</p><p class="normal">${app.selectedEvent.venue_address}, ${app.selectedEvent.city_name}</p><p class="normal">${app.selectedEvent.date}</p><div class="options__event-description">${app.selectedEvent.description}</div><a href="${app.selectedEvent.url}" target="_blank" class="options__event-link">More Info <i class="fa fa-chevron-right" aria-hidden="true"></i></a>`).hide().appendTo('.options__event').fadeIn(500);
+  $(`<a href="${app.selectedEvent.url}" target="_blank"><h4>${app.selectedEvent.title}</h4></a><p class="normal">${app.selectedEvent.venue_name}</p><p class="normal">${app.selectedEvent.venue_address}, ${app.selectedEvent.city_name}</p><p class="normal">${app.selectedEvent.date}</p><div class="options__event-description">${app.selectedEvent.description}</div><a href="${app.selectedEvent.url}" target="_blank" class="options__event-link">Event Page <i class="fa fa-chevron-right" aria-hidden="true"></i></a>`).hide().appendTo('.options__event').fadeIn(500);
 
   if(app.selectedEvent.description === null) {
     app.selectedEvent.description = 'No event description found';
@@ -764,14 +765,26 @@ app.clearRoute = function() {
   $('.options__tabs-item[data-title="transportation"], .options__tabs-item[data-title="directions"]').addClass('options__tabs-item--disabled');
 }
 
+// Hides directions questions and shows directionsService
+app.showDirections = function() {
+  $('.options__content-item[data-title="directions"] .options__question').addClass('options__question--hidden');
+  $('.options__content-item[data-title="directions"] .options__directions').removeClass('options__directions--hidden');
+}
+
+// Hides directions and shows directions questions
+app.hideDirections = function() {
+  $('.options__content-item[data-title="directions"] .options__directions').addClass('options__directions--hidden');
+  $('.options__content-item[data-title="directions"] .options__question').removeClass('options__question--hidden');
+}
+
 // Generates the directions from home location to selected event in the directions tab
 app.generateDirections = function(directions) {
   $('.options__directions-info').empty();
   $('.options__directions-items').empty();
 
-  $('<p><span class="normal">Mode:</span> <span class="mode"></span></p><p><span class="normal">Distance:</span> <span class="distance"></span></p><p><span class="normal">Time:</span> <span class="time"></span></p>').hide().appendTo('.options__directions-info').fadeIn(500);
+  $('.options__directions-info').append('<p><span class="normal">Mode:</span> <span class="mode"></span></p><p><span class="normal">Distance:</span> <span class="distance"></span></p><p><span class="normal">Time:</span> <span class="time"></span></p>');
 
-  $('.mode').text(app.mode);
+  $('.mode').html(app.mode + ' <span class="mode-edit">(<span class="mode-edit-inner">edit</span>)</span>');
 
   app.legs = directions.routes[0].legs[0];
 
@@ -856,10 +869,10 @@ app.changeActiveTabClick = function(that) {
 
 // Changes the active tab based on which next button was clicked and enables disabled tabs once they have been active
 app.changeActiveTabNext = function(that) {
-	let currentIndex = that.parent().index();
+	let currentIndex = that.parent().parent().index();
 	let totalTabs = $('.options__tabs-item').length;
 
-	if(currentIndex > totalTabs - 3) {
+	if(currentIndex > totalTabs - 2) {
 		currentIndex--;
 	}
 
@@ -962,8 +975,13 @@ app.init = function() {
     app.submitClicked = true;
   });
 
-  $('.options__button--transportation').on('click', function() {
+  $('.options__button--directions').on('click', function() {
     app.getTransportationMode();
+    app.showDirections();
+  });
+
+  $('.options__directions').on('click', '.mode-edit-inner', function() {
+    app.hideDirections();
   });
 
   $('body').on('change', '.options__question input:not([name="transportation"]), .options__question select', function() {

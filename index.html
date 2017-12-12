@@ -18,18 +18,18 @@
       <div class="options__content-items">
         <div class="options__content-item options__content-item--active" data-title="location">
           <h3>Location</h3>
-          <form class="options__question" id="locationForm">
+          <form class="options__question">
             <legend>Where are you located?</legend>
             <div class="options__input-units">
               <input type="text" id="location" placeholder="e.g. 123 Fake Street, Toronto" class="options__input options__input--location">
               <button class="options__units options__units--geolocate" type="button"><i class="fa fa-location-arrow" aria-hidden="true"></i><span class="accessible">Use Current Location</span></button>
             </div>
+            <button class="options__button options__button--location options__button--next" type="submit" disabled>Next</button>
           </form>
-          <button class="options__button options__button--location options__button--next" type="submit" form="locationForm" disabled>Next</button>
         </div>
         <div class="options__content-item" data-title="distance">
           <h3>Distance</h3>
-          <form class="options__question" id="distanceForm">
+          <form class="options__question">
             <legend>How far are you willing to travel?</legend>
             <div class="options__input-units">
               <input type="number" id="distance" placeholder="e.g. 10" class="options__input options__input--distance">
@@ -37,12 +37,12 @@
             </div>
             <input type="checkbox" id="distanceUnits" value="Metric (US)" class="accessible">
             <label for="distanceUnits">Imperial (US)</label>
+            <button class="options__button options__button--distance options__button--next" type="submit" disabled>Next</button>
           </form>
-          <button class="options__button options__button--distance options__button--next" type="submit" form="distanceForm" disabled>Next</button>
         </div>
         <div class="options__content-item" data-title="date">
           <h3>Date</h3>
-          <form class="options__question" id="dateForm">
+          <form class="options__question">
             <legend>When do you want to go?</legend>
             <div>
               <input type="radio" id="noDatePreference" name="date" value="Future" class="accessible" checked>
@@ -78,12 +78,12 @@
               <input type="checkbox" id="dateRange" value="Date Range" class="accessible">
               <label for="dateRange">Date Range</label>
             </div>
+            <button class="options__button options__button--date options__button--next" type="submit">Next</button>
           </form>
-          <button class="options__button options__button--date options__button--next" type="submit" form="dateForm">Next</button>
         </div>
         <div class="options__content-item" data-title="categories">
           <h3>Categories</h3>
-          <form class="options__question" id="categoriesForm">
+          <form class="options__question">
             <legend>Which of the following interest you? (Select all that apply)</legend>
             <div class="options__categories">
               <div>
@@ -91,8 +91,8 @@
                 <label for="noCategoryPreference">No Preference</label>
               </div>
             </div>
+            <button class="options__button options__button--categories options__button--submit options__button--next" type="submit">Find Events</button>
           </form>
-          <button class="options__button options__button--categories options__button--submit options__button--next" type="submit" form="categoriesForm">Find Events</button>
         </div>
         <div class="options__content-item options__content-item--instructions" data-title="instructions">
           <h3>Instructions</h3>
@@ -114,12 +114,14 @@
         </div>
         <div class="options__content-item" data-title="info">
           <h3>Event Info</h3>
-          <div class="options__event"></div>
-          <button class="options__button options__button--info options__button--next">Directions</button>
+          <form class="options__question">
+            <div class="options__event"></div>
+            <button class="options__button options__button--info options__button--next" type="submit">Directions</button>
+          </form>
         </div>
-        <div class="options__content-item" data-title="transportation">
-          <h3>Transportation</h3>
-          <form class="options__question" id="transportationForm">
+        <div class="options__content-item" data-title="directions">
+          <h3>Directions</h3>
+          <form class="options__question">
             <legend>How are you getting there?</legend>
             <div>
               <input type="radio" id="driving" name="transportation" value="Driving" class="accessible" checked>
@@ -137,14 +139,13 @@
               <input type="radio" id="transit" name="transportation" value="Transit" class="accessible">
               <label for="transit">Transit</label>
             </div>
+            <button class="options__button options__button--directions options__button--next" type="submit">Search</button>
           </form>
-          <button class="options__button options__button--transportation options__button--next" type="submit" form="transportationForm">Search</button>
-        </div>
-        <div class="options__content-item" data-title="directions">
-          <h3>Directions</h3>
-          <div class="options__directions-info"></div>
-          <div class="options__directions-items"></div>
-          <button class="options__button options__button--directions options__button--next options__button--email">Email</button>
+          <div class="options__directions options__directions--hidden">
+            <div class="options__directions-info"></div>
+            <div class="options__directions-items"></div>
+            <button class="options__button options__button--email options__button--next">Email</button>
+          </div>
         </div>
       </div>
       <footer>
@@ -157,8 +158,7 @@
       <div class="options__tabs-item options__tabs-item--disabled" data-title="date"><i class="fa fa-calendar" aria-hidden="true"></i><span class="accessible">Date</span></div>
       <div class="options__tabs-item options__tabs-item--disabled" data-title="categories"><i class="fa fa-tags" aria-hidden="true"></i><span class="accessible">Categories</span></div>
       <div class="options__tabs-item options__tabs-item--disabled" data-title="info"><i class="fa fa-info" aria-hidden="true"></i><span class="accessible">Event Info</span></div>
-      <div class="options__tabs-item options__tabs-item--disabled" data-title="transportation"><i class="fa fa-car" aria-hidden="true"></i><span class="accessible">Transportation</span></div>
-      <div class="options__tabs-item options__tabs-item--disabled" data-title="directions"><i class="fa fa-map-signs" aria-hidden="true"></i><span class="accessible">Directions</span></div>
+      <div class="options__tabs-item options__tabs-item--disabled" data-title="directions"><i class="fa fa-car" aria-hidden="true"></i><span class="accessible">Directions</span></div>
     </div>
   </section>
   <section class="map">
