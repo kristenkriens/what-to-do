@@ -626,9 +626,10 @@ app.showInstructions = function() {
 	$('.options__content-item[data-title="instructions"]').addClass('options__content-item--active');
 }
 
-// Shows the Event Info tab, removes the active class from instructions tab, and enables directions tab
+// Shows the Event Info tab, deactivates other tabs and hides their contents, and enables directions tab
 app.showEventInfoTab = function(venueId) {
-	$('.options__content-item[data-title="instructions"]').removeClass('options__content-item--active');
+	$('.options__content-item').removeClass('options__content-item--active');
+  $('.options__tabs-item').removeClass('options__tabs-item--active');
 
 	$('.options__tabs-item[data-title="info"]').addClass('options__tabs-item--active').removeClass('options__tabs-item--disabled');
 	$('.options__content-item[data-title="info"]').addClass('options__content-item--active');
@@ -756,16 +757,16 @@ app.generateRoute = function(route) {
   app.directionsDisplay.setDirections(route);
 }
 
-// Clears route on map and disables transportation and directions tabs
+// Clears route on map and resets directions tab back to question
 app.clearRoute = function() {
   app.directionsDisplay.setMap(null);
 
   app.enableRoutes();
 
-  $('.options__tabs-item[data-title="transportation"], .options__tabs-item[data-title="directions"]').addClass('options__tabs-item--disabled');
+  app.hideDirections();
 }
 
-// Hides directions questions and shows directionsService
+// Hides directions questions and shows directions
 app.showDirections = function() {
   $('.options__content-item[data-title="directions"] .options__question').addClass('options__question--hidden');
   $('.options__content-item[data-title="directions"] .options__directions').removeClass('options__directions--hidden');
