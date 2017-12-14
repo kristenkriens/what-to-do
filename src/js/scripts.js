@@ -494,6 +494,8 @@ app.removeDuplicateVenues = function(events) {
 
 // Generates alphabetical legend with categories for returned events and icons for each category
 app.generateLegend = function(events) {
+  $('.map__legend-item').remove();
+  
   let categoriesNameArray = [];
 
   for (let i in events) {
