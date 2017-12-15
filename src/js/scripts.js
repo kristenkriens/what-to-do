@@ -6,6 +6,7 @@ app.directionsDisplay;
 app.map;
 
 app.initialClick = 0;
+app.infoWindowClosed = false;
 
 app.locationClicked = false;
 app.distanceClicked = false;
@@ -238,17 +239,23 @@ app.setLocation = function() {
         }
       });
 
-      let infoWindow = new google.maps.InfoWindow({
-        content: `I'm draggable!`
-      });
-
       if(app.initialClick === 0) {
         app.map.setZoom(13);
 
         homeMarker.setAnimation(google.maps.Animation.DROP);
+      }
 
+      let infoWindow = new google.maps.InfoWindow({
+        content: `I'm draggable!`
+      });
+
+      if(!app.infoWindowClosed) {
         infoWindow.open(app.map, homeMarker);
       }
+
+      google.maps.event.addListener(infoWindow, 'closeclick', function() {
+         app.infoWindowClosed = true;
+      });
 
       app.initialClick = 1;
 
