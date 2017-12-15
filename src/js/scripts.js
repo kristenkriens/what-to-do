@@ -245,6 +245,8 @@ app.setLocation = function() {
         homeMarker.setAnimation(google.maps.Animation.DROP);
       }
 
+      app.initialClick = 1;
+
       let infoWindow = new google.maps.InfoWindow({
         content: `I'm draggable!`
       });
@@ -256,8 +258,6 @@ app.setLocation = function() {
       google.maps.event.addListener(infoWindow, 'closeclick', function() {
          app.infoWindowClosed = true;
       });
-
-      app.initialClick = 1;
 
       app.markers.push(homeMarker);
 
