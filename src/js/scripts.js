@@ -933,12 +933,22 @@ app.init = function() {
 		app.disableButton($(this), 'location');
   });
 
+  $('.options__button--location').on('click', function() {
+    app.setLocation();
+    app.locationClicked = true;
+  });
+
 	$('.options__input--distance').on('keyup', function() {
 		app.disableButton($(this), 'distance');
   });
 
-  $('body').on('keyup', '.overlay__input--email', function() {
-		app.disableButton($(this), 'email');
+  $('.options__button--distance').on('click', function() {
+    app.drawDistanceRadius();
+    app.distanceClicked = true;
+  });
+
+  $('.options__content-item[data-title="distance"] input[type="checkbox"]').on('click', function() {
+    app.setDistanceUnits($(this));
   });
 
   $('input[name="date"]').on('click', function() {
@@ -947,20 +957,6 @@ app.init = function() {
 
   $('.options__date input[type="checkbox"]').on('click', function() {
 		app.showCustomDateRange();
-  });
-
-  $('.options__button--location').on('click', function() {
-    app.setLocation();
-    app.locationClicked = true;
-  });
-
-  $('.options__content-item[data-title="distance"] input[type="checkbox"]').on('click', function() {
-    app.setDistanceUnits($(this));
-  })
-
-	$('.options__button--distance').on('click', function() {
-    app.drawDistanceRadius();
-    app.distanceClicked = true;
   });
 
   $('.options__categories').on('click', 'input', function() {
@@ -1005,12 +1001,16 @@ app.init = function() {
 		app.changeActiveTabNext($(this));
 	});
 
+  $('body').on('click', '.overlay__button--close', function() {
+    app.removeOverlay($(this));
+  });
+
   $('.options__button--email').on('click', function() {
     app.generateOverlay();
   });
 
-  $('body').on('click', '.overlay__button--close', function() {
-    app.removeOverlay($(this));
+  $('body').on('keyup', '.overlay__input--email', function() {
+		app.disableButton($(this), 'email');
   });
 
   $('body').on('click', '.overlay__button--email', function() {
