@@ -140,7 +140,7 @@ app.generateCategories = function(categories) {
 		let id = categories.category[i].id;
 		let name = categories.category[i].name;
 
-		$('.options__categories').append(`<div><input type="checkbox" id="${id}" name="categories" value="${id}" class="accessible"><label for="${id}">${name}</label></div>`);
+		$('.options__categories').append(`<li><input type="checkbox" id="${id}" name="categories" value="${id}" class="accessible"><label for="${id}">${name}</label></li>`);
 
     let iconNameArray = ['music', 'users', 'smile-o', 'mortar-board', 'child', 'ticket', 'film', 'cutlery', 'heart', 'paint-brush', 'medkit', 'tree', 'book', 'fort-awesome', 'home', 'comments', 'glass', 'university', 'sitemap', 'sun-o', 'microphone', 'paw', 'hand-rock-o', 'shopping-cart', 'flask', 'bell', 'soccer-ball-o', 'desktop', 'asterisk'];
 

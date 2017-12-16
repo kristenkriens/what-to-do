@@ -1,3 +1,26 @@
+header {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+}
+
+footer {
+  position: absolute;
+  bottom: 20px;
+  left: 20px;
+  font-size: 14px;
+
+  a {
+    color: $white;
+    transition: 200ms opacity ease;
+
+    &:hover {
+      opacity: 0.75;
+      text-decoration: underline;
+    }
+  }
+}
+
 .options {
   display: flex;
   flex-wrap: wrap;
@@ -10,21 +33,22 @@
   &__content {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     background-color: $blue;
     width: calc(100% - 70px);
     height: 100%;
-    padding: 20px;
+    padding: 130px 20px 60px 20px;
 
     @media (max-width: $md-width) {
       width: 100%;
+      padding-bottom: 20px;
     }
 
-    &-items, header, footer {
+    &-items {
       width: 100%;
     }
 
     &-items {
-      margin: 30px 0;
       position: relative;
 
       @media (max-width: $md-width) {
@@ -37,7 +61,7 @@
       padding-bottom: 40px;
 
       @media (max-width: $md-width) {
-        padding-bottom: 60px;
+        padding-bottom: 0;
       }
 
       h3 {
@@ -57,7 +81,7 @@
 
         .spinner {
           font-size: 75px;
-          margin: 25px auto 0;
+          margin: 20px auto 0;
           text-align: center;
         }
 
@@ -83,32 +107,12 @@
         }
       }
     }
-
-    footer {
-      align-self: flex-end;
-      font-size: 14px;
-
-      @media (max-width: $md-width) {
-        position: absolute;
-        bottom: 20px;
-        left: 20px;
-        width: auto;
-        z-index: 1;
-      }
-
-      a {
-        color: $white;
-        transition: 200ms opacity ease;
-
-        &:hover {
-          opacity: 0.75;
-          text-decoration: underline;
-        }
-      }
-    }
   }
 
   &__question {
+    display: flex;
+    flex-wrap: wrap;
+
     &--hidden {
       display: none;
 
@@ -116,12 +120,23 @@
         display: none;
       }
     }
+
+    ul {
+      width: 100%;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    li {
+      width: 100%;
+    }
   }
 
   &__input {
     &-units  {
       position: relative;
-      max-width: 265px;
+      width: 100%;
 
       input {
         padding-right: 35px;
@@ -141,6 +156,7 @@
       + input + label {
         margin-top: 7px;
         margin-bottom: 0;
+        width: 100%;
       }
     }
   }
@@ -184,9 +200,10 @@
     width: 100%;
     padding-right: 15px;
 
-    div:first-of-type label {
+    li:first-of-type label {
       border-bottom: 1px dashed $white;
       padding-bottom: 7px;
+      margin-right: 15px;
     }
 
     @media (min-width: $sm-width-plus) and (max-width: $md-width) {
@@ -194,7 +211,7 @@
       flex-wrap: wrap;
       justify-content: space-between;
 
-      div {
+      li {
         width: calc(50% - 10px);
       }
     }
@@ -269,12 +286,12 @@
   }
 
   &__button {
-    position: absolute;
-    bottom: 0;
-    right: 0;
+    margin-top: 20px;
+    margin-left: auto;
   }
 
   &__tabs {
+    order: 1;
     background-color: $navy;
     height: 100%;
     position: relative;
@@ -287,6 +304,16 @@
 
     @media (max-width: $sm-width) {
       justify-content: space-between;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+
+      @media (max-width: $md-width) {
+        display: flex;
+      }
     }
 
     &-item {
@@ -302,7 +329,7 @@
       transition: 200ms color ease, 200ms background-color ease;
 
       @media (max-width: $sm-width) {
-        width: calc(100% / 7);
+        width: calc(100% / 6);
         height: 60px;
         font-size: 25px;
       }

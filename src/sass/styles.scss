@@ -157,16 +157,16 @@ a[href^="https://maps.google.com/maps"] {
   display:none;
 }
 
-div::-webkit-scrollbar-track, ol::-webkit-scrollbar-track {
+div::-webkit-scrollbar-track, ol::-webkit-scrollbar-track, ul::-webkit-scrollbar-track {
 	background-color: $white;
 }
 
-div::-webkit-scrollbar, ol::-webkit-scrollbar {
+div::-webkit-scrollbar, ol::-webkit-scrollbar, ul::-webkit-scrollbar {
 	width: 10px;
 	background-color: $white;
 }
 
-div::-webkit-scrollbar-thumb, ol::-webkit-scrollbar-thumb {
+div::-webkit-scrollbar-thumb, ol::-webkit-scrollbar-thumb, ul::-webkit-scrollbar-thumb {
 	background-color: $navy;
 }
 

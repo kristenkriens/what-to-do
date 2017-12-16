@@ -9,12 +9,22 @@
   <link rel="stylesheet" type="text/css" href="dist/css/styles.css">
 </head>
 <body>
+  <header>
+    <h1>What To Do</h1>
+    <h2>Local Event Finder</h2>
+  </header>
   <section class="options">
+    <nav class="options__tabs">
+      <ul>
+        <li class="options__tabs-item options__tabs-item--active" data-title="location"><i class="fa fa-globe" aria-hidden="true"></i><span class="accessible">Location</span></li>
+        <li class="options__tabs-item options__tabs-item--disabled" data-title="distance"><i class="fa fa-street-view" aria-hidden="true"></i><span class="accessible">Distance</span></li>
+        <li class="options__tabs-item options__tabs-item--disabled" data-title="date"><i class="fa fa-calendar" aria-hidden="true"></i><span class="accessible">Date</span></li>
+        <li class="options__tabs-item options__tabs-item--disabled" data-title="categories"><i class="fa fa-tags" aria-hidden="true"></i><span class="accessible">Categories</span></li>
+        <li class="options__tabs-item options__tabs-item--disabled" data-title="info"><i class="fa fa-info" aria-hidden="true"></i><span class="accessible">Event Info</span></li>
+        <li class="options__tabs-item options__tabs-item--disabled" data-title="directions"><i class="fa fa-car" aria-hidden="true"></i><span class="accessible">Directions</span></li>
+      </ul>
+    </nav>
     <div class="options__content">
-      <header>
-        <h1>What To Do</h1>
-        <h2>Local Event Finder</h2>
-      </header>
       <div class="options__content-items">
         <div class="options__content-item options__content-item--active" data-title="location">
           <h3>Step 1: Location</h3>
@@ -44,40 +54,42 @@
           <h3>Step 3: Date</h3>
           <form class="options__question">
             <legend>When do you want to go?</legend>
-            <div>
-              <input type="radio" id="noDatePreference" name="date" value="Future" class="accessible" checked>
-              <label for="noDatePreference">No Preference</label>
-            </div>
-            <div>
-              <input type="radio" id="today" name="date" value="Today" class="accessible">
-              <label for="today">Today</label>
-            </div>
-            <div>
-              <input type="radio" id="thisWeek" name="date" value="This Week" class="accessible">
-              <label for="thisWeek">This Week</label>
-            </div>
-            <div>
-              <input type="radio" id="nextWeek" name="date" value="Next Week" class="accessible">
-              <label for="nextWeek">Next Week</label>
-            </div>
-            <div>
-              <input type="radio" id="custom" name="date" value="Custom" class="accessible">
-              <label for="custom">Custom</label>
-            </div>
-            <div class="options__date options__date--hidden">
-              <div class="options__date-start">
-                <select id="startMonth" class="options__input options__input--month"></select>
-                <select id="startDay" class="options__input options__input--day"></select>
-                <select id="startYear" class="options__input options__input--year"></select>
-              </div>
-              <div class="options__date-end options__date-end--hidden">
-                <select id="endMonth" class="options__input options__input--month"></select>
-                <select id="endDay" class="options__input options__input--day"></select>
-                <select id="endYear" class="options__input options__input--year"></select>
-              </div>
-              <input type="checkbox" id="dateRange" value="Date Range" class="accessible">
-              <label for="dateRange">Date Range</label>
-            </div>
+            <ul>
+              <li>
+                <input type="radio" id="noDatePreference" name="date" value="Future" class="accessible" checked>
+                <label for="noDatePreference">No Preference</label>
+              </li>
+              <li>
+                <input type="radio" id="today" name="date" value="Today" class="accessible">
+                <label for="today">Today</label>
+              </li>
+              <li>
+                <input type="radio" id="thisWeek" name="date" value="This Week" class="accessible">
+                <label for="thisWeek">This Week</label>
+              </li>
+              <li>
+                <input type="radio" id="nextWeek" name="date" value="Next Week" class="accessible">
+                <label for="nextWeek">Next Week</label>
+              </li>
+              <li>
+                <input type="radio" id="custom" name="date" value="Custom" class="accessible">
+                <label for="custom">Custom</label>
+              </li>
+              <li class="options__date options__date--hidden">
+                <div class="options__date-start">
+                  <select id="startMonth" class="options__input options__input--month"></select>
+                  <select id="startDay" class="options__input options__input--day"></select>
+                  <select id="startYear" class="options__input options__input--year"></select>
+                </div>
+                <div class="options__date-end options__date-end--hidden">
+                  <select id="endMonth" class="options__input options__input--month"></select>
+                  <select id="endDay" class="options__input options__input--day"></select>
+                  <select id="endYear" class="options__input options__input--year"></select>
+                </div>
+                <input type="checkbox" id="dateRange" value="Date Range" class="accessible">
+                <label for="dateRange">Date Range</label>
+              </li>
+            </ul>
             <button class="options__button options__button--date options__button--next" type="submit">Next</button>
           </form>
         </div>
@@ -85,12 +97,12 @@
           <h3>Step 4: Categories</h3>
           <form class="options__question">
             <legend>Which of the following interest you? (Select all that apply)</legend>
-            <div class="options__categories">
-              <div>
+            <ul class="options__categories">
+              <li>
                 <input type="checkbox" id="noCategoryPreference" name="categories" value="No Preference" class="accessible" checked>
                 <label for="noCategoryPreference">No Preference</label>
-              </div>
-            </div>
+              </li>
+            </ul>
             <button class="options__button options__button--categories options__button--submit options__button--next" type="submit">Find Events</button>
           </form>
         </div>
@@ -148,17 +160,6 @@
           </div>
         </div>
       </div>
-      <footer>
-        <p>&copy; <a href="http://kristenkriens.com" target="_blank">Kristen Kriens</a> 2017</p>
-      </footer>
-    </div>
-    <div class="options__tabs">
-      <div class="options__tabs-item options__tabs-item--active" data-title="location"><i class="fa fa-globe" aria-hidden="true"></i><span class="accessible">Location</span></div>
-      <div class="options__tabs-item options__tabs-item--disabled" data-title="distance"><i class="fa fa-street-view" aria-hidden="true"></i><span class="accessible">Distance</span></div>
-      <div class="options__tabs-item options__tabs-item--disabled" data-title="date"><i class="fa fa-calendar" aria-hidden="true"></i><span class="accessible">Date</span></div>
-      <div class="options__tabs-item options__tabs-item--disabled" data-title="categories"><i class="fa fa-tags" aria-hidden="true"></i><span class="accessible">Categories</span></div>
-      <div class="options__tabs-item options__tabs-item--disabled" data-title="info"><i class="fa fa-info" aria-hidden="true"></i><span class="accessible">Event Info</span></div>
-      <div class="options__tabs-item options__tabs-item--disabled" data-title="directions"><i class="fa fa-car" aria-hidden="true"></i><span class="accessible">Directions</span></div>
     </div>
   </section>
   <section class="map">
@@ -175,6 +176,9 @@
       <div class="map__zoom-out"><i class="fa fa-minus" aria-hidden="true"></i><span class="accessible">Zoom Out</span></div>
     </div>
   </section>
+  <footer>
+    <p>&copy; <a href="http://kristenkriens.com" target="_blank">Kristen Kriens</a> 2017</p>
+  </footer>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCd5mGXsG9F1l3f88jkDNNV1cKu4KZZGgM&libraries=places" type="text/javascript"></script>
   <script src="https://use.fontawesome.com/07dc8c3210.js"></script>
