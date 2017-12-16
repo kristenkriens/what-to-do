@@ -58,11 +58,7 @@ footer {
 
     &-item {
       display: none;
-      padding-bottom: 40px;
-
-      @media (max-width: $md-width) {
-        padding-bottom: 0;
-      }
+      padding-bottom: 0;
 
       h3 {
         margin-bottom: 15px;
