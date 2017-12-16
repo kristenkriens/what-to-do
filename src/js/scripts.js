@@ -526,7 +526,7 @@ app.generateLegend = function(events) {
   });
 
   for (let i in filteredCategoriesIconNameArray) {
-    $('.map__legend').append(`<div class="map__legend-item"><i class="fa fa-${filteredCategoriesIconNameArray[i].icon}" aria-hidden="true"></i> <span>${filteredCategoriesIconNameArray[i].name}</span></div>`).removeClass('map__legend--hidden');
+    $('.map__legend ul').append(`<div class="map__legend-item"><i class="fa fa-${filteredCategoriesIconNameArray[i].icon}" aria-hidden="true"></i> <span>${filteredCategoriesIconNameArray[i].name}</span></div>`).parent().removeClass('map__legend--hidden');
   }
 
   app.generateEvents(events);
