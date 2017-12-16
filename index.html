@@ -135,22 +135,24 @@
           <h3>Directions</h3>
           <form class="options__question">
             <legend>How are you getting there?</legend>
-            <div>
-              <input type="radio" id="driving" name="transportation" value="Driving" class="accessible" checked>
-              <label for="driving">Driving</label>
-            </div>
-            <div>
-              <input type="radio" id="walking" name="transportation" value="Walking" class="accessible">
-              <label for="walking">Walking</label>
-            </div>
-            <div>
-              <input type="radio" id="bicycling" name="transportation" value="Bicycling" class="accessible">
-              <label for="bicycling">Bicycling</label>
-            </div>
-            <div>
-              <input type="radio" id="transit" name="transportation" value="Transit" class="accessible">
-              <label for="transit">Transit</label>
-            </div>
+            <ul>
+              <li>
+                <input type="radio" id="driving" name="transportation" value="Driving" class="accessible" checked>
+                <label for="driving">Driving</label>
+              </li>
+              <li>
+                <input type="radio" id="walking" name="transportation" value="Walking" class="accessible">
+                <label for="walking">Walking</label>
+              </li>
+              <li>
+                <input type="radio" id="bicycling" name="transportation" value="Bicycling" class="accessible">
+                <label for="bicycling">Bicycling</label>
+              </li>
+              <li>
+                <input type="radio" id="transit" name="transportation" value="Transit" class="accessible">
+                <label for="transit">Transit</label>
+              </li>
+            </ul>
             <button class="options__button options__button--directions options__button--next" type="submit">Search</button>
           </form>
           <div class="options__directions options__directions--hidden">
