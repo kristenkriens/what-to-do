@@ -383,6 +383,9 @@ footer {
   }
 
   &__directions {
+    display: flex;
+    flex-wrap: wrap;
+
     &--hidden {
       display: none;
 
