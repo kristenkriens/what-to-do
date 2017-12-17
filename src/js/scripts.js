@@ -339,7 +339,7 @@ app.generateDates = function() {
       month = '0' + month;
     }
 
-    $('.options__input--month').append(`<option value="${month}" ${i == currentMonth ? 'selected' : ''}>${months[i - 1]}</option>`);
+    $('.options__input--month select').append(`<option value="${month}" ${i == currentMonth ? 'selected' : ''}>${months[i - 1]}</option>`);
   }
 
   for(let i = 1; i <= 31; i++) {
@@ -349,14 +349,14 @@ app.generateDates = function() {
       day = '0' + day;
     }
 
-    $('.options__input--day').append(`<option value="${day}" ${i == currentDay ? 'selected' : ''}>${i}</option>`);
+    $('.options__input--day select').append(`<option value="${day}" ${i == currentDay ? 'selected' : ''}>${i}</option>`);
   }
 
   for(let i = 0; i <= 2; i++) {
     let year = currentYear + i;
     years.push(year);
 
-    $('.options__input--year').append(`<option value="${years[i]}" ${years[i] == currentYear ? 'selected' : ''}>${years[i]}</option>`);
+    $('.options__input--year select').append(`<option value="${years[i]}" ${years[i] == currentYear ? 'selected' : ''}>${years[i]}</option>`);
   }
 }
 
@@ -414,18 +414,18 @@ app.drawDistanceRadius = function() {
 
 // Gets dates from select boxes if Custom is selected for the date
 app.getCustomDate = function() {
-  let startDay = $('.options__date-start .options__input--day').val();
-  let startMonth = $('.options__date-start .options__input--month').val();
-  let startYear = $('.options__date-start .options__input--year').val();
+  let startDay = $('.options__date-start .options__input--day select').val();
+  let startMonth = $('.options__date-start .options__input--month select').val();
+  let startYear = $('.options__date-start .options__input--year select').val();
 
   let endDay = startDay;
   let endMonth = startMonth;
   let endYear = startYear;
 
   if($('.options__date input[type="checkbox"]').is(':checked')) {
-    endDay = $('.options__date-end .options__input--day').val();
-    endMonth = $('.options__date-end .options__input--month').val();
-    endYear = $('.options__date-end .options__input--year').val();
+    endDay = $('.options__date-end .options__input--day select').val();
+    endMonth = $('.options__date-end .options__input--month select').val();
+    endYear = $('.options__date-end .options__input--year select').val();
   }
 
   app.date = `${startYear}${startMonth}${startDay}00-${endYear}${endMonth}${endDay}00`;
@@ -805,7 +805,7 @@ app.generateDirections = function(directions) {
     $('.options__directions-items').append(`<p>${parseInt(i) + 1}. ${app.legs.steps[i].instructions} (${app.legs.steps[i].distance.text} - ${app.legs.steps[i].duration.text})</p>`);
   }
 
-  if($('.options__directions-items').height() > 235) {
+  if($('.options__directions-items').height() > 240) {
     $('.options__directions-items').addClass('options__directions-items--scroll');
   }
 }

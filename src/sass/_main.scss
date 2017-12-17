@@ -37,7 +37,7 @@ footer {
     background-color: $blue;
     width: calc(100% - 70px);
     height: 100%;
-    padding: 130px 20px 60px 20px;
+    padding: 125px 20px 60px 20px;
 
     @media (max-width: $md-width) {
       width: 100%;
@@ -175,6 +175,18 @@ footer {
     }
 
     .options__input {
+      position: relative;
+
+      &:after {
+        content: '\f107';
+        color: $navy;
+        font-family: 'FontAwesome';
+        position: absolute;
+        top: 8px;
+        right: 10px;
+        pointer-events: none;
+      }
+
       &--year {
         width: calc(32% - 5px);
       }
