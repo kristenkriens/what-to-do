@@ -308,7 +308,7 @@ app.setNewMarkerLocation = function(that) {
 
   app.setLocation();
 
-  if($('.options__content-item[data-title="instructions"]').hasClass('options__content-item--active')) {
+  if($('.options__content-item[data-title="instructions"]').hasClass('options__content-item--active') || $('.options__content-item[data-title="info"]').hasClass('options__content-item--active') || $('.options__content-item[data-title="directions"]').hasClass('options__content-item--active')) {
     app.changeActiveTabClick($('.options__tabs-item[data-title="categories"]'));
   }
 }
